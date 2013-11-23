@@ -1,0 +1,4 @@
+GameMessageLocalized
+====================
+
+game message localized
