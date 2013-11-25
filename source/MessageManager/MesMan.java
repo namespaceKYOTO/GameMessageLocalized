@@ -18,6 +18,9 @@ public class MesMan extends JFrame
 	private Stack<Stack<String>> row;
 	private Stack<String> columnName;
 	
+	private Stack<String> tagRow;
+	private Stack<String> tagColumnName;
+	
 	public static void main(String[] args)
 	{
 		MesMan mesMan = new MesMan();
@@ -39,22 +42,46 @@ public class MesMan extends JFrame
 		setBounds( x, y, width, height );
 		
 		// create list table
+		//JTable table = new JTable(this.row, this.columnName);
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
-		
 		for(String str : this.country)
 		{
 			this.columnName.push(str);
 			this.row.push(new Stack<String>());
 		}
-		JTable table = new JTable(this.row, this.columnName);
+		MesTable mesTable = new MesTable(this.row, this.columnName);
 		
 		// 
-		JScrollPane pane = new JScrollPane(table);
+		JScrollPane pane = new JScrollPane(mesTable);
 		
 		JPanel panel = new JPanel();
 		panel.add(pane);
 		
-		getContentPane().add(panel,  BorderLayout.CENTER);
+		this.tagRow = new Stack<String>();
+		this.tagColumnName = new Stack<String>();
+		this.tagColumnName.push("Tag Name");
+		TagTable tagTable = new TagTable(this.tagRow, this.tagColumnName);
+		
+		JScrollPane tagPane = new JScrollPane(tagTable);
+		
+		JPanel tagPanel = new JPanel();
+		panel.add(tagPane);
+		
+		getContentPane().add(panel, BorderLayout.CENTER);
+		getContentPane().add(tagPanel, BorderLayout.WEST);
+		
+		
+		// menu bar 
+		JMenuBar menuBar = new JMenuBar();
+		JMenu file = new JMenu("File");
+		JMenu help = new JMenu("Help");
+		
+		file.add(new OutPutItem());
+		
+		menuBar.add(file);
+		menuBar.add(help);
+		
+		setJMenuBar(menuBar);
 	}
 }

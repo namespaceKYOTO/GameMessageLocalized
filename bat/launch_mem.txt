@@ -4,6 +4,7 @@
  * command -> help    : help display
  *            all     : all (delete & compile & run)
  *            compile : compile java source
+ *                    : e.g. compile sourcefile
  *            run     : execute java
  *                    : you specify the file you want to run
  *                    : e.g. run [PackageName.ClassFileName]
