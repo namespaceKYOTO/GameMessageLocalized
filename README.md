@@ -2,4 +2,5 @@ GameMessageLocalized
 ====================
 
 game message localized
-メッセージのローカライズ関係
+
+ゲーム内のメッセージのローカライズを簡単に行えるようなツールです。
