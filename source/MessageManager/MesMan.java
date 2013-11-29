@@ -9,17 +9,15 @@ package MesMan;
 import java.lang.*;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 
-public class MesMan extends JFrame
+public class MesMan extends JFrame implements ActionListener
 {
-	// ISO 3166-1
-	private String[] country = {"Label", "JPN", "USA", "GBR", "DEU", "FRA", "ITA", "ESP"};
-	private Stack<Stack<String>> row;
-	private Stack<String> columnName;
+	private MesTable mesTable;
 	
-	private Stack<Stack<String>> tagRow;
-	private Stack<String> tagColumnName;
+	private TagTable tagTable;
 	
 	public static void main(String[] args)
 	{
@@ -42,56 +40,15 @@ public class MesMan extends JFrame
 		setBounds( x, y, width, height );
 		
 		// create message table
-		this.row = new Stack<Stack<String>>();
-		this.columnName = new Stack<String>();
-		for(String str : this.country)
-		{
-			this.columnName.push(str);
-			this.row.push(new Stack<String>());
-		}
-		Dimension preferredMesTable = new Dimension((width / 3) * 2 - 10, height);
-		MesTable mesTable = new MesTable(this.row, this.columnName);
-		mesTable.setPreferredSize(preferredMesTable);
+		this.mesTable = new MesTable((width / 3) * 2 - 10, height);
 		
-		JScrollPane pane = new JScrollPane(mesTable);
-		pane.setPreferredSize(preferredMesTable);
+		// create tab table
+		this.tagTable = new TagTable((width / 3) * 1 - 10, height);
 		
-		JPanel panel = new JPanel();
-		panel.add(pane);
-		panel.setPreferredSize(preferredMesTable);
-		
-		// create tag table
-		this.tagRow = new Stack<Stack<String>>();
-		this.tagColumnName = new Stack<String>();
-		this.tagRow.push(new Stack<String>());
-		this.tagColumnName.push("Tag Name");
-		this.tagColumnName.push("Description");
-		Dimension preferredTagTable = new Dimension((width / 3) * 1 - 10, height);
-		TagTable tagTable = new TagTable(this.tagRow, this.tagColumnName);
-		tagTable.setPreferredSize(preferredTagTable);
-		
-		JScrollPane tagPane = new JScrollPane(tagTable);
-		tagPane.setPreferredSize(preferredTagTable);
-		
-		JPanel tagPanel = new JPanel();
-		tagPanel.add(tagPane);
-		tagPanel.setPreferredSize(preferredTagTable);
-		
-		//getContentPane().add(panel, BorderLayout.CENTER);
-		//getContentPane().add(tagPanel, BorderLayout.WEST);
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
-		add(tagPanel);
-		add(panel);
-		//FlowLayout layout = new FlowLayout(/*FlowLayout.LEFT*/);
-		//layout.addLayoutComponent("TagPanel", tagPanel);
-		//layout.addLayoutComponent("MessagPanel", panel);
-		//setLayout(layout);
-		//tagPanel.setLayout(layout);
-		//panel.setLayout(layout);
-		//add(tagPanel);
-		//add(panel);
-		
+		add(this.tagTable.getPanel());
+		add(this.mesTable.getPanel());
 		
 		// menu bar 
 		JMenuBar menuBar = new JMenuBar();
@@ -104,5 +61,20 @@ public class MesMan extends JFrame
 		menuBar.add(help);
 		
 		setJMenuBar(menuBar);
+	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	invoked when an action occurs
+	/*---------------------------------------------------------------------*/
+	public void actionPerformed(ActionEvent e)
+	{
+		//if(e.getActionCommand().equal(JButton.PRESSED_ICON_CHANGED_PROPERTY))
+		{
+			System.out.println("Click Button");
+			//int rowCount = this.tagTable.getRowCount();
+			//rowCount = rowCount - 1 >= 0 ? rowCount - 1 : 0;
+			//this.tagTable.addRowSelectionInterval(rowCount, rowCount);
+		//	this.tagRow.push(new Stack<String>());
+		}
 	}
 }
