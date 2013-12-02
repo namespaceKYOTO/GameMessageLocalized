@@ -16,8 +16,9 @@ import javax.swing.table.TableColumn;
 public class MesMan extends JFrame implements ActionListener
 {
 	private MesTable mesTable;
-	
 	private TagTable tagTable;
+	private CheckParamPanel checkParam;
+	private JFileChooser fileChooser;
 	
 	public static void main(String[] args)
 	{
@@ -55,12 +56,19 @@ public class MesMan extends JFrame implements ActionListener
 		JMenu file = new JMenu("File");
 		JMenu help = new JMenu("Help");
 		
-		file.add(new OutPutItem());
+		JMenuItem outFile = new JMenuItem("Out File");
+		outFile.addActionListener(this);
+		file.add(outFile);
 		
 		menuBar.add(file);
 		menuBar.add(help);
 		
 		setJMenuBar(menuBar);
+		
+		// file Chooser
+		this.checkParam = new CheckParamPanel();
+		this.fileChooser = new JFileChooser();
+		this.fileChooser.setAccessory(this.checkParam.getPanel());
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -71,10 +79,8 @@ public class MesMan extends JFrame implements ActionListener
 		//if(e.getActionCommand().equal(JButton.PRESSED_ICON_CHANGED_PROPERTY))
 		{
 			System.out.println("Click Button");
-			//int rowCount = this.tagTable.getRowCount();
-			//rowCount = rowCount - 1 >= 0 ? rowCount - 1 : 0;
-			//this.tagTable.addRowSelectionInterval(rowCount, rowCount);
-		//	this.tagRow.push(new Stack<String>());
+//			this.mesTable.outFile();
+			this.fileChooser.showSaveDialog(this);
 		}
 	}
 }
