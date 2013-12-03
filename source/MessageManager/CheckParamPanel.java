@@ -22,7 +22,7 @@ public class CheckParamPanel
 	public CheckParamPanel()
 	{
 		// suffix
-		JCheckBox binCheck = new JCheckBox("bin");
+		JCheckBox binCheck = new JCheckBox(".bin");
 		JCheckBox cCheck = new JCheckBox(".c");
 		JPanel suffix = new JPanel();
 		suffix.add(binCheck);

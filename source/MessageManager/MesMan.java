@@ -8,6 +8,7 @@ package MesMan;
 
 import java.lang.*;
 import java.util.*;
+import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -76,11 +77,15 @@ public class MesMan extends JFrame implements ActionListener
 	/*---------------------------------------------------------------------*/
 	public void actionPerformed(ActionEvent e)
 	{
-		//if(e.getActionCommand().equal(JButton.PRESSED_ICON_CHANGED_PROPERTY))
 		{
 			System.out.println("Click Button");
 //			this.mesTable.outFile();
-			this.fileChooser.showSaveDialog(this);
+			int ret = this.fileChooser.showSaveDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				System.out.println("File Save");
+				File out_file = this.fileChooser.getSelectedFile();
+			}
 		}
 	}
 }
