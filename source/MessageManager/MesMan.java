@@ -57,9 +57,12 @@ public class MesMan extends JFrame implements ActionListener
 		JMenu file = new JMenu("File");
 		JMenu help = new JMenu("Help");
 		
-		JMenuItem outFile = new JMenuItem("Out File");
-		outFile.addActionListener(this);
-		file.add(outFile);
+		JMenuItem inputFile = new JMenuItem("Input File");
+		JMenuItem outputFile = new JMenuItem("Output File");
+		inputFile.addActionListener(this);
+		outputFile.addActionListener(this);
+		file.add(inputFile);
+		file.add(outputFile);
 		
 		menuBar.add(file);
 		menuBar.add(help);
@@ -77,14 +80,21 @@ public class MesMan extends JFrame implements ActionListener
 	/*---------------------------------------------------------------------*/
 	public void actionPerformed(ActionEvent e)
 	{
+		System.out.println(e.paramString());
+		if(e.getActionCommand().equals("Input File"))
 		{
-			System.out.println("Click Button");
-//			this.mesTable.outFile();
+			System.out.println("Input File");
+		}
+		else if(e.getActionCommand().equals("Output File"))
+		{
+			System.out.println("Output File");
 			int ret = this.fileChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
 				System.out.println("File Save");
-				File out_file = this.fileChooser.getSelectedFile();
+				File outFile = this.fileChooser.getSelectedFile();
+				OutPuter outPuter = new OutPuter();
+				outPuter.outPut(outFile, this.tagTable.getRow(), this.mesTable.getRow());
 			}
 		}
 	}

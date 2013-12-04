@@ -66,6 +66,11 @@ public class TagTable implements MouseListener, ActionListener
 		return this.panel;
 	}
 	
+	public Stack<Stack<String>> getRow()
+	{
+		return this.tagRow;
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	Mouse event
 	/*---------------------------------------------------------------------*/

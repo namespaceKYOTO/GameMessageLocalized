@@ -67,6 +67,11 @@ public class MesTable implements MouseListener, ActionListener
 		return this.panel;
 	}
 	
+	public Stack<Stack<String>> getRow()
+	{
+		return this.row;
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	Mouse event
 	/*---------------------------------------------------------------------*/
