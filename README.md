@@ -1,6 +1,6 @@
-GameMessageLocalized
+Message Manager
 ====================
 
-game message localized
+Message Manager
 
 ゲーム内のメッセージのローカライズを簡単に行えるようなツールです。
