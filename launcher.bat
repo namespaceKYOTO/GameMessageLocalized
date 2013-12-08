@@ -2,8 +2,8 @@
 setlocal
 
 rem set local environment path
-set JAVAC_PATH=C:\"Program Files"\Java\jdk1.7.0_40\bin\
-set JAVA_PATH=C:\"Program Files"\Java\jdk1.7.0_40\bin\
+set JAVAC_PATH=C:\"Program Files"\Java\jdk1.7.0_45\bin\
+set JAVA_PATH=C:\"Program Files"\Java\jdk1.7.0_45\bin\
 rem relative path to the c drive from javac path
 set C_DRIVE_RELATIVE_PATH=.\..\..\..\..
 
