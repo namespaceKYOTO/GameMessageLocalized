@@ -19,7 +19,15 @@ public class MesMan extends JFrame implements ActionListener
 	private MesTable mesTable;
 	private TagTable tagTable;
 	private CheckParamPanel checkParam;
-	private JFileChooser fileChooser;
+	private JFileChooser mtblChooser;
+	private JFileChooser outputChooser;
+	
+	private String FRAME_TITLE = "Message Manager";
+	
+	
+	private String TABLE_OPEN = "Table Open";
+	private String TABLE_SAVE = "Table Save";
+	private String OUTPUT = "Output";
 	
 	public static void main(String[] args)
 	{
@@ -31,7 +39,7 @@ public class MesMan extends JFrame implements ActionListener
 	
 	public MesMan()
 	{
-		setTitle("Message Manager");
+		setTitle(FRAME_TITLE);
 		
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle rec = env.getMaximumWindowBounds();
@@ -57,11 +65,13 @@ public class MesMan extends JFrame implements ActionListener
 		JMenu file = new JMenu("File");
 		JMenu help = new JMenu("Help");
 		
-		JMenuItem inputFile = new JMenuItem("Input File");
-		JMenuItem outputFile = new JMenuItem("Output File");
+		JMenuItem tableOpen = new JMenuItem(TABLE_OPEN);
+		JMenuItem tableSave = new JMenuItem(TABLE_SAVE);
+		JMenuItem outputFile = new JMenuItem(OUTPUT);
 		inputFile.addActionListener(this);
 		outputFile.addActionListener(this);
-		file.add(inputFile);
+		file.add(tableOpen);
+		file.add(tableSave);
 		file.add(outputFile);
 		
 		menuBar.add(file);
@@ -71,8 +81,11 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// file Chooser
 		this.checkParam = new CheckParamPanel();
-		this.fileChooser = new JFileChooser();
-		this.fileChooser.setAccessory(this.checkParam.getPanel());
+		this.outputChooser = new JFileChooser();
+		this.outputChooser.setAccessory(this.checkParam.getPanel());
+		
+		this.mtblChooser = new JFileChooser();
+		this.mtblChooser.setFileFilter(new MTblFilter());
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -81,18 +94,32 @@ public class MesMan extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println(e.paramString());
-		if(e.getActionCommand().equals("Input File"))
+		if(e.getActionCommand().equals(TABLE_OPEN))
 		{
-			System.out.println("Input File");
-		}
-		else if(e.getActionCommand().equals("Output File"))
-		{
-			System.out.println("Output File");
-			int ret = this.fileChooser.showSaveDialog(this);
+			int ret = this.mtblChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
-				System.out.println("File Save");
-				File outFile = this.fileChooser.getSelectedFile();
+				System.out.println(TABLE_OPEN);
+				File inputFile = this.mtblChooser.getSelectedFile();
+			}
+		}
+		else if(e.getActionCommand().equals(TABLE_SAVE))
+		{
+			int ret = this.mtblChooser.showSaveDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				System.out.println(TABLE_SAVE);
+				File inputFile = this.mtblChooser.getSelectedFile();
+			}
+		}
+		else if(e.getActionCommand().equals(OUTPUT))
+		{
+			this.outputChooser.setFileFilter(null);
+			int ret = this.outputChooser.showSaveDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				System.out.println(OUTPUT);
+				File outFile = this.outputChooser.getSelectedFile();
 				OutPuter outPuter = new OutPuter();
 				outPuter.outPut(outFile, this.tagTable.getRow(), this.mesTable.getRow());
 			}

@@ -16,14 +16,20 @@ public class CheckParamPanel
 {
 	private JPanel panel;
 	
+	private SUFFIX_BIN = ".bin";
+	private SUFFIX_C = ".c";
+	private UTF8 = "UTF-8";
+	private UTF16BE = "UTF-16BE";
+	private UTF16LE = "UTF-16LE";
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
 	public CheckParamPanel()
 	{
 		// suffix
-		JCheckBox binCheck = new JCheckBox(".bin");
-		JCheckBox cCheck = new JCheckBox(".c");
+		JCheckBox binCheck = new JCheckBox(SUFFIX_BIN);
+		JCheckBox cCheck = new JCheckBox(SUFFIX_C);
 		JPanel suffix = new JPanel();
 		suffix.add(binCheck);
 		suffix.add(cCheck);
@@ -33,9 +39,9 @@ public class CheckParamPanel
 		suffix.setBorder(suffixBorder);
 		
 		// language code
-		JCheckBox utf8 = new JCheckBox("UTF-8");
-		JCheckBox utf16BE = new JCheckBox("UTF-16BE");
-		JCheckBox utf16LE = new JCheckBox("UTF-16LE");
+		JCheckBox utf8 = new JCheckBox(UTF8);
+		JCheckBox utf16BE = new JCheckBox(UTF16BE);
+		JCheckBox utf16LE = new JCheckBox(UTF16LE);
 		JPanel code = new JPanel();
 		code.add(utf8);
 		code.add(utf16BE);
