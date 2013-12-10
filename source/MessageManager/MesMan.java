@@ -68,7 +68,8 @@ public class MesMan extends JFrame implements ActionListener
 		JMenuItem tableOpen = new JMenuItem(TABLE_OPEN);
 		JMenuItem tableSave = new JMenuItem(TABLE_SAVE);
 		JMenuItem outputFile = new JMenuItem(OUTPUT);
-		inputFile.addActionListener(this);
+		tableOpen.addActionListener(this);
+		tableSave.addActionListener(this);
 		outputFile.addActionListener(this);
 		file.add(tableOpen);
 		file.add(tableSave);
@@ -101,6 +102,8 @@ public class MesMan extends JFrame implements ActionListener
 			{
 				System.out.println(TABLE_OPEN);
 				File inputFile = this.mtblChooser.getSelectedFile();
+				MTbl mtbl = new MTbl();
+				mtbl.open(inputFile, this.mesTable);
 			}
 		}
 		else if(e.getActionCommand().equals(TABLE_SAVE))

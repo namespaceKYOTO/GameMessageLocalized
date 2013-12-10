@@ -12,6 +12,8 @@ import javax.swing.filechooser.FileFilter;
 
 public class MTblFilter extends FileFilter
 {
+	static private String MTBL = "mtbl";
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
@@ -30,7 +32,7 @@ public class MTblFilter extends FileFilter
 			return true;
 		}
 		
-		if("mtbl".equals(getSuffix(f)))
+		if(MTBL.equals(getSuffix(f)))
 		{
 			return true;
 		}
@@ -53,9 +55,13 @@ public class MTblFilter extends FileFilter
 	private String getSuffix(File f)
 	{
 		String name = f.getName();
+		System.out.println(name);
 		String[] split = name.split(".");
+		String str = String.format("Split : %d", split.length);
+		System.out.println(str);
 		if(split.length >= 2)
 		{
+			System.out.println(split[split.length - 1]);
 			return split[split.length - 1];
 		}
 		else

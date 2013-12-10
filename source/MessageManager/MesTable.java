@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class MesTable implements MouseListener, ActionListener
 {
 	// ISO 3166-1
-	private String[] country = {"Label", "JPN", "USA", "GBR", "DEU", "FRA", "ITA", "ESP"};
+	private String[] country = {"Label", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
 	private Stack<Stack<String>> row;
 	private Stack<String> columnName;
 	
@@ -67,9 +67,14 @@ public class MesTable implements MouseListener, ActionListener
 		return this.panel;
 	}
 	
+	public JTable getTable()
+	{
+		return this.table;
+	}
+	
 	public DefaultTableModel getTableModel()
 	{
-		return this.tableModdel;
+		return this.tableModel;
 	}
 	
 	public Stack<Stack<String>> getRow()

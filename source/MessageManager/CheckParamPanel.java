@@ -16,11 +16,11 @@ public class CheckParamPanel
 {
 	private JPanel panel;
 	
-	private SUFFIX_BIN = ".bin";
-	private SUFFIX_C = ".c";
-	private UTF8 = "UTF-8";
-	private UTF16BE = "UTF-16BE";
-	private UTF16LE = "UTF-16LE";
+	private String SUFFIX_BIN = ".bin";
+	private String SUFFIX_C = ".c";
+	private String UTF8 = "UTF-8";
+	private String UTF16BE = "UTF-16BE";
+	private String UTF16LE = "UTF-16LE";
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
