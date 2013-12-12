@@ -113,6 +113,8 @@ public class MesMan extends JFrame implements ActionListener
 			{
 				System.out.println(TABLE_SAVE);
 				File inputFile = this.mtblChooser.getSelectedFile();
+				MTbl mtbl = new MTbl();
+				mtbl.save(inputFile, this.mesTable);
 			}
 		}
 		else if(e.getActionCommand().equals(OUTPUT))

@@ -14,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class MTbl
 {
+	static private String MTBL = ".mtbl";
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
@@ -77,5 +79,44 @@ public class MTbl
 	/*---------------------------------------------------------------------*/
 	public void save(File file, MesTable table)
 	{
+		try
+		{
+			DefaultTableModel tableModel = table.getTableModel();
+			
+			if(file.getName().endsWith(MTBL) == false)
+			{
+				File newFile = new File(file.getParent(), file.getName() + MTBL);
+				file = newFile;
+			}
+			file.createNewFile();
+			
+			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+			
+			// Column Comment
+			pw.println("# Column Data");
+			
+			// Column 
+			for(int i = 0; i < tableModel.getColumnCount(); ++i)
+			{
+				pw.print(tableModel.getColumnName(i) + ",");
+			}
+			pw.print("\n");
+			
+			// Row Comment
+			pw.println("# Row Data");
+			
+			for(int row = 0; row < tableModel.getRowCount(); ++row)
+			{
+				for(int column = 0; column < tableModel.getColumnCount(); ++column)
+				{
+					String mes = tableModel.getValueAt(row, column);
+					pw.print(mes + ",");
+				}
+				pw.print("\n");
+			}
+		}
+		catch(IOException e)
+		{
+		}
 	}
 }
