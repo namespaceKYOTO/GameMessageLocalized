@@ -100,7 +100,6 @@ public class MesMan extends JFrame implements ActionListener
 			int ret = this.mtblChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
-				System.out.println(TABLE_OPEN);
 				File inputFile = this.mtblChooser.getSelectedFile();
 				MTbl mtbl = new MTbl();
 				mtbl.open(inputFile, this.mesTable);
@@ -111,8 +110,9 @@ public class MesMan extends JFrame implements ActionListener
 			int ret = this.mtblChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
-				System.out.println(TABLE_SAVE);
 				File inputFile = this.mtblChooser.getSelectedFile();
+				MTbl mtbl = new MTbl();
+				mtbl.save(inputFile, this.mesTable);
 			}
 		}
 		else if(e.getActionCommand().equals(OUTPUT))

@@ -14,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class MTbl
 {
+	static private String MTBL = ".mtbl";
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
@@ -68,7 +70,7 @@ public class MTbl
 		}
 		catch(IOException e)
 		{
-			System.out.println("Faild File Open : " + e.getMessage());
+			System.out.println("Failed File Open : " + e.getMessage());
 		}
 	}
 	
@@ -77,5 +79,27 @@ public class MTbl
 	/*---------------------------------------------------------------------*/
 	public void save(File file, MesTable table)
 	{
+		try
+		{
+			if(file.getName().endsWith(MTBL) == false)
+			{
+				File newFile = new File(file.getParent(), file.getName() + MTBL);
+				file = newFile;
+			}
+			file.createNewFile();
+			
+			OutputStreamWriter outputStream = new OutputStreamWriter( new PrintStream(file), "UTF-16");
+			
+			// Column Comment
+			outputStream.println("# Column Data");
+			
+			
+			outputStream.flush();
+			outputStream.close();
+		}
+		catch(IOException e)
+		{
+			System.out.println("Fialed File Save : " + e.getMessage());
+		}
 	}
 }
