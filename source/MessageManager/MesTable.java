@@ -16,9 +16,13 @@ import javax.swing.table.DefaultTableModel;
 public class MesTable implements MouseListener, ActionListener
 {
 	// ISO 3166-1
-	private String[] country = {"Label", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
+	private String[] country = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
 	private Stack<Stack<String>> row;
 	private Stack<String> columnName;
+	
+	private String POPUP_ADD_ROW = "add row";
+	private String POPUP_INSERT_ROW = "insert row";
+	private String POPUP_REMOVE_ROW = "remove row";
 	
 	private JPanel panel;
 	private JScrollPane scrollPane;
@@ -51,12 +55,16 @@ public class MesTable implements MouseListener, ActionListener
 		this.panel.add(this.scrollPane);
 		this.panel.setPreferredSize(preferredMesTable);
 		
-		JMenuItem addItem = new JMenuItem("add row");
-		JMenuItem deleteItem = new JMenuItem("delete row");
+		JMenuItem addItem = new JMenuItem(POPUP_ADD_ROW);
+		JMenuItem insertItem = new JMenuItem(POPUP_INSERT_ROW);
+		JMenuItem removeItem = new JMenuItem(POPUP_REMOVE_ROW);
 		addItem.addActionListener(this);
+		insertItem.addActionListener(this);
+		removeItem.addActionListener(this);
 		this.popup = new JPopupMenu();
 		this.popup.add(addItem);
-		this.popup.add(deleteItem);
+		this.popup.add(insertItem);
+		this.popup.add(removeItem);
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -119,10 +127,37 @@ public class MesTable implements MouseListener, ActionListener
 	/*---------------------------------------------------------------------*/
 	public void actionPerformed(ActionEvent e)
 	{
-		System.out.println("actionPerformed");
-		int rc = this.tableModel.getRowCount();
-		this.tableModel.addRow(new Stack<String>());
-		
-		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+		if(e.getActionCommand().equals(POPUP_ADD_ROW))
+		{
+			int rc = this.tableModel.getRowCount();
+			this.tableModel.addRow(new Stack<String>());
+			
+			this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+		}
+		else if(e.getActionCommand().equals(POPUP_INSERT_ROW))
+		{
+			int selectedRow = this.table.getSelectedRow();
+			if(selectedRow != -1)
+			{
+				System.out.println("insert Row");
+				int rc = this.tableModel.getRowCount();
+				this.tableModel.insertRow(selectedRow, new Stack<String>());
+				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+			}
+			else
+			{
+				System.out.println("not select row");
+			}
+		}
+		else if(e.getActionCommand().equals(POPUP_REMOVE_ROW))
+		{
+			int selectedRow = this.table.getSelectedRow();
+			if(selectedRow != -1)
+			{
+				this.tableModel.removeRow(selectedRow);
+				int rc = this.tableModel.getRowCount() - 1;
+				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+			}
+		}
 	}
 }

@@ -15,6 +15,9 @@ import javax.swing.table.DefaultTableModel;
 public class MTbl
 {
 	static private String MTBL = ".mtbl";
+	static private String CHARACTOR_CODE = "UTF-16";
+	static private String DELIMITER = "\t";
+	static private String NEWLINE = "\r\n";
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
@@ -36,7 +39,7 @@ public class MTbl
 		try
 		{
 			FileInputStream fileStrem = new FileInputStream(file);
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileStrem, "UTF-16"));
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileStrem, CHARACTOR_CODE));
 			
 			String line;
 			
@@ -44,7 +47,7 @@ public class MTbl
 			line = bufferedReader.readLine();
 			// Column
 			line = bufferedReader.readLine();
-			String[] column = line.split("\t");
+			String[] column = line.split(DELIMITER);
 			for(String val : column)
 			{
 				tableModel.addColumn(val);
@@ -55,7 +58,7 @@ public class MTbl
 			// Row
 			while((line = bufferedReader.readLine()) != null)
 			{
-				String[] rowData = line.split("\t");
+				String[] rowData = line.split(DELIMITER);
 				Stack<String>row = new Stack<String>();
 				for(String val : rowData)
 				{
@@ -87,9 +90,7 @@ public class MTbl
 				file = newFile;
 			}
 			file.createNewFile();
-			
-			//OutputStreamWriter outputStream = new OutputStreamWriter( new PrintStream(file), "UTF-16");
-			PrintWriter pw = new PrintWriter(file, "UTF-16");
+			PrintWriter pw = new PrintWriter(file, CHARACTOR_CODE);
 			
 			// Column Comment
 			pw.println("# Column Data");
@@ -100,10 +101,10 @@ public class MTbl
 				pw.print(table.getColumnName().get(i));
 				if(i + 1 < table.getColumnName().size())
 				{
-					pw.print("\t");
+					pw.print(DELIMITER);
 				}
 			}
-			pw.print("\r\n");
+			pw.print(NEWLINE);
 			
 			// Row Comment
 			pw.println("# Row Data");
@@ -118,10 +119,10 @@ public class MTbl
 					pw.print(columnData.get(column));
 					if(column + 1 < columnData.size())
 					{
-						pw.print("\t");
+						pw.print(DELIMITER);
 					}
 				}
-				pw.print("\r\n");
+				pw.print(NEWLINE);
 			}
 			
 			// finish
@@ -130,7 +131,7 @@ public class MTbl
 		}
 		catch(IOException e)
 		{
-			System.out.println("Fialed File Save : " + e.getMessage());
+			System.out.println("Failed File Save : " + e.getMessage());
 		}
 	}
 }

@@ -24,10 +24,12 @@ public class MesMan extends JFrame implements ActionListener
 	
 	private String FRAME_TITLE = "Message Manager";
 	
-	
 	private String TABLE_OPEN = "Table Open";
 	private String TABLE_SAVE = "Table Save";
 	private String OUTPUT = "Output";
+	
+	private String MENU_FILE = "File";
+	private String MENU_HELP = "Help";
 	
 	public static void main(String[] args)
 	{
@@ -62,8 +64,8 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// menu bar 
 		JMenuBar menuBar = new JMenuBar();
-		JMenu file = new JMenu("File");
-		JMenu help = new JMenu("Help");
+		JMenu file = new JMenu(MENU_FILE);
+		JMenu help = new JMenu(MENU_HELP);
 		
 		JMenuItem tableOpen = new JMenuItem(TABLE_OPEN);
 		JMenuItem tableSave = new JMenuItem(TABLE_SAVE);
