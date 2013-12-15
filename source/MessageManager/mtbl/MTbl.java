@@ -88,14 +88,45 @@ public class MTbl
 			}
 			file.createNewFile();
 			
-			OutputStreamWriter outputStream = new OutputStreamWriter( new PrintStream(file), "UTF-16");
+			//OutputStreamWriter outputStream = new OutputStreamWriter( new PrintStream(file), "UTF-16");
+			PrintWriter pw = new PrintWriter(file, "UTF-16");
 			
 			// Column Comment
-			outputStream.println("# Column Data");
+			pw.println("# Column Data");
 			
+			// Column
+			for(int i = 0; i < table.getColumnName().size(); ++i)
+			{
+				pw.print(table.getColumnName().get(i));
+				if(i + 1 < table.getColumnName().size())
+				{
+					pw.print("\t");
+				}
+			}
+			pw.print("\r\n");
 			
-			outputStream.flush();
-			outputStream.close();
+			// Row Comment
+			pw.println("# Row Data");
+			
+			// Row
+			Stack<Stack<String>> rowData = table.getRow();
+			for(int row = 0; row < rowData.size(); ++row)
+			{
+				Stack<String> columnData = rowData.get(row);
+				for(int column = 0; column < columnData.size(); ++column)
+				{
+					pw.print(columnData.get(column));
+					if(column + 1 < columnData.size())
+					{
+						pw.print("\t");
+					}
+				}
+				pw.print("\r\n");
+			}
+			
+			// finish
+			pw.flush();
+			pw.close();
 		}
 		catch(IOException e)
 		{

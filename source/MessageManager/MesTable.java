@@ -77,6 +77,11 @@ public class MesTable implements MouseListener, ActionListener
 		return this.tableModel;
 	}
 	
+	public Stack<String> getColumnName()
+	{
+		return this.columnName;
+	}
+	
 	public Stack<Stack<String>> getRow()
 	{
 		return this.row;
