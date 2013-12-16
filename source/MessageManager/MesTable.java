@@ -12,17 +12,20 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableColumnModel;
 
 public class MesTable implements MouseListener, ActionListener
 {
 	// ISO 3166-1
-	private String[] country = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
+	private String[] languages = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
 	private Stack<Stack<String>> row;
 	private Stack<String> columnName;
 	
 	private String POPUP_ADD_ROW = "add row";
 	private String POPUP_INSERT_ROW = "insert row";
 	private String POPUP_REMOVE_ROW = "remove row";
+	private String POPUP_ADD_COLUMN = "add column";
+	private String POPUP_REMOVE_COLUMN = "remove column";
 	
 	private JPanel panel;
 	private JScrollPane scrollPane;
@@ -37,7 +40,7 @@ public class MesTable implements MouseListener, ActionListener
 	{
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
-		for(String str : this.country)
+		for(String str : this.languages)
 		{
 			this.columnName.push(str);
 		}
@@ -58,13 +61,19 @@ public class MesTable implements MouseListener, ActionListener
 		JMenuItem addItem = new JMenuItem(POPUP_ADD_ROW);
 		JMenuItem insertItem = new JMenuItem(POPUP_INSERT_ROW);
 		JMenuItem removeItem = new JMenuItem(POPUP_REMOVE_ROW);
+		JMenuItem addColumn = new JMenuItem(POPUP_ADD_COLUMN);
+		JMenuItem removeColumn = new JMenuItem(POPUP_REMOVE_COLUMN);
 		addItem.addActionListener(this);
 		insertItem.addActionListener(this);
 		removeItem.addActionListener(this);
+		addColumn.addActionListener(this);
+		removeColumn.addActionListener(this);
 		this.popup = new JPopupMenu();
 		this.popup.add(addItem);
 		this.popup.add(insertItem);
 		this.popup.add(removeItem);
+		this.popup.add(addColumn);
+		this.popup.add(removeColumn);
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -157,6 +166,26 @@ public class MesTable implements MouseListener, ActionListener
 				this.tableModel.removeRow(selectedRow);
 				int rc = this.tableModel.getRowCount() - 1;
 				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+			}
+		}
+		else if(e.getActionCommand().equals(POPUP_ADD_COLUMN))
+		{
+			JOptionPane pane = new JOptionPane("add column name", JOptionPane.YES_OPTION);
+			String input = pane.showInputDialog("add column name");
+			this.tableModel.addColumn(input);
+		}
+		else if(e.getActionCommand().equals(POPUP_REMOVE_COLUMN))
+		{
+			JOptionPane pane = new JOptionPane("remove column name", JOptionPane.YES_OPTION);
+			String input = pane.showInputDialog("remove column name");
+			DefaultTableColumnModel model = (DefaultTableColumnModel)this.table.getColumnModel();
+			try
+			{
+				model.removeColumn(model.getColumn(model.getColumnIndex(input)));
+			}
+			catch(IllegalArgumentException exce)
+			{
+				System.out.println("not found column");
 			}
 		}
 	}
