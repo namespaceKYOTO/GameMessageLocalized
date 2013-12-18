@@ -88,7 +88,6 @@ public class MesMan extends JFrame implements ActionListener
 		this.outputChooser.setAccessory(this.checkParam.getPanel());
 		
 		this.mtblChooser = new JFileChooser();
-		this.mtblChooser.setFileFilter(new MTblFilter());
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -99,6 +98,7 @@ public class MesMan extends JFrame implements ActionListener
 		System.out.println(e.paramString());
 		if(e.getActionCommand().equals(TABLE_OPEN))
 		{
+			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
 			int ret = this.mtblChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
@@ -109,6 +109,7 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		else if(e.getActionCommand().equals(TABLE_SAVE))
 		{
+			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)");
 			int ret = this.mtblChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
