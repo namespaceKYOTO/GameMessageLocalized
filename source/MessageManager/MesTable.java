@@ -136,6 +136,7 @@ public class MesTable implements MouseListener, ActionListener
 	/*---------------------------------------------------------------------*/
 	public void actionPerformed(ActionEvent e)
 	{
+		// add row
 		if(e.getActionCommand().equals(POPUP_ADD_ROW))
 		{
 			int rc = this.tableModel.getRowCount();
@@ -143,6 +144,7 @@ public class MesTable implements MouseListener, ActionListener
 			
 			this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 		}
+		// intert row
 		else if(e.getActionCommand().equals(POPUP_INSERT_ROW))
 		{
 			int selectedRow = this.table.getSelectedRow();
@@ -158,6 +160,7 @@ public class MesTable implements MouseListener, ActionListener
 				System.out.println("not select row");
 			}
 		}
+		// remove row
 		else if(e.getActionCommand().equals(POPUP_REMOVE_ROW))
 		{
 			int selectedRow = this.table.getSelectedRow();
@@ -168,12 +171,17 @@ public class MesTable implements MouseListener, ActionListener
 				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 			}
 		}
+		// add column
 		else if(e.getActionCommand().equals(POPUP_ADD_COLUMN))
 		{
 			JOptionPane pane = new JOptionPane("add column name", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("add column name");
-			this.tableModel.addColumn(input);
+			if(input.length() > 0)
+			{
+				this.tableModel.addColumn(input);
+			}
 		}
+		// remove column
 		else if(e.getActionCommand().equals(POPUP_REMOVE_COLUMN))
 		{
 			JOptionPane pane = new JOptionPane("remove column name", JOptionPane.YES_OPTION);

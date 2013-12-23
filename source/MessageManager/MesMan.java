@@ -109,7 +109,7 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		else if(e.getActionCommand().equals(TABLE_SAVE))
 		{
-			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)");
+			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
 			int ret = this.mtblChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
@@ -127,7 +127,7 @@ public class MesMan extends JFrame implements ActionListener
 				System.out.println(OUTPUT);
 				File outFile = this.outputChooser.getSelectedFile();
 				OutPuter outPuter = new OutPuter();
-				outPuter.outPut(outFile, this.tagTable.getRow(), this.mesTable.getRow());
+				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
 			}
 		}
 	}
