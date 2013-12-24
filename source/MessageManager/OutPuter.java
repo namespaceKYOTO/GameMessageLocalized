@@ -23,30 +23,38 @@ public class OutPuter
 	/*---------------------------------------------------------------------*/
 	public void outPut(File file, TagTable tagTable, MesTable mesTable, int outFileFlag, int charaCodeFlag)
 	{
-		String outPutFileName = getOutputFileName(file);
+		String outPutBaseFileName = getOutputBaseFileName(file);
 		
 		// .bin
 		if( (outFileFlag & CheckParamPanel.OUT_FILE_BIN) != 0x00 )
 		{
-			String outPutBinFileName = outPutFileName  + ".bin";
+			System.out.println("Output File : " + outPutBaseFileName);
 			
-			//if()
+			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF8) != 0x00)
 			{
-				OutputBinary(outPutBinFileName, tagTable, mesTable, "UTF8");
+				OutputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF8", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-8");
+			}
+			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF16LE) != 0x00)
+			{
+				OutputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16LE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16LE");
+			}
+			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF16BE) != 0x00)
+			{
+				OutputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16BE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16BE");
 			}
 		}
 		
 		// .c
 		if( (outFileFlag & CheckParamPanel.OUT_FILE_C) != 0x00 )
 		{
-			String outPutCFileName = outPutFileName  + ".c";
+			String outPutCFileName = outPutBaseFileName  + ".c";
 		}
 	}
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	get Output File Name
 	/*---------------------------------------------------------------------*/
-	private String getOutputFileName(File file)
+	private String getOutputBaseFileName(File file)
 	{
 		System.out.println(file.getName());
 		String ret = file.getName();
@@ -70,15 +78,54 @@ public class OutPuter
 		return ret;
 	}
 	
-	private void OutputBinary(String name, TagTable tagTable, MesTable mesTable, String charset)
+	/*---------------------------------------------------------------------*/
+	//*!brief	get Output File Name
+	/*---------------------------------------------------------------------*/
+	private String getOutputFileName(String baseName, String charset, String suffix, int charCodeFlag)
+	{
+		int count = 0;
+		while((charCodeFlag & 0xFFFFFFFF) != 0x00)
+		{
+			charCodeFlag = charCodeFlag & (charCodeFlag - 1);
+			++count;
+		}
+		
+		if(count <= 1)
+		{
+			return baseName + suffix;
+		}
+		else
+		{
+			return baseName + charset + suffix;
+		}
+	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	output file
+	/*---------------------------------------------------------------------*/
+	private void OutputBinary(String parent, String name, TagTable tagTable, MesTable mesTable, String charset)
 	{
 		try
 		{
-			File file = new File(name);
+			File file = new File(parent, name);
 			file.createNewFile();
+			FileOutputStream outputStream = new FileOutputStream(file);
+			
+			// out put
+			for(Stack<String> row : mesTable.getRow())
+			{
+				for(String column : row)
+				{
+					outputStream.write(column.getBytes(charset));
+				}
+			}
+			
+			outputStream.flush();
+			outputStream.close();
 		}
 		catch(IOException e)
 		{
+			System.out.println("Faild Output Message : " + e.getMessage());
 		}
 	}
 }
