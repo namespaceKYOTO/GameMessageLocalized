@@ -50,12 +50,14 @@ public class MesMan extends JFrame implements ActionListener
 		int x = ((int)rec.getWidth() / 2) - (width / 2);
 		int y = ((int)rec.getHeight() / 2) - (height / 2);
 		setBounds( x, y, width, height );
+		Dimension size = getContentPane().getSize();
+		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
 		
 		// create message table
-		this.mesTable = new MesTable((width / 3) * 2 - 10, height);
+		this.mesTable = new MesTable((size.width / 3) * 2 - 10, size.height);
 		
 		// create tab table
-		this.tagTable = new TagTable((width / 3) * 1 - 10, height);
+		this.tagTable = new TagTable((size.width / 3) * 1 - 10, size.height);
 		
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
