@@ -109,4 +109,17 @@ public class TagTable implements MouseListener, ActionListener
 		
 		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	get tag code
+	/*---------------------------------------------------------------------*/
+	public Byte[] getTagCode(int index, String charset)
+	{
+		ArrayList<Byte> stack = new ArrayList<Byte>();
+		
+		
+		Byte[] ret;
+		stack.toArray(ret);
+		return ret;
+	}
 }

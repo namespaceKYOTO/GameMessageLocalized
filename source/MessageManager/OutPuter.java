@@ -116,7 +116,8 @@ public class OutPuter
 			{
 				for(String column : row)
 				{
-					outputStream.write(column.getBytes(charset));
+//					outputStream.write(column.getBytes(charset));
+					outWrite(column, tagTable, charset);
 				}
 			}
 			
@@ -127,5 +128,37 @@ public class OutPuter
 		{
 			System.out.println("Faild Output Message : " + e.getMessage());
 		}
+	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	out write
+	/*---------------------------------------------------------------------*/
+	private byte[] outWrite(String str, TagTable tagTable, String charset)
+	{
+		String _str = str;
+		Stack<Stack<String>> row = tagTable.getRow();
+		ArrayList<Byte> stack = new ArrayList<Byte>();
+		int count = 0;
+		for(Stack<String> column : row )
+		{
+			int index = -1;
+			if((index = _str.indexOf(column.indexOf(0))) != -1)
+			{
+				Byte[] tagCode = tagTable.getTagCode(count, charset);
+				stack.add(tagCode);
+//				String str_column = column.indexOf(0);
+//				_str = _str.substring(index, index + str_column.length());
+			}
+			++count;
+		}
+		byte[] strByte = _str.getBytes(charset);
+		for(byte b : strByte)
+		{
+			stack.add(new Byte(b));
+		}
+		
+		byte[] ret;
+		stack.toArray(ret);
+		return ret;
 	}
 }
