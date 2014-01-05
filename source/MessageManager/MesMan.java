@@ -34,9 +34,6 @@ public class MesMan extends JFrame implements ActionListener
 	public static void main(String[] args)
 	{
 		MesMan mesMan = new MesMan();
-		
-		mesMan.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mesMan.setVisible(true);
 	}
 	
 	public MesMan()
@@ -52,6 +49,13 @@ public class MesMan extends JFrame implements ActionListener
 		setBounds( x, y, width, height );
 		Dimension size = getContentPane().getSize();
 		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		Dimension size = getContentPane().getSize();
+		width = size.width;
+		height = size.height;
 		
 		// create message table
 		this.mesTable = new MesTable((size.width / 3) * 2 - 10, size.height);
@@ -90,6 +94,8 @@ public class MesMan extends JFrame implements ActionListener
 		this.outputChooser.setAccessory(this.checkParam.getPanel());
 		
 		this.mtblChooser = new JFileChooser();
+		
+		getContentPane().validate();
 	}
 	
 	/*---------------------------------------------------------------------*/
