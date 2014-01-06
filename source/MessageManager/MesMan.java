@@ -27,6 +27,8 @@ public class MesMan extends JFrame implements ActionListener
 	private String TABLE_OPEN = "Table Open";
 	private String TABLE_SAVE = "Table Save";
 	private String OUTPUT = "Output";
+	private String TAG_OPEN = "Tag Table Open";
+	private String TAG_SAVE = "Tag Table Save";
 	
 	private String MENU_FILE = "File";
 	private String MENU_HELP = "Help";
@@ -75,12 +77,18 @@ public class MesMan extends JFrame implements ActionListener
 		JMenuItem tableOpen = new JMenuItem(TABLE_OPEN);
 		JMenuItem tableSave = new JMenuItem(TABLE_SAVE);
 		JMenuItem outputFile = new JMenuItem(OUTPUT);
+		JMenuItem tagOpen = new JMenuItem(TAG_OPEN);
+		JMenuItem tagSave = new JMenuItem(TAG_SAVE);
 		tableOpen.addActionListener(this);
 		tableSave.addActionListener(this);
 		outputFile.addActionListener(this);
+		tagOpen.addActionListener(this);
+		tagSave.addActionListener(this);
 		file.add(tableOpen);
 		file.add(tableSave);
 		file.add(outputFile);
+		file.add(tagOpen);
+		file.add(tagSave);
 		
 		menuBar.add(file);
 		menuBar.add(help);
@@ -143,6 +151,16 @@ public class MesMan extends JFrame implements ActionListener
 				OutPuter outPuter = new OutPuter();
 				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
 			}
+		}
+		// Tag Table Open
+		else if(e.getActionCommand().equals(TAG_OPEN))
+		{
+			System.out.println("=== TAG_OPEN ===");
+		}
+		// Tag Table Save
+		else if(e.getActionCommand().equals(TAG_SAVE))
+		{
+			System.out.println("=== TAG_SAVE ===");
 		}
 	}
 }
