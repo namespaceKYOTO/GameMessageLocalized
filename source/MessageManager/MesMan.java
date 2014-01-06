@@ -146,7 +146,6 @@ public class MesMan extends JFrame implements ActionListener
 			int ret = this.outputChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
-				System.out.println(OUTPUT);
 				File outFile = this.outputChooser.getSelectedFile();
 				OutPuter outPuter = new OutPuter();
 				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
@@ -155,12 +154,26 @@ public class MesMan extends JFrame implements ActionListener
 		// Tag Table Open
 		else if(e.getActionCommand().equals(TAG_OPEN))
 		{
-			System.out.println("=== TAG_OPEN ===");
+			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
+			int ret = this.mtblChooser.showOpenDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				File inputFile = this.mtblChooser.getSelectedFile();
+				TTbl ttbl = new TTbl();
+				ttbl.open(inputFile, this.tagTable);
+			}
 		}
 		// Tag Table Save
 		else if(e.getActionCommand().equals(TAG_SAVE))
 		{
-			System.out.println("=== TAG_SAVE ===");
+			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
+			int ret = this.mtblChooser.showSaveDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				File inputFile = this.mtblChooser.getSelectedFile();
+				TTbl ttbl = new TTbl();
+				ttbl.open(inputFile, this.tagTable);
+			}
 		}
 	}
 }
