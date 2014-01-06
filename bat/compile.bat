@@ -6,9 +6,11 @@ pushd %JAVAC_PATH%
 IF %1==toc (
 @echo ON
 javac -d %ROOT_PATH%\out -sourcepath %ROOT_PATH% @%ROOT_RELATIVE_PATH%\source_BtoC -Xlint:deprecation
+@echo OFF
 ) ELSE IF %1==mes (
 @echo ON
 javac -d %ROOT_PATH%\out -sourcepath %ROOT_PATH% @%ROOT_RELATIVE_PATH%\source_MesMan -Xlint:deprecation
+@echo OFF
 ) ELSE IF %1==help (
 @echo ON
 javac -help
@@ -16,5 +18,6 @@ javac -help
 @echo   toc
 @echo   mes
 @echo e.g compile toc
+@echo OFF
 )
 popd
