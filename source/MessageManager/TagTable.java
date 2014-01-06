@@ -117,9 +117,24 @@ public class TagTable implements MouseListener, ActionListener
 	{
 		ArrayList<Byte> stack = new ArrayList<Byte>();
 		
-		
-		Byte[] ret;
+		Byte[] ret = new Byte[stack.size()];
 		stack.toArray(ret);
 		return ret;
+	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	resize
+	/*---------------------------------------------------------------------*/
+	public void resize(Dimension dimension)
+	{
+		Dimension tabelDimension = new Dimension(dimension.width - 32, dimension.height);
+		
+		this.table.setPreferredSize(tabelDimension);
+		this.scrollPane.setPreferredSize(tabelDimension);
+		this.panel.setPreferredSize(dimension);
+		
+		this.table.setSize(tabelDimension);
+		this.scrollPane.setSize(tabelDimension);
+		this.panel.setSize(dimension);
 	}
 }

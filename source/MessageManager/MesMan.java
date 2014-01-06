@@ -46,16 +46,15 @@ public class MesMan extends JFrame implements ActionListener
 		int height = (int)rec.getHeight() / 2;
 		int x = ((int)rec.getWidth() / 2) - (width / 2);
 		int y = ((int)rec.getHeight() / 2) - (height / 2);
-		setBounds( x, y, width, height );
-		Dimension size = getContentPane().getSize();
-		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
-		
+		setBounds( x, y, width, height );		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
+		// size
 		Dimension size = getContentPane().getSize();
 		width = size.width;
 		height = size.height;
+		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
 		
 		// create message table
 		this.mesTable = new MesTable((size.width / 3) * 2 - 10, size.height);
@@ -96,6 +95,9 @@ public class MesMan extends JFrame implements ActionListener
 		this.mtblChooser = new JFileChooser();
 		
 		getContentPane().validate();
+		
+		// resize listener
+		addComponentListener(new MyComponentListener(this.mesTable, this.tagTable));
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -104,6 +106,8 @@ public class MesMan extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println(e.paramString());
+		
+		// Table Open
 		if(e.getActionCommand().equals(TABLE_OPEN))
 		{
 			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
@@ -115,6 +119,7 @@ public class MesMan extends JFrame implements ActionListener
 				mtbl.open(inputFile, this.mesTable);
 			}
 		}
+		// Table Save
 		else if(e.getActionCommand().equals(TABLE_SAVE))
 		{
 			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
@@ -126,6 +131,7 @@ public class MesMan extends JFrame implements ActionListener
 				mtbl.save(inputFile, this.mesTable);
 			}
 		}
+		// Output Message Table
 		else if(e.getActionCommand().equals(OUTPUT))
 		{
 			this.outputChooser.setFileFilter(null);

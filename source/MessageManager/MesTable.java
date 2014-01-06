@@ -197,4 +197,20 @@ public class MesTable implements MouseListener, ActionListener
 			}
 		}
 	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	resize
+	/*---------------------------------------------------------------------*/
+	public void resize(Dimension dimension)
+	{
+		Dimension tabelDimension = new Dimension(dimension.width - 32, dimension.height);
+		
+		this.table.setPreferredSize(tabelDimension);
+		this.scrollPane.setPreferredSize(tabelDimension);
+		this.panel.setPreferredSize(dimension);
+		
+		this.table.setSize(tabelDimension);
+		this.scrollPane.setSize(tabelDimension);
+		this.panel.setSize(dimension);
+	}
 }

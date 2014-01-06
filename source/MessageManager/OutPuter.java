@@ -116,8 +116,7 @@ public class OutPuter
 			{
 				for(String column : row)
 				{
-//					outputStream.write(column.getBytes(charset));
-					outWrite(column, tagTable, charset);
+					outputStream.write(outWrite(column, tagTable, charset));
 				}
 			}
 			
@@ -139,26 +138,66 @@ public class OutPuter
 		Stack<Stack<String>> row = tagTable.getRow();
 		ArrayList<Byte> stack = new ArrayList<Byte>();
 		int count = 0;
-		for(Stack<String> column : row )
-		{
-			int index = -1;
-			if((index = _str.indexOf(column.indexOf(0))) != -1)
-			{
-				Byte[] tagCode = tagTable.getTagCode(count, charset);
-				stack.add(tagCode);
-//				String str_column = column.indexOf(0);
-//				_str = _str.substring(index, index + str_column.length());
-			}
-			++count;
-		}
-		byte[] strByte = _str.getBytes(charset);
-		for(byte b : strByte)
-		{
-			stack.add(new Byte(b));
-		}
 		
-		byte[] ret;
-		stack.toArray(ret);
-		return ret;
+		try
+		{
+			// tag replace
+			for(Stack<String> column : row )
+			{
+				int index = -1;
+				String tagName = column.get(0);
+				if((index = _str.indexOf(tagName)) != -1)
+				{
+					// character befor of tag
+					if(index != 0)
+					{
+						String preTagStr = _str.substring(0, index - 1);
+						byte[] strByte = _str.getBytes(charset);
+						for(byte b : strByte)
+						{
+							stack.add(new Byte(b));
+						}
+					}
+					
+					// tag 
+					Byte[] tagCode = tagTable.getTagCode(count, charset);
+					for(Byte code : tagCode)
+					{
+						stack.add(code);
+					}
+					
+					// character after of tag
+					_str = _str.substring(index + tagName.length());
+				}
+				++count;
+			}
+			if(_str.length() > 0)
+			{
+				byte[] strByte = _str.getBytes(charset);
+				for(byte b : strByte)
+				{
+					stack.add(new Byte(b));
+				}
+			}
+			
+			Byte[] stackData = new Byte[stack.size()];
+			stack.toArray(stackData);
+			
+			int index = 0;
+			byte[] ret = new byte[stack.size()];
+			for(Byte data : stackData)
+			{
+				ret[index++] = data.byteValue();
+			}
+			return ret;
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			System.out.println("Faild Output Message : " + e.getMessage());
+		}
+		finally
+		{
+			return null;
+		}
 	}
 }
