@@ -26,8 +26,8 @@ public class MyComponentListener implements ComponentListener
 	public void componentResized(ComponentEvent e)
 	{
 		Rectangle bound = e.getComponent().getBounds();
-		this.mesTable.resize(new Dimension((bound.width / 3) * 2, bound.height - 80));
-		this.tagTable.resize(new Dimension((bound.width / 3) * 1, bound.height - 80));
+		this.mesTable.resize(new Dimension((bound.width / 3) * 2, bound.height - 40));
+		this.tagTable.resize(new Dimension((bound.width / 3) * 1, bound.height - 40));
 	}
 	
 	public void componentMoved(ComponentEvent e){};

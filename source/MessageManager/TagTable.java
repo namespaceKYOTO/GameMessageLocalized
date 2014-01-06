@@ -127,7 +127,7 @@ public class TagTable implements MouseListener, ActionListener
 	/*---------------------------------------------------------------------*/
 	public void resize(Dimension dimension)
 	{
-		Dimension tabelDimension = new Dimension(dimension.width - 32, dimension.height);
+		Dimension tabelDimension = new Dimension(dimension.width - 32, dimension.height - 32);
 		
 		this.table.setPreferredSize(tabelDimension);
 		this.scrollPane.setPreferredSize(tabelDimension);
