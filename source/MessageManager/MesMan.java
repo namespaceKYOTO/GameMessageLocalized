@@ -24,8 +24,8 @@ public class MesMan extends JFrame implements ActionListener
 	
 	private String FRAME_TITLE = "Message Manager";
 	
-	private String TABLE_OPEN = "Table Open";
-	private String TABLE_SAVE = "Table Save";
+	private String TABLE_OPEN = "Message Table Open";
+	private String TABLE_SAVE = "Message Table Save";
 	private String OUTPUT = "Output";
 	private String TAG_OPEN = "Tag Table Open";
 	private String TAG_SAVE = "Tag Table Save";
