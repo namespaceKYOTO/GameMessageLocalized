@@ -59,10 +59,12 @@ public class MesMan extends JFrame implements ActionListener
 		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
 		
 		// create message table
-		this.mesTable = new MesTable((size.width / 3) * 2 - 10, size.height);
+		String[] languages = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
+		this.mesTable = new MesTable(languages, (size.width / 3) * 2 - 10, size.height);
 		
 		// create tab table
-		this.tagTable = new TagTable((size.width / 3) * 1 - 10, size.height);
+		String[] tag = {"Tag Name", "Description"};
+		this.tagTable = new TagTable(tag, (size.width / 3) * 1 - 10, size.height);
 		
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
@@ -118,7 +120,8 @@ public class MesMan extends JFrame implements ActionListener
 		// Table Open
 		if(e.getActionCommand().equals(TABLE_OPEN))
 		{
-			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
+			String suffix = ".mtbl";
+			this.mtblChooser.setFileFilter(new FileFilterEx(suffix,"Message Table(.mtbl)"));
 			int ret = this.mtblChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
@@ -130,7 +133,8 @@ public class MesMan extends JFrame implements ActionListener
 		// Table Save
 		else if(e.getActionCommand().equals(TABLE_SAVE))
 		{
-			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
+			String suffix = ".mtbl";
+			this.mtblChooser.setFileFilter(new FileFilterEx(suffix,"Message Table(.mtbl)"));
 			int ret = this.mtblChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
@@ -154,7 +158,8 @@ public class MesMan extends JFrame implements ActionListener
 		// Tag Table Open
 		else if(e.getActionCommand().equals(TAG_OPEN))
 		{
-			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
+			String suffix = ".ttbl";
+			this.mtblChooser.setFileFilter(new FileFilterEx(suffix,"Tag Table(.ttbl)"));
 			int ret = this.mtblChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
@@ -166,7 +171,8 @@ public class MesMan extends JFrame implements ActionListener
 		// Tag Table Save
 		else if(e.getActionCommand().equals(TAG_SAVE))
 		{
-			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
+			String suffix = ".ttbl";
+			this.mtblChooser.setFileFilter(new FileFilterEx(suffix,"Tag Table(.ttbl)"));
 			int ret = this.mtblChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{

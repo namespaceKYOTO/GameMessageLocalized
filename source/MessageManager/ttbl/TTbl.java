@@ -7,32 +7,15 @@
 package MesMan;
 
 import java.lang.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 
-public class TTbl
+public class TTbl extends TableFile
 {
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
 	public TTbl()
 	{
-	}
-	
-	/*---------------------------------------------------------------------*/
-	//*!brief	.ttbl file open
-	/*---------------------------------------------------------------------*/
-	public void open(File file, TagTable tagTable)
-	{
-	}
-	
-	/*---------------------------------------------------------------------*/
-	//*!brief	.ttbl file save
-	/*---------------------------------------------------------------------*/
-	public void save(File file, TagTable tagTable)
-	{
+		super(".mtbl", "UTF-16");
 	}
 }
