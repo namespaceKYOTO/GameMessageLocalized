@@ -16,6 +16,6 @@ public class TTbl extends TableFile
 	/*---------------------------------------------------------------------*/
 	public TTbl()
 	{
-		super(".mtbl", "UTF-16");
+		super(".ttbl", "UTF-16");
 	}
 }

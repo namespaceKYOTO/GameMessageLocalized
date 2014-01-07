@@ -28,10 +28,38 @@ public class TagTable extends TableEx
 	/*---------------------------------------------------------------------*/
 	public Byte[] getTagCode(int index, String charset)
 	{
-		ArrayList<Byte> stack = new ArrayList<Byte>();
+		ArrayList<Byte> codeList = new ArrayList<Byte>();
 		
-		Byte[] ret = new Byte[stack.size()];
-		stack.toArray(ret);
+		// 
+		Stack<String> rowData = getRow().get(index);
+		String code = null;
+		int columnIndex = getColumnIndex("Code");
+		if(columnIndex != -1)
+		{
+			code = rowData.get(columnIndex);
+			Long data = Long.valueOf(code);
+			for(int i = 0; i < Long.MAX_VALUE / 0xFF; ++i)
+			{
+				if(data == 0)
+				{
+					if(i ==0)
+					{
+						codeList.add(Byte.valueOf((byte)0));
+					}
+					break;
+				}
+				
+				codeList.add(Byte.valueOf((byte)(data & 0x00000000000000FFL)));
+				data >>= 8;
+			}
+		}
+		else
+		{
+			return null;
+		}
+		
+		Byte[] ret = new Byte[codeList.size()];
+		codeList.toArray(ret);
 		return ret;
 	}
 }

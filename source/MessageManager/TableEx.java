@@ -102,6 +102,11 @@ public class TableEx implements MouseListener, ActionListener
 		return this.row;
 	}
 	
+	public int getColumnIndex(String column)
+	{
+		return this.columnName.search(column);
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	Mouse event
 	/*---------------------------------------------------------------------*/
