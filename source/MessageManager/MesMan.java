@@ -50,28 +50,8 @@ public class MesMan extends JFrame implements ActionListener
 		int y = ((int)rec.getHeight() / 2) - (height / 2);
 		setBounds( x, y, width, height );		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
 		
-		// size
-		Dimension size = getContentPane().getSize();
-		width = size.width;
-		height = size.height;
-		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
-		
-		// create message table
-		String[] languages = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
-		this.mesTable = new MesTable(languages, (size.width / 3) * 2 - 10, size.height);
-		
-		// create tab table
-		String[] tag = {"Tag Name", "Description"};
-		this.tagTable = new TagTable(tag, (size.width / 3) * 1 - 10, size.height);
-		
-		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
-		setLayout(layout);
-		add(this.tagTable.getPanel());
-		add(this.mesTable.getPanel());
-		
-		// menu bar 
+		// menu bar
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu(MENU_FILE);
 		JMenu help = new JMenu(MENU_HELP);
@@ -96,6 +76,27 @@ public class MesMan extends JFrame implements ActionListener
 		menuBar.add(help);
 		
 		setJMenuBar(menuBar);
+		
+		setVisible(true);
+		
+		// size
+		Dimension size = getContentPane().getSize();
+		width = size.width;
+		height = size.height;
+		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
+		
+		// create message table
+		String[] languages = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
+		this.mesTable = new MesTable(languages, (size.width / 3) * 2 - 10, size.height);
+		
+		// create tab table
+		String[] tag = {"Tag Name", "Description", "Code"};
+		this.tagTable = new TagTable(tag, (size.width / 3) * 1 - 10, size.height);
+		
+		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
+		setLayout(layout);
+		add(this.tagTable.getPanel());
+		add(this.mesTable.getPanel());
 		
 		// file Chooser
 		this.checkParam = new CheckParamPanel();

@@ -45,16 +45,19 @@ public class TableEx implements MouseListener, ActionListener
 		
 		Dimension preferredMesTable = new Dimension(width, height);
 		this.tableModel = new DefaultTableModel(this.row, this.columnName);
+		this.tableModel.addRow(new Stack<String>());
 		this.table = new JTable(this.tableModel);
-		this.table.setPreferredSize(preferredMesTable);
+		//this.table.setPreferredSize(preferredMesTable));
+		this.table.setSize(preferredMesTable);
 		this.table.addMouseListener(this);
+		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		this.scrollPane = new JScrollPane(this.table);
 		this.scrollPane.setPreferredSize(preferredMesTable);
 		
 		this.panel = new JPanel();
 		this.panel.add(this.scrollPane);
-		this.panel.setPreferredSize(preferredMesTable);
+		//this.panel.setPreferredSize(preferredMesTable);
 		
 		JMenuItem addItem = new JMenuItem(POPUP_ADD_ROW);
 		JMenuItem insertItem = new JMenuItem(POPUP_INSERT_ROW);
@@ -201,11 +204,12 @@ public class TableEx implements MouseListener, ActionListener
 	/*---------------------------------------------------------------------*/
 	public void resize(Dimension dimension)
 	{
+		System.out.println("== Resize ==");
 		Dimension tabelDimension = new Dimension(dimension.width - 32, dimension.height - 32);
 		
-		this.table.setPreferredSize(tabelDimension);
+//		this.table.setPreferredSize(tabelDimension);
 		this.scrollPane.setPreferredSize(tabelDimension);
-		this.panel.setPreferredSize(dimension);
+//		this.panel.setPreferredSize(dimension);
 		
 		this.table.setSize(tabelDimension);
 		this.scrollPane.setSize(tabelDimension);
