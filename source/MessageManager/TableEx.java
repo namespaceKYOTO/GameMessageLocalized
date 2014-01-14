@@ -186,10 +186,17 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		// remove row
 		else if(command.equals(POPUP_REMOVE_ROW))
 		{
-			int selectedRow = this.table.getSelectedRow();
-			if(selectedRow != -1)
+			//int selectedRow = this.table.getSelectedRow();
+			//if(selectedRow != -1)
+			int[] selectedRows = this.table.getSelectedRows();
+			if(selectedRows.length > 0)
 			{
-				this.tableModel.removeRow(selectedRow);
+				int removeCount = 0;
+				for(int i = 0; i < selectedRows.length; ++i)
+				{
+					this.tableModel.removeRow(selectedRows[i] + removeCount);
+					--removeCount;
+				}
 				int rc = this.tableModel.getRowCount() - 1;
 				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 			}
