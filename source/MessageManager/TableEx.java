@@ -11,10 +11,11 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableColumnModel;
 
-public class TableEx implements MouseListener, ActionListener
+public class TableEx implements MouseListener, ActionListener, MenuListener
 {
 	private Stack<Stack<String>> row;
 	private Stack<String> columnName;
@@ -36,6 +37,7 @@ public class TableEx implements MouseListener, ActionListener
 	private JPopupMenu			popupNum;
 	private JMenu				addItem;
 	private JMenu				insertItem;
+	private String				selectMenu;
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
@@ -44,6 +46,7 @@ public class TableEx implements MouseListener, ActionListener
 	{
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
+		this.selectMenu = "";
 		for(String str : columns)
 		{
 			this.columnName.push(str);
@@ -93,6 +96,7 @@ public class TableEx implements MouseListener, ActionListener
 			this.addItem.add(Item1);
 			this.addItem.add(Item10);
 			this.addItem.add(Item100);
+			this.addItem.addMenuListener(this);
 		}
 		{
 			JMenuItem Item1 = new JMenuItem(POPUP_NUM_1);
@@ -104,6 +108,7 @@ public class TableEx implements MouseListener, ActionListener
 			this.insertItem.add(Item1);
 			this.insertItem.add(Item10);
 			this.insertItem.add(Item100);
+			this.insertItem.addMenuListener(this);
 		}
 	}
 	
@@ -168,16 +173,18 @@ public class TableEx implements MouseListener, ActionListener
 	/*---------------------------------------------------------------------*/
 	public void actionPerformed(ActionEvent e)
 	{
+		String command = e.getActionCommand();
+		System.out.println("Command : " + command);
 		// add row
-		if(e.getActionCommand().equals(POPUP_ADD_ROW))
+		if(command.equals(POPUP_ADD_ROW))
 		{
 		}
 		// intert row
-		else if(e.getActionCommand().equals(POPUP_INSERT_ROW))
+		else if(command.equals(POPUP_INSERT_ROW))
 		{
 		}
 		// remove row
-		else if(e.getActionCommand().equals(POPUP_REMOVE_ROW))
+		else if(command.equals(POPUP_REMOVE_ROW))
 		{
 			int selectedRow = this.table.getSelectedRow();
 			if(selectedRow != -1)
@@ -188,7 +195,7 @@ public class TableEx implements MouseListener, ActionListener
 			}
 		}
 		// add column
-		else if(e.getActionCommand().equals(POPUP_ADD_COLUMN))
+		else if(command.equals(POPUP_ADD_COLUMN))
 		{
 			JOptionPane pane = new JOptionPane("add column name", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("add column name");
@@ -198,7 +205,7 @@ public class TableEx implements MouseListener, ActionListener
 			}
 		}
 		// remove column
-		else if(e.getActionCommand().equals(POPUP_REMOVE_COLUMN))
+		else if(command.equals(POPUP_REMOVE_COLUMN))
 		{
 			JOptionPane pane = new JOptionPane("remove column name", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("remove column name");
@@ -213,19 +220,40 @@ public class TableEx implements MouseListener, ActionListener
 			}
 		}
 		// add, insert 1
-		else if(e.getActionCommand().equals(POPUP_NUM_1) || e.getActionCommand().equals(POPUP_NUM_10) || e.getActionCommand().equals(POPUP_NUM_100))
+		else if(command.equals(POPUP_NUM_1) || command.equals(POPUP_NUM_10) || command.equals(POPUP_NUM_100))
 		{
-			System.out.println(String.format("POPUP MENU ADD : %d", Integer.valueOf(e.getActionCommand()).intValue()));
-			if(addItem.isSelected())
+			System.out.println(String.format("POPUP MENU : %d", Integer.valueOf(command).intValue()));
+			if(this.selectMenu.equals(POPUP_ADD_ROW))
 			{	
 				System.out.println("Add Row");
-				this.addRow(Integer.valueOf(e.getActionCommand()).intValue());
+				this.addRow(Integer.valueOf(command).intValue());
+				this.selectMenu = "";
 			}
-			else if(insertItem.isSelected())
+			else if(this.selectMenu.equals(POPUP_INSERT_ROW))
 			{
 				System.out.println("Insert Row");
-				this.insertRow(Integer.valueOf(e.getActionCommand()).intValue());
+				this.insertRow(Integer.valueOf(command).intValue());
+				this.selectMenu = "";
 			}
+		}
+	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	action event
+	/*---------------------------------------------------------------------*/
+	public void menuCanceled(MenuEvent e){}
+	public void menuDeselected(MenuEvent e){}
+	
+	public void menuSelected(MenuEvent e)
+	{
+		System.out.println("Menu Selected");
+		if(e.getSource() == this.addItem)
+		{
+			this.selectMenu = POPUP_ADD_ROW;
+		}
+		else if(e.getSource() == this.insertItem)
+		{
+			this.selectMenu = POPUP_INSERT_ROW;
 		}
 	}
 	
@@ -253,10 +281,10 @@ public class TableEx implements MouseListener, ActionListener
 	{
 		for(int i = 0; i < num; ++i)
 		{
-			int rc = this.tableModel.getRowCount();
 			this.tableModel.addRow(new Stack<String>());
-			this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 		}
+		int rc = this.tableModel.getRowCount();
+		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -269,10 +297,10 @@ public class TableEx implements MouseListener, ActionListener
 		{
 			for(int i = 0; i < num; ++i)
 			{
-				int rc = this.tableModel.getRowCount();
 				this.tableModel.insertRow(selectedRow, new Stack<String>());
-				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 			}
+			int rc = this.tableModel.getRowCount();
+			this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 		}
 		else
 		{
