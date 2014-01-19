@@ -197,6 +197,10 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 					this.tableModel.removeRow(selectedRows[i] + removeCount);
 					--removeCount;
 				}
+				if(this.tableModel.getRowCount() == 0)
+				{
+					this.addRow(1);
+				}
 				int rc = this.tableModel.getRowCount() - 1;
 				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 			}
@@ -229,10 +233,8 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		// add, insert 1
 		else if(command.equals(POPUP_NUM_1) || command.equals(POPUP_NUM_10) || command.equals(POPUP_NUM_100))
 		{
-			System.out.println(String.format("POPUP MENU : %d", Integer.valueOf(command).intValue()));
 			if(this.selectMenu.equals(POPUP_ADD_ROW))
-			{	
-				System.out.println("Add Row");
+			{
 				this.addRow(Integer.valueOf(command).intValue());
 				this.selectMenu = "";
 			}
