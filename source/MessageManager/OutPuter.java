@@ -32,15 +32,15 @@ public class OutPuter
 			
 			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF8) != 0x00)
 			{
-				OutputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF8", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-8");
+				outputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF8", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-8");
 			}
 			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF16LE) != 0x00)
 			{
-				OutputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16LE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16LE");
+				outputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16LE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16LE");
 			}
 			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF16BE) != 0x00)
 			{
-				OutputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16BE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16BE");
+				outputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16BE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16BE");
 			}
 		}
 		
@@ -103,7 +103,7 @@ public class OutPuter
 	/*---------------------------------------------------------------------*/
 	//*!brief	output file
 	/*---------------------------------------------------------------------*/
-	private void OutputBinary(String parent, String name, TagTable tagTable, MesTable mesTable, String charset)
+	private void outputBinary(String parent, String name, TagTable tagTable, MesTable mesTable, String charset)
 	{
 		try
 		{
@@ -116,7 +116,8 @@ public class OutPuter
 			{
 				for(String column : row)
 				{
-					outputStream.write(outWrite(column, tagTable, charset));
+					outputStream.write(this.outWrite(column, tagTable, charset));
+					outputStream.write(0x00);	// Message End Code
 				}
 			}
 			
@@ -138,6 +139,7 @@ public class OutPuter
 		Stack<Stack<String>> row = tagTable.getRow();
 		ArrayList<Byte> stack = new ArrayList<Byte>();
 		int count = 0;
+		byte[] ret = null;
 		
 		try
 		{
@@ -182,22 +184,19 @@ public class OutPuter
 			
 			Byte[] stackData = new Byte[stack.size()];
 			stack.toArray(stackData);
+			System.out.println("stack : " + stack.toString());
 			
 			int index = 0;
-			byte[] ret = new byte[stack.size()];
+			ret = new byte[stack.size()];
 			for(Byte data : stackData)
 			{
 				ret[index++] = data.byteValue();
 			}
-			return ret;
 		}
 		catch(UnsupportedEncodingException e)
 		{
 			System.out.println("Faild Output Message : " + e.getMessage());
 		}
-		finally
-		{
-			return null;
-		}
+		return ret;
 	}
 }
