@@ -31,13 +31,16 @@ public class TagTable extends TableEx
 		ArrayList<Byte> codeList = new ArrayList<Byte>();
 		
 		// 
-		Stack<String> rowData = getRow().get(index);
+		Stack<String> rowData = this.getRow().get(index);
 		String code = null;
 		int columnIndex = getColumnIndex("Code");
+		System.out.println(String.format("Code index : %d", columnIndex));
 		if(columnIndex != -1)
 		{
 			code = rowData.get(columnIndex);
-			Long data = Long.valueOf(code);
+			System.out.println("code : " + code);
+			//Long data = Long.valueOf(code);
+			Long data = Long.decode(code);
 			for(int i = 0; i < Long.MAX_VALUE / 0xFF; ++i)
 			{
 				if(data == 0)

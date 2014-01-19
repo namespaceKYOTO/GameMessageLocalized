@@ -90,6 +90,7 @@ public class OutPuter
 			++count;
 		}
 		
+		// To avoid naming fogged
 		if(count <= 1)
 		{
 			return baseName + suffix;
@@ -110,6 +111,18 @@ public class OutPuter
 			File file = new File(parent, name);
 			file.createNewFile();
 			FileOutputStream outputStream = new FileOutputStream(file);
+			byte[] newLine;
+			if(charset.equals("UTF-8") == true)
+			{
+				newLine = new byte[1];
+				newLine[0] = 0;
+			}
+			else
+			{
+				newLine = new byte[2];
+				newLine[0] = 0;
+				newLine[1] = 0;
+			}
 			
 			// out put
 			for(Stack<String> row : mesTable.getRow())
@@ -117,7 +130,7 @@ public class OutPuter
 				for(String column : row)
 				{
 					outputStream.write(this.outWrite(column, tagTable, charset));
-					outputStream.write(0x00);	// Message End Code
+					outputStream.write(newLine);	// Message End Code
 				}
 			}
 			
@@ -148,7 +161,7 @@ public class OutPuter
 			{
 				int index = -1;
 				String tagName = column.get(0);
-				if((index = _str.indexOf(tagName)) != -1)
+				if(tagName != null && (index = _str.indexOf(tagName)) != -1)
 				{
 					// character befor of tag
 					if(index != 0)
