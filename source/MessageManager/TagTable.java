@@ -33,7 +33,7 @@ public class TagTable extends TableEx
 		// 
 		Stack<String> rowData = this.getRow().get(index);
 		String code = null;
-		int columnIndex = getColumnIndex("Code");
+		int columnIndex = this.getColumnIndex("Code");
 		System.out.println(String.format("Code index : %d", columnIndex));
 		if(columnIndex != -1)
 		{

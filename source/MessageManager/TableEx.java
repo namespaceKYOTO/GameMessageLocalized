@@ -142,7 +142,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	
 	public int getColumnIndex(String column)
 	{
-		return this.columnName.search(column);
+		return this.columnName.size() - this.columnName.search(column);
 	}
 	
 	/*---------------------------------------------------------------------*/
