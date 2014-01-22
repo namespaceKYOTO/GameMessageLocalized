@@ -11,6 +11,9 @@ import java.util.*;
 
 public class OutPuter
 {
+	static int LITTLE_ENDIAN = 1;
+	static int BIG_ENDIAN = 2;
+
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
@@ -112,6 +115,8 @@ public class OutPuter
 			file.createNewFile();
 			FileOutputStream outputStream = new FileOutputStream(file);
 			byte[] newLine;
+			
+			// new line
 			if(charset.equals("UTF-8") == true)
 			{
 				newLine = new byte[1];
@@ -124,13 +129,57 @@ public class OutPuter
 				newLine[1] = 0;
 			}
 			
-			// out put
+			// signature (4Byte)
+			byte[] signature = {0x54, 0x45, 0x58, 0x54};	// TEXT
+			outputStream.write(signature);
+			
+			// creation date  YYYY MM DD (2Byte 1Byte 1Byte)
+			Calendar rightNow = Calendar.getInstance();
+			int year = rightNow.get(Calendar.YEAR);
+			int month = rightNow.get(Calendar.MONTH) + 1;
+			int date = rightNow.get(Calendar.DATE);
+			System.out.println(String.format("Date : %d/%d/%d",year,month,date));
+			outputStream.write(this.getByteData(year, 2, BIG_ENDIAN));
+			outputStream.write(this.getByteData(month, 1, BIG_ENDIAN));
+			outputStream.write(this.getByteData(date, 1, BIG_ENDIAN));
+			//outputStream.write(year / 1000); year %= 1000;
+			//outputStream.write(year / 100 ); year %= 100;
+			//outputStream.write(year / 10  ); year %= 10;
+			//outputStream.write(year / 1   );
+			//outputStream.write(month / 10); month %= 10;
+			//outputStream.write(month / 1 );
+			//outputStream.write(date / 10); date %= 10;
+			//outputStream.write(date / 1 );
+			
+			// Message Num (4Byte)
+			byte[] messageNum = this.getByteData(mesTable.getRow().size(), 4, BIG_ENDIAN);
+			outputStream.write(messageNum);
+			
+			// Language Num (4Byte)
+			byte[] languageNum = this.getByteData(mesTable.getLanguageNum(), 4, BIG_ENDIAN);
+			outputStream.write(languageNum);
+			
+			// Message Offset (Message Num * Language Num * 4Byte)
+			int messageSize = 0;
+			for(Stack<String> row : mesTable.getRow())
+			{
+				for(String column : row)
+				{
+					outputStream.write(this.getByteData(messageSize, 4, BIG_ENDIAN));
+					byte[] message = this.outWrite(column, tagTable, charset);
+					int size = message.length /*+ newLine.length()*/;
+					messageSize += size;
+				}
+			}
+			
+			
+			// Messsage
 			for(Stack<String> row : mesTable.getRow())
 			{
 				for(String column : row)
 				{
 					outputStream.write(this.outWrite(column, tagTable, charset));
-					outputStream.write(newLine);	// Message End Code
+					//outputStream.write(newLine);	// Message End Code
 				}
 			}
 			
@@ -210,6 +259,31 @@ public class OutPuter
 		{
 			System.out.println("Faild Output Message : " + e.getMessage());
 		}
+		return ret;
+	}
+	
+	/*---------------------------------------------------------------------*/
+	//*!brief	get byte data
+	//*!note	Only in little endian still
+	/*---------------------------------------------------------------------*/
+	private byte[] getByteData(long value, int byteSize, int endian)
+	{
+		byte[] ret = new byte[byteSize];
+		
+		if(endian == LITTLE_ENDIAN)
+		{
+			for(int i = 0; i < byteSize; ++i) {
+				ret[i] = (byte)(value & 0x00000000000000FF);
+				value >>>= 8;
+			}
+		}
+		else if(endian == BIG_ENDIAN)
+		{
+			for(int i = 1; i <= byteSize; ++i) {
+				ret[i - 1] = (byte)(value & (0x00000000000000FF << ((byteSize - i) * 8)));
+			}
+		}
+		
 		return ret;
 	}
 }

@@ -31,11 +31,17 @@ public class MesMan extends JFrame implements ActionListener
 	private String TAG_SAVE = "Tag Table Save";
 	
 	private String MENU_FILE = "File";
+	private String MENU_SETTING = "Setting";
 	private String MENU_LANGUAGE = "Language";
 	private String MENU_HELP = "Help";
 	
 	public static void main(String[] args)
 	{
+		System.out.println("== Args ==");
+		for(String arg : args)
+		{
+			System.out.println(arg);
+		}
 		MesMan mesMan = new MesMan();
 	}
 	
@@ -55,6 +61,7 @@ public class MesMan extends JFrame implements ActionListener
 		// menu bar
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu(MENU_FILE);
+		JMenu setting = new JMenu(MENU_SETTING);
 		JMenu language = new JMenu(MENU_LANGUAGE);
 		JMenu help = new JMenu(MENU_HELP);
 		
@@ -75,10 +82,15 @@ public class MesMan extends JFrame implements ActionListener
 		file.add(tagOpen);
 		file.add(tagSave);
 		
+		// Setting
+		//JMenuItem mesEndCode = new JMenuItem();
+		//setting.add();
+		
 		// Langugae
 		//language.;
 		
 		menuBar.add(file);
+		menuBar.add(setting);
 		menuBar.add(language);
 		menuBar.add(help);
 		
