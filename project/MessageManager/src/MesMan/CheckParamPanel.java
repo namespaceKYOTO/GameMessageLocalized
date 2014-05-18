@@ -34,8 +34,10 @@ public class CheckParamPanel implements ItemListener
 	private int charactorCodeFlag;
 	
 	public static int OUT_FILE_BIN = 0x00000001;
-	public static int OUT_FILE_C = 0x00000002;
-	public static int CHARA_CODE_UTF8 = 0x00000001;
+	public static int OUT_FILE_C   = 0x00000002;
+	
+	public static int CHARA_CODE_MASK    = 0x0000000F;
+	public static int CHARA_CODE_UTF8    = 0x00000001;
 	public static int CHARA_CODE_UTF16BE = 0x00000002;
 	public static int CHARA_CODE_UTF16LE = 0x00000004;
 	

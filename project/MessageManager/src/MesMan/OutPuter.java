@@ -6,7 +6,10 @@
 package MesMan;
 
 import java.io.*;
+import java.rmi.server.LogStream;
 import java.util.*;
+
+import BtoC.BtoC;
 
 public class OutPuter
 {
@@ -27,29 +30,51 @@ public class OutPuter
 	{
 		String outPutBaseFileName = getOutputBaseFileName(file);
 		
-		// .bin
-		if( (outFileFlag & CheckParamPanel.OUT_FILE_BIN) != 0x00 )
-		{
-			System.out.println("Output File : " + outPutBaseFileName);
-			
-			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF8) != 0x00)
-			{
-				outputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF8", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-8");
+		boolean binCreate = (outFileFlag & CheckParamPanel.OUT_FILE_BIN) != 0x00;
+		boolean cCreate = (outFileFlag & CheckParamPanel.OUT_FILE_C) != 0x00;
+		String binFile = null;
+
+		System.out.println(String.format("charaCodeFlag] 0x%x", charaCodeFlag));
+		if( (outFileFlag & CheckParamPanel.OUT_FILE_BIN) != 0x00 ) {
+			String charset[] = {
+					"UTF-8",
+					"UTF-16LE",
+					"UTF-16BE",
+			};
+			int binFlag = 1;
+			int count = 0;
+			for (String string : charset) {
+				// .bin
+				if( binCreate && (charaCodeFlag & (binFlag<<count)) != 0 ) {
+					binFile = getOutputFileName(outPutBaseFileName, "_"+string, ".bin", charaCodeFlag);
+					outputBinary(file.getParent(), binFile, tagTable, mesTable, string);
+				}
+				
+				// .c
+				if( cCreate ) {
+					String parent = file.getParent();
+					if( binFile == null ) {
+						binFile = outPutBaseFileName + ".bin";
+						outputBinary(file.getParent(), binFile, tagTable, mesTable, "UTF-8");
+					}
+					String cFfile = binFile.replace(".", "_");
+					String args[] = {
+						"-o",
+						parent + "/" + cFfile + ".c",	// Out C File Name
+						"-d",
+						parent + "/" + binFile,			// data File Name
+					};
+					BtoC.main(args);
+					
+					// tag file
+				}
+				
+				// .java
+				// yet...
+
+				++count;
+				binFile = null;
 			}
-			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF16LE) != 0x00)
-			{
-				outputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16LE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16LE");
-			}
-			if((charaCodeFlag & CheckParamPanel.CHARA_CODE_UTF16BE) != 0x00)
-			{
-				outputBinary(file.getParent(), getOutputFileName(outPutBaseFileName, "_UTF16BE", ".bin", charaCodeFlag), tagTable, mesTable, "UTF-16BE");
-			}
-		}
-		
-		// .c
-		if( (outFileFlag & CheckParamPanel.OUT_FILE_C) != 0x00 )
-		{
-//			String outPutCFileName = outPutBaseFileName  + ".c";
 		}
 	}
 	
@@ -85,15 +110,8 @@ public class OutPuter
 	/*---------------------------------------------------------------------*/
 	private String getOutputFileName(String baseName, String charset, String suffix, int charCodeFlag)
 	{
-		int count = 0;
-		while((charCodeFlag & 0xFFFFFFFF) != 0x00)
-		{
-			charCodeFlag = charCodeFlag & (charCodeFlag - 1);
-			++count;
-		}
-		
 		// To avoid naming fogged
-		if(count <= 1)
+		if( ((charCodeFlag-1) & charCodeFlag) == 0x00 )
 		{
 			return baseName + suffix;
 		}
