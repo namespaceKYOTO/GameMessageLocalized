@@ -5,9 +5,15 @@
 /*---------------------------------------------------------------------*/
 package MesMan;
 
-import java.io.*;
-import java.rmi.server.LogStream;
-import java.util.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Stack;
 
 import BtoC.BtoC;
 
@@ -67,6 +73,7 @@ public class OutPuter
 					BtoC.main(args);
 					
 					// tag file
+					outputCTagFile(parent, cFfile, mesTable);
 				}
 				
 				// .java
@@ -159,14 +166,6 @@ public class OutPuter
 			outputStream.write(this.getByteData(year, 2, BIG_ENDIAN));
 			outputStream.write(this.getByteData(month, 1, BIG_ENDIAN));
 			outputStream.write(this.getByteData(date, 1, BIG_ENDIAN));
-			//outputStream.write(year / 1000); year %= 1000;
-			//outputStream.write(year / 100 ); year %= 100;
-			//outputStream.write(year / 10  ); year %= 10;
-			//outputStream.write(year / 1   );
-			//outputStream.write(month / 10); month %= 10;
-			//outputStream.write(month / 1 );
-			//outputStream.write(date / 10); date %= 10;
-			//outputStream.write(date / 1 );
 			
 			// Message Num (4Byte)
 			byte[] messageNum = this.getByteData(mesTable.getRow().size(), 4, BIG_ENDIAN);
@@ -206,6 +205,45 @@ public class OutPuter
 		catch(IOException e)
 		{
 			System.out.println("Faild Output Message : " + e.getMessage());
+		}
+	}
+	
+	private void outputCTagFile(String parent, String name, MesTable mesTable)
+	{
+		try
+		{
+			File file = new File(parent, name + ".h");
+			file.createNewFile();
+			PrintWriter pw = new PrintWriter(file);
+			
+			// "-","." replace "_"
+			name = name.replace("-", "_");
+			name = name.replace(".", "_");
+			
+			pw.write("#ifndef " + name + "_h_\n");
+			pw.write("#define " + name + "_h_\n");
+			pw.write("\n");
+			
+			int labelIdx = mesTable.getColumnIndex("Label");
+			Stack<Stack<String>> row = mesTable.getRow();
+			Stack<String> label = row.get(labelIdx);
+			
+			int index = 0;
+			for (String string : label) {
+				pw.write(String.format("#define %s %d\n", string, index));
+				++index;
+			}
+			pw.write("\n");
+			
+			pw.write(String.format("#define all_label_%s %d\n", name, index));
+			pw.write("\n");
+			
+			pw.write("#endif\t// " + name + "_h_\n");
+			
+			pw.close();
+		}
+		catch(IOException e)
+		{			
 		}
 	}
 	

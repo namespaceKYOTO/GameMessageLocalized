@@ -100,7 +100,7 @@ public class ToCFile
 			
 			// data read
 			this.dataContent = new byte[(int)file.length()];
-			/*int ret = */fileStream.read(this.dataContent, 0, (int)file.length());
+			fileStream.read(this.dataContent, 0, (int)file.length());
 			fileStream.close();
 		}
 		catch(FileNotFoundException e)
