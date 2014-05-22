@@ -226,10 +226,10 @@ public class OutPuter
 			
 			int labelIdx = mesTable.getColumnIndex("Label");
 			Stack<Stack<String>> row = mesTable.getRow();
-			Stack<String> label = row.get(labelIdx);
 			
 			int index = 0;
-			for (String string : label) {
+			for (Stack<String> strings : row) {
+				String string = strings.elementAt(labelIdx);
 				pw.write(String.format("#define %s %d\n", string, index));
 				++index;
 			}
