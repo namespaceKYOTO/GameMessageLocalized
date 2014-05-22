@@ -25,12 +25,14 @@ public class MesMan extends JFrame implements ActionListener
 	private String MENU_SETTING = "Setting";
 	private String MENU_LANGUAGE = "Language";
 	private String MENU_HELP = "Help";
+	private String MENU_CHECK = "Check";
 	
 	private String OPEN = "Open";
 	private String SAVE = "Save";
 	private String OUTPUT = "Output";
 	private String MES_TBL = "Message Table";
 	private String TAG_TBL = "Tag Table";
+	private String CHAR_SIZE = "Character Size";
 	
 	private JMenuItem openMesTbl = null;
 	private JMenuItem openTabTbl = null;
@@ -66,6 +68,7 @@ public class MesMan extends JFrame implements ActionListener
 		JMenu setting = new JMenu(MENU_SETTING);
 		JMenu language = new JMenu(MENU_LANGUAGE);
 		JMenu help = new JMenu(MENU_HELP);
+		JMenu check = new JMenu(MENU_CHECK);
 		
 		//// File
 		// Open
@@ -99,17 +102,22 @@ public class MesMan extends JFrame implements ActionListener
 			file.add(item);
 		}
 		
-		// Setting
-		//JMenuItem mesEndCode = new JMenuItem();
-		//setting.add();
+		//// Setting
+		// CharSize
+		{
+			JMenuItem item = new JMenuItem(CHAR_SIZE);
+			item.addActionListener(this);
+			setting.add(item);
+		}
 		
-		// Langugae
+		// Language
 		//language.;
 		
 		menuBar.add(file);
 		menuBar.add(setting);
 		menuBar.add(language);
 		menuBar.add(help);
+		menuBar.add(check);
 		
 		setJMenuBar(menuBar);
 		
@@ -222,6 +230,10 @@ public class MesMan extends JFrame implements ActionListener
 				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
 			}
 		}
-//		// Tag Table Open
+		// Character Size
+		else if(e.getActionCommand().equals(CHAR_SIZE))
+		{
+			
+		}
 	}
 }
