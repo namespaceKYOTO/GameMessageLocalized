@@ -38,6 +38,7 @@ public class OutPuter
 		
 		boolean binCreate = (outFileFlag & CheckParamPanel.OUT_FILE_BIN) != 0x00;
 		boolean cCreate = (outFileFlag & CheckParamPanel.OUT_FILE_C) != 0x00;
+		boolean javaCreate = (outFileFlag & CheckParamPanel.OUT_FILE_JAVA) != 0x00;
 		String binFile = null;
 
 		System.out.println(String.format("charaCodeFlag] 0x%x", charaCodeFlag));
@@ -63,21 +64,31 @@ public class OutPuter
 						binFile = outPutBaseFileName + ".bin";
 						outputBinary(file.getParent(), binFile, tagTable, mesTable, "UTF-8");
 					}
-					String cFfile = binFile.replace(".", "_");
+					String cFile = binFile.replace(".", "_");
+					cFile = cFile.replace("-", "_");
 					String args[] = {
 						"-o",
-						parent + "/" + cFfile + ".c",	// Out C File Name
+						parent + "/" + cFile + ".c",	// Out C File Name
 						"-d",
 						parent + "/" + binFile,			// data File Name
 					};
 					BtoC.main(args);
 					
 					// tag file
-					outputCTagFile(parent, cFfile, mesTable);
+					outputCTagFile(parent, cFile, mesTable);
+					
 				}
-				
+
 				// .java
-				// yet...
+				if( javaCreate ) {
+					String parent = file.getParent();
+					if( binFile == null ) {
+						binFile = outPutBaseFileName;
+					}
+					String javaFileName = outPutBaseFileName.replace(".", "_");
+					javaFileName = javaFileName.replace("-", "_");
+					outputJavaFile(parent, javaFileName, mesTable);
+				}
 
 				++count;
 				binFile = null;
@@ -208,6 +219,11 @@ public class OutPuter
 		}
 	}
 	
+	/**
+	 * @param parent	Parent directory
+	 * @param name		file name
+	 * @param mesTable	source data
+	 */
 	private void outputCTagFile(String parent, String name, MesTable mesTable)
 	{
 		try
@@ -244,6 +260,44 @@ public class OutPuter
 		}
 		catch(IOException e)
 		{			
+		}
+	}
+	
+	/**
+	 * @param parent	parent Directory
+	 * @param name		file name
+	 * @param mesTable	source data
+	 */
+	private void outputJavaFile(String parent, String name, MesTable mesTable)
+	{
+		try
+		{
+			File file = new File(parent, name + ".java");
+			file.createNewFile();
+			PrintWriter pw = new PrintWriter(file);
+			
+			pw.write("package MessageLabel;\n");
+			pw.write("\n");
+			pw.write("public class " + name + "\n");
+			pw.write("{\n");
+			
+			int labelIdx = mesTable.getColumnIndex("Label");
+			Stack<Stack<String>> row = mesTable.getRow();
+			
+			int index = 0;
+			for (Stack<String> strings : row) {
+				String string = strings.elementAt(labelIdx);
+				pw.write(String.format("\tstatic int %s = %d;\n", string, index));
+				++index;
+			}
+			
+
+			pw.write("\n}\n");
+			pw.close();
+		}
+		catch(IOException e)
+		{
+			
 		}
 	}
 	

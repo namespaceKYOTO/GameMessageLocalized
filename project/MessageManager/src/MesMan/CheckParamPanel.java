@@ -20,12 +20,14 @@ public class CheckParamPanel implements ItemListener
 	private String CHARACTOR_CODE = "Charactor Code";
 	private String SUFFIX_BIN = ".bin";
 	private String SUFFIX_C = ".c";
+	private String SUFFIX_JAVA = ".java";
 	private String UTF8 = "UTF-8";
 	private String UTF16BE = "UTF-16BE";
 	private String UTF16LE = "UTF-16LE";
 	
 	private JCheckBox binCheck;
 	private JCheckBox cCheck;
+	private JCheckBox javaCheck;
 	private JCheckBox utf8;
 	private JCheckBox utf16BE;
 	private JCheckBox utf16LE;
@@ -35,6 +37,7 @@ public class CheckParamPanel implements ItemListener
 	
 	public static int OUT_FILE_BIN = 0x00000001;
 	public static int OUT_FILE_C   = 0x00000002;
+	public static int OUT_FILE_JAVA = 0x00000004;
 	
 	public static int CHARA_CODE_MASK    = 0x0000000F;
 	public static int CHARA_CODE_UTF8    = 0x00000001;
@@ -52,11 +55,16 @@ public class CheckParamPanel implements ItemListener
 		// suffix
 		this.binCheck = new JCheckBox(SUFFIX_BIN);
 		this.cCheck = new JCheckBox(SUFFIX_C);
+		this.javaCheck = new JCheckBox(SUFFIX_JAVA);
 		this.binCheck.addItemListener(this);
 		this.cCheck.addItemListener(this);
+		this.javaCheck.addItemListener(this);
+		
 		JPanel suffix = new JPanel();
 		suffix.add(this.binCheck);
 		suffix.add(this.cCheck);
+		suffix.add(this.javaCheck);
+		
 		BoxLayout suffixLayout = new BoxLayout(suffix, BoxLayout.X_AXIS);
 		suffix.setLayout(suffixLayout);
 		TitledBorder suffixBorder = new TitledBorder(new LineBorder(Color.BLACK, 2), OUT_FILE);
@@ -69,10 +77,12 @@ public class CheckParamPanel implements ItemListener
 		this.utf8.addItemListener(this);
 		this.utf16BE.addItemListener(this);
 		this.utf16LE.addItemListener(this);
+		
 		JPanel code = new JPanel();
 		code.add(this.utf8);
 		code.add(this.utf16BE);
 		code.add(this.utf16LE);
+		
 		BoxLayout codeLayout = new BoxLayout(code, BoxLayout.X_AXIS);
 		code.setLayout(codeLayout);
 		TitledBorder codeBorder = new TitledBorder(new LineBorder(Color.BLACK, 2), CHARACTOR_CODE);
@@ -120,6 +130,11 @@ public class CheckParamPanel implements ItemListener
 		{
 			if( this.cCheck.isSelected() )	{ outFileFlag |= OUT_FILE_C; }
 			else							{ outFileFlag &= ~OUT_FILE_C;}
+		}
+		else if(this.javaCheck == source)
+		{
+			if( this.javaCheck.isSelected() ) { outFileFlag |= OUT_FILE_JAVA; }
+			else							  { outFileFlag &= ~OUT_FILE_JAVA; }
 		}
 		else if(this.utf8 == source)
 		{
