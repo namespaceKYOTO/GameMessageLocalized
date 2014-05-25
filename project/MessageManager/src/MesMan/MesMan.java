@@ -9,6 +9,7 @@ package MesMan;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 public class MesMan extends JFrame implements ActionListener
@@ -39,8 +40,27 @@ public class MesMan extends JFrame implements ActionListener
 	private JMenuItem saveMesTbl = null;
 	private JMenuItem saveTabTbl = null;
 	
+	private CharacterDialog charDialog;
+	
 	public static void main(String[] args)
 	{
+		try
+		{
+			byte[] code = {0x00, 0x20};
+			for(int i = 0; i < 0x0FFF; ++i) {
+				System.out.println(new String(code, "UTF-16") + ",");
+				
+				++code[1];
+				if(code[1] == 0) {
+					++code[0];
+				}
+			}
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			
+		}
+		
 		System.out.println("== Args ==");
 		for(String arg : args)
 		{
@@ -111,7 +131,8 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		
 		// Language
-		//language.;
+		{
+		}
 		
 		menuBar.add(file);
 		menuBar.add(setting);
@@ -148,6 +169,8 @@ public class MesMan extends JFrame implements ActionListener
 		this.outputChooser.setAccessory(this.checkParam.getPanel());
 		
 		this.mtblChooser = new JFileChooser();
+		
+		this.charDialog = new CharacterDialog(this, x, y, width, height);
 		
 		getContentPane().validate();
 		
@@ -233,7 +256,7 @@ public class MesMan extends JFrame implements ActionListener
 		// Character Size
 		else if(e.getActionCommand().equals(CHAR_SIZE))
 		{
-			
+			this.charDialog.show();
 		}
 	}
 }
