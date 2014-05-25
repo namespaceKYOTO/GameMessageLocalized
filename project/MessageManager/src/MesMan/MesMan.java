@@ -44,6 +44,7 @@ public class MesMan extends JFrame implements ActionListener
 	
 	public static void main(String[] args)
 	{
+/////////////////// test
 		try
 		{
 			byte[] code = {0x00, 0x20};
@@ -60,6 +61,7 @@ public class MesMan extends JFrame implements ActionListener
 		{
 			
 		}
+////////////////////
 		
 		System.out.println("== Args ==");
 		for(String arg : args)

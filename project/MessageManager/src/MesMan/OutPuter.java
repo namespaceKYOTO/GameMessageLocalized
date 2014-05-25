@@ -276,7 +276,7 @@ public class OutPuter
 			file.createNewFile();
 			PrintWriter pw = new PrintWriter(file);
 			
-			pw.write("package MessageLabel;\n");
+			pw.write("package MesMan;\n");
 			pw.write("\n");
 			pw.write("public class " + name + "\n");
 			pw.write("{\n");
