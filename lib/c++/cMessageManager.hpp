@@ -14,7 +14,8 @@ namespace message
 class cMessageManager
 {
 public:
-	const ints ERRO_CODE_DATA_NULL = -1;
+	const int ERRO_CODE_DATA_NULL = -1;
+
 public:
 	cMessageManager();
 	~cMessageManager();
@@ -22,6 +23,8 @@ public:
 	unsigned int getDate() const;
 	unsigned int getMessageNum() const;
 	unsigned int getLanguageNum() const;
+
+	void	getMessage(int languageNo, int messageNo, char* )
 
 private:
 	typedef struct MESSAGE_DATA
