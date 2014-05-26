@@ -26,7 +26,7 @@ public class MesMan extends JFrame implements ActionListener
 	private String MENU_SETTING = "Setting";
 	private String MENU_LANGUAGE = "Language";
 	private String MENU_HELP = "Help";
-	private String MENU_CHECK = "Check";
+	private String MENU_TOOLS = "Tools";
 	
 	private String OPEN = "Open";
 	private String SAVE = "Save";
@@ -90,7 +90,7 @@ public class MesMan extends JFrame implements ActionListener
 		JMenu setting = new JMenu(MENU_SETTING);
 		JMenu language = new JMenu(MENU_LANGUAGE);
 		JMenu help = new JMenu(MENU_HELP);
-		JMenu check = new JMenu(MENU_CHECK);
+		JMenu tools = new JMenu(MENU_TOOLS);
 		
 		//// File
 		// Open
@@ -127,20 +127,24 @@ public class MesMan extends JFrame implements ActionListener
 		//// Setting
 		// CharSize
 		{
-			JMenuItem item = new JMenuItem(CHAR_SIZE);
-			item.addActionListener(this);
-			setting.add(item);
 		}
 		
 		// Language
 		{
 		}
 		
+		// tools
+		{
+			JMenuItem item = new JMenuItem(CHAR_SIZE);
+			item.addActionListener(this);
+			tools.add(item);
+		}
+		
 		menuBar.add(file);
 		menuBar.add(setting);
 		menuBar.add(language);
 		menuBar.add(help);
-		menuBar.add(check);
+		menuBar.add(tools);
 		
 		setJMenuBar(menuBar);
 		
