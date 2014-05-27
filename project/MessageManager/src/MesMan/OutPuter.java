@@ -186,14 +186,6 @@ public class OutPuter
 			byte[] languageNum = this.getByteData(mesTable.getLanguageNum(), 4, BIG_ENDIAN);
 			outputStream.write(languageNum);
 			
-			// charset
-			int charsetNo = 0;
-			if(charset.equals("UTF-8"))			{ charsetNo = 0; }
-			else if(charset.equals("UTF-16BE"))	{ charsetNo = 1; }
-			else if(charset.equals("UTF-16LE"))	{ charsetNo = 2; }
-			byte[] charsetByte = this.getByteData(charsetNo, 4, BIG_ENDIAN);
-			outputStream.write(charsetByte);
-			
 			// Message Offset (Message Num * Language Num * 4Byte)
 			int messageSize = 0;
 			for(Stack<String> row : mesTable.getRow())
