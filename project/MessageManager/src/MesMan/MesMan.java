@@ -45,23 +45,26 @@ public class MesMan extends JFrame implements ActionListener
 	public static void main(String[] args)
 	{
 /////////////////// test
-		try
-		{
-			byte[] code = {0x00, 0x20};
-			for(int i = 0; i < 0x0FFF; ++i) {
-				System.out.println(new String(code, "UTF-16") + ",");
-				
-				++code[1];
-				if(code[1] == 0) {
-					++code[0];
-				}
-			}
-		}
-		catch(UnsupportedEncodingException e)
-		{
-			
-		}
+//		try
+//		{
+//			byte[] code = {0x00, 0x20};
+//			for(int i = 0; i < 0x0FFF; ++i) {
+//				System.out.println(new String(code, "UTF-16") + ",");
+//				
+//				++code[1];
+//				if(code[1] == 0) {
+//					++code[0];
+//				}
+//			}
+//		}
+//		catch(UnsupportedEncodingException e)
+//		{
+//			
+//		}
 ////////////////////
+		MessageManager mesman = new MessageManager("res/MesTableDefine.bin");
+		mesman.setLanguageNo(2);
+		System.out.println(mesman.getMessage(MesTableDefine.mes_file));
 		
 		System.out.println("== Args ==");
 		for(String arg : args)

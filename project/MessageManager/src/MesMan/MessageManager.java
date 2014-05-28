@@ -29,6 +29,14 @@ public class MessageManager
 	private int mesDataIdx;
 	private int languageNo;
 	
+	public int getLanguageNo() {
+		return languageNo;
+	}
+
+	public void setLanguageNo(int languageNo) {
+		this.languageNo = languageNo;
+	}
+
 	/**
 	 * @param mtblFileName
 	 */
@@ -46,6 +54,7 @@ public class MessageManager
 		{
 			File file = new File(mtblFileName);
 			FileInputStream fileStream = new FileInputStream(file);
+			this.readData = new byte[(int)file.length()];
 			int readBytes = fileStream.read(this.readData);
 			
 			// Singnature
@@ -73,7 +82,7 @@ public class MessageManager
 			// Message Offset (Message Num * Language Num * 4Byte)
 			this.setMessageOffset( MesOffsetOffset, this.messageNum, this.languageNum);
 			
-//			this.mesDataIdx = 
+			this.mesDataIdx = MesOffsetOffset + messageOffset.length * 4;
 		}
 		catch(IOException e)
 		{
@@ -93,7 +102,7 @@ public class MessageManager
 						((int)this.readData[offset + 1])<<16 | 
 						((int)this.readData[offset + 2])<<8 |
 						((int)this.readData[offset + 3]);
-			System.out.println(String.format("Get Byte : %x %x %x %x",this.readData[offset + 0],this.readData[offset + 1],this.readData[offset + 1],this.readData[offset + 2]));
+			System.out.println(String.format("Get Byte : %x %x %x %x",this.readData[offset + 0],this.readData[offset + 1],this.readData[offset + 2],this.readData[offset + 3]));
 			System.out.println(String.format("         : %x", ret));
 			
 			return ret;
@@ -134,9 +143,10 @@ public class MessageManager
 		String ret = null;
 		try
 		{
-			int idx = mesNo * languageNum + languageNo;
-			int mesLength = this.messageOffset[idx + 1] - this.messageOffset[idx];  
-			ret = new String(this.readData, idx, mesLength, this.charset);
+			int idx = (mesNo * languageNum) + languageNo;
+			int mesLength = this.messageOffset[idx + 1] - this.messageOffset[idx];
+			int offset = this.mesDataIdx + this.messageOffset[idx]; 
+			ret = new String(this.readData, offset, mesLength, this.charset);
 		}
 		catch(UnsupportedEncodingException e)
 		{

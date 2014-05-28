@@ -195,27 +195,46 @@ public class OutPuter
 			outputStream.write(charsetByte);
 			
 			// Message Offset (Message Num * Language Num * 4Byte)
-			int messageSize = 0;
+			int messageOffset = 0;
+			int labelIdx = mesTable.getColumnIndex("Label");
+			int descIdx = mesTable.getColumnIndex("Description");
+			int rowCount = 0;
+			int columnCount = 0;
 			for(Stack<String> row : mesTable.getRow())
 			{
 				for(String column : row)
 				{
-					outputStream.write(this.getByteData(messageSize, 4, BIG_ENDIAN));
-					byte[] message = this.outWrite(column, tagTable, charset);
-					int size = message.length /*+ newLine.length()*/;
-					messageSize += size;
+					if(columnCount != labelIdx && columnCount != descIdx)
+					{
+						outputStream.write(this.getByteData(messageOffset, 4, BIG_ENDIAN));
+						byte[] message = this.outWrite(column, tagTable, charset);
+						System.out.println(column +  String.format(" %d", message.length));
+						int size = message.length /*+ newLine.length()*/;
+						messageOffset += size;
+					}
+					++columnCount;
 				}
+				++rowCount;
+				columnCount = 0;
 			}
 			
 			
 			// Messsage
+			rowCount = 0;
+			columnCount = 0;
 			for(Stack<String> row : mesTable.getRow())
 			{
 				for(String column : row)
 				{
-					outputStream.write(this.outWrite(column, tagTable, charset));
-					//outputStream.write(newLine);	// Message End Code
+					if(columnCount != labelIdx && columnCount != descIdx)
+					{
+						outputStream.write(this.outWrite(column, tagTable, charset));
+						//outputStream.write(newLine);	// Message End Code
+					}
+					++columnCount;
 				}
+				columnCount = 0;
+				++rowCount;
 			}
 			
 			outputStream.flush();
@@ -363,7 +382,7 @@ public class OutPuter
 			
 			Byte[] stackData = new Byte[stack.size()];
 			stack.toArray(stackData);
-			System.out.println("stack : " + stack.toString());
+//			System.out.println("stack : " + stack.toString());
 			
 			int index = 0;
 			ret = new byte[stack.size()];
