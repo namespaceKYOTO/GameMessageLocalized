@@ -63,7 +63,7 @@ public class MesMan extends JFrame implements ActionListener
 //		}
 ////////////////////
 		MessageManager mesman = new MessageManager("res/MesTableDefine.bin");
-		mesman.setLanguageNo(2);
+		mesman.setLanguageNo(MesTableDefine.Language_JPN);
 		System.out.println(mesman.getMessage(MesTableDefine.mes_file));
 		
 		System.out.println("== Args ==");

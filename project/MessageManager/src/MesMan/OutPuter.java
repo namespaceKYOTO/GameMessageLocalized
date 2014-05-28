@@ -8,7 +8,6 @@ package MesMan;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -198,7 +197,6 @@ public class OutPuter
 			int messageOffset = 0;
 			int labelIdx = mesTable.getColumnIndex("Label");
 			int descIdx = mesTable.getColumnIndex("Description");
-			int rowCount = 0;
 			int columnCount = 0;
 			for(Stack<String> row : mesTable.getRow())
 			{
@@ -214,13 +212,11 @@ public class OutPuter
 					}
 					++columnCount;
 				}
-				++rowCount;
 				columnCount = 0;
 			}
 			
 			
 			// Messsage
-			rowCount = 0;
 			columnCount = 0;
 			for(Stack<String> row : mesTable.getRow())
 			{
@@ -234,7 +230,6 @@ public class OutPuter
 					++columnCount;
 				}
 				columnCount = 0;
-				++rowCount;
 			}
 			
 			outputStream.flush();
@@ -302,15 +297,28 @@ public class OutPuter
 			File file = new File(parent, name + ".java");
 			file.createNewFile();
 			PrintWriter pw = new PrintWriter(file);
+			int labelIdx = mesTable.getColumnIndex("Label");
+			Stack<Stack<String>> row = mesTable.getRow();
 			
 			pw.write("package MesMan;\n");
 			pw.write("\n");
 			pw.write("public class " + name + "\n");
 			pw.write("{\n");
 			
-			int labelIdx = mesTable.getColumnIndex("Label");
-			Stack<Stack<String>> row = mesTable.getRow();
+
+			pw.write("\t// Number of Language\n");
+			int languageCount = 0;
+			for(String column : mesTable.getColumnName())
+			{
+				if(!"Label".equals(column) && !"Description".equals(column))
+				{
+					pw.write(String.format("\tstatic int Language_%s = %d;\n", column, languageCount));
+					++languageCount;
+				}
+			}
+			pw.write("\n");
 			
+			pw.write("\t// Number of Message\n");
 			int index = 0;
 			for (Stack<String> strings : row) {
 				String string = strings.elementAt(labelIdx);

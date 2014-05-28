@@ -2,6 +2,15 @@ package MesMan;
 
 public class MesTableDefine
 {
+	// Number of Language
+	static int Language_JPN = 0;
+	static int Language_ENG = 1;
+	static int Language_DEU = 2;
+	static int Language_FRA = 3;
+	static int Language_ITA = 4;
+	static int Language_SPA = 5;
+
+	// Number of Message
 	static int mes_file = 0;
 	static int mes_open = 1;
 	static int mes_save = 2;
