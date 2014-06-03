@@ -204,9 +204,11 @@ public class OutPuter
 				{
 					if(columnCount != labelIdx && columnCount != descIdx)
 					{
-						outputStream.write(this.getByteData(messageOffset, 4, BIG_ENDIAN));
+						byte[] mesOffset = this.getByteData(messageOffset, 4, BIG_ENDIAN);
+						outputStream.write(mesOffset);
+						outputStream.flush();
 						byte[] message = this.outWrite(column, tagTable, charset);
-						System.out.println(column +  String.format(" %d", message.length));
+						System.out.println(column +  String.format(" %d : %01x %01x %01x %01x", message.length, mesOffset[0], mesOffset[1], mesOffset[2], mesOffset[3]));
 						int size = message.length /*+ newLine.length()*/;
 						messageOffset += size;
 					}
@@ -226,6 +228,7 @@ public class OutPuter
 					{
 						outputStream.write(this.outWrite(column, tagTable, charset));
 						//outputStream.write(newLine);	// Message End Code
+						outputStream.flush();
 					}
 					++columnCount;
 				}
@@ -420,11 +423,14 @@ public class OutPuter
 				ret[i] = (byte)(value & 0x00000000000000FF);
 				value >>>= 8;
 			}
+			System.out.println(String.format("getByteData %x -> ", value) + ret.toString());
 		}
 		else if(endian == BIG_ENDIAN)
 		{
+			int byteBit = 8;
 			for(int i = 1; i <= byteSize; ++i) {
-				ret[i - 1] = (byte)(value & (0x00000000000000FF << ((byteSize - i) * 8)));
+				long siftvalue = value >>> ((byteSize - i) * byteBit);
+				ret[i - 1] = (byte)(siftvalue & 0x00000000000000FF);
 			}
 		}
 		

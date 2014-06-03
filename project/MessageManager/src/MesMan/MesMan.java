@@ -14,6 +14,7 @@ import javax.swing.*;
 
 public class MesMan extends JFrame implements ActionListener
 {
+	private static MessageManager mesman = null;
 	private MesTable mesTable;
 	private TagTable tagTable;
 	private CheckParamPanel checkParam;
@@ -21,55 +22,26 @@ public class MesMan extends JFrame implements ActionListener
 	private JFileChooser outputChooser;
 	
 	private String FRAME_TITLE = "Message Manager";
-	
-	private String MENU_FILE = "File";
-	private String MENU_SETTING = "Setting";
-	private String MENU_LANGUAGE = "Language";
-	private String MENU_HELP = "Help";
-	private String MENU_TOOLS = "Tools";
-	
-	private String OPEN = "Open";
-	private String SAVE = "Save";
-	private String OUTPUT = "Output";
-	private String MES_TBL = "Message Table";
-	private String TAG_TBL = "Tag Table";
 	private String CHAR_SIZE = "Character Size";
 	
 	private JMenuItem openMesTbl = null;
 	private JMenuItem openTabTbl = null;
 	private JMenuItem saveMesTbl = null;
 	private JMenuItem saveTabTbl = null;
+	private JMenuItem output = null;
 	
 	private CharacterDialog charDialog;
 	
 	public static void main(String[] args)
 	{
-/////////////////// test
-//		try
-//		{
-//			byte[] code = {0x00, 0x20};
-//			for(int i = 0; i < 0x0FFF; ++i) {
-//				System.out.println(new String(code, "UTF-16") + ",");
-//				
-//				++code[1];
-//				if(code[1] == 0) {
-//					++code[0];
-//				}
-//			}
-//		}
-//		catch(UnsupportedEncodingException e)
-//		{
-//			
-//		}
-////////////////////
-		MessageManager mesman = new MessageManager("res/MesTableDefine.bin");
-		mesman.setLanguageNo(MesTableDefine.Language_JPN);
-		System.out.println(mesman.getMessage(MesTableDefine.mes_file));
-		
-		System.out.println("== Args ==");
 		for(String arg : args)
 		{
 			System.out.println(arg);
+		}
+		mesman = new MessageManager("res/MesTableDefine.bin");
+		mesman.setLanguageNo(MesTableDefine.Language_ENG);
+		for(int i = MesTableDefine.mes_file; i <= MesTableDefine.mes_SPA; ++i ) {
+			System.out.println(mesman.getMessage(i));
 		}
 		MesMan mesMan = new MesMan();
 	}
@@ -89,18 +61,18 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// menu bar
 		JMenuBar menuBar = new JMenuBar();
-		JMenu file = new JMenu(MENU_FILE);
-		JMenu setting = new JMenu(MENU_SETTING);
-		JMenu language = new JMenu(MENU_LANGUAGE);
-		JMenu help = new JMenu(MENU_HELP);
-		JMenu tools = new JMenu(MENU_TOOLS);
+		JMenu file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
+		JMenu setting = new JMenu(mesman.getMessage(MesTableDefine.mes_setting));
+		JMenu language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
+		JMenu help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
+		JMenu tools = new JMenu(mesman.getMessage(MesTableDefine.mes_tools));
 		
 		//// File
 		// Open
 		{
-			JMenu menu = new JMenu(OPEN);
-			openMesTbl = new JMenuItem(MES_TBL);
-			openTabTbl = new JMenuItem(TAG_TBL);
+			JMenu menu = new JMenu(mesman.getMessage(MesTableDefine.mes_open));
+			openMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
+			openTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
 			openMesTbl.addActionListener(this);
 			openTabTbl.addActionListener(this);
 			menu.add(openMesTbl);
@@ -110,9 +82,9 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// Save
 		{
-			JMenu menu = new JMenu(SAVE);
-			saveMesTbl = new JMenuItem(MES_TBL);
-			saveTabTbl = new JMenuItem(TAG_TBL);
+			JMenu menu = new JMenu(mesman.getMessage(MesTableDefine.mes_save));
+			saveMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
+			saveTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
 			saveMesTbl.addActionListener(this);
 			saveTabTbl.addActionListener(this);
 			menu.add(saveMesTbl);
@@ -122,9 +94,9 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// Output
 		{
-			JMenuItem item = new JMenuItem(OUTPUT);
-			item.addActionListener(this);
-			file.add(item);
+			output = new JMenuItem(mesman.getMessage(MesTableDefine.mes_output));
+			output.addActionListener(this);
+			file.add(output);
 		}
 		
 		//// Setting
@@ -194,64 +166,51 @@ public class MesMan extends JFrame implements ActionListener
 	{
 		System.out.println(e.paramString());
 		
-		if(e.getActionCommand().equals(MES_TBL))
+		if(e.getSource() == openMesTbl)
 		{
-			Object source = e.getSource();
-			String suffix = ".mtbl";
-			this.mtblChooser.setFileFilter(new FileFilterEx(suffix,"Message Table(.mtbl)"));
-			
-			// Open
-			if(openMesTbl == source) {
-				int ret = this.mtblChooser.showOpenDialog(this);
-				if(ret == JFileChooser.APPROVE_OPTION)
-				{
-					File inputFile = this.mtblChooser.getSelectedFile();
-					MTbl mtbl = new MTbl();
-					mtbl.open(inputFile, this.mesTable);
-				}
-			}
-			// Save
-			else if(saveMesTbl == source) {
-				int ret = this.mtblChooser.showSaveDialog(this);
-				if(ret == JFileChooser.APPROVE_OPTION)
-				{
-					File inputFile = this.mtblChooser.getSelectedFile();
-					MTbl mtbl = new MTbl();
-					mtbl.save(inputFile, this.mesTable);
-				}
+			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
+			int ret = this.mtblChooser.showOpenDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				File inputFile = this.mtblChooser.getSelectedFile();
+				MTbl mtbl = new MTbl();
+				mtbl.open(inputFile, this.mesTable);
 			}
 		}
-		else if(e.getActionCommand().equals(TAG_TBL))
+		else if(e.getSource() == openTabTbl)
 		{
-			Object source = e.getSource();
-			String suffix = ".ttbl";
-			this.mtblChooser.setFileFilter(new FileFilterEx(suffix,"Tag Table(.ttbl)"));
-			
-			// Open
-			if(openTabTbl == source)
+			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
+			int ret = this.mtblChooser.showOpenDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
 			{
-				int ret = this.mtblChooser.showOpenDialog(this);
-				if(ret == JFileChooser.APPROVE_OPTION)
-				{
-					File inputFile = this.mtblChooser.getSelectedFile();
-					TTbl ttbl = new TTbl();
-					ttbl.open(inputFile, this.tagTable);
-				}
-			}
-			// Save
-			else if(saveTabTbl == source)
-			{
-				int ret = this.mtblChooser.showSaveDialog(this);
-				if(ret == JFileChooser.APPROVE_OPTION)
-				{
-					File inputFile = this.mtblChooser.getSelectedFile();
-					TTbl ttbl = new TTbl();
-					ttbl.open(inputFile, this.tagTable);
-				}
+				File inputFile = this.mtblChooser.getSelectedFile();
+				TTbl ttbl = new TTbl();
+				ttbl.open(inputFile, this.tagTable);
 			}
 		}
-		// Output Message Table
-		else if(e.getActionCommand().equals(OUTPUT))
+		else if(e.getSource() == saveMesTbl)
+		{
+			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
+			int ret = this.mtblChooser.showSaveDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				File inputFile = this.mtblChooser.getSelectedFile();
+				MTbl mtbl = new MTbl();
+				mtbl.save(inputFile, this.mesTable);
+			}	
+		}
+		else if(e.getSource() == saveTabTbl) 
+		{
+			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
+			int ret = this.mtblChooser.showSaveDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				File inputFile = this.mtblChooser.getSelectedFile();
+				TTbl ttbl = new TTbl();
+				ttbl.open(inputFile, this.tagTable);
+			}
+		}
+		else if(e.getSource() == output)
 		{
 			this.outputChooser.setFileFilter(null);
 			int ret = this.outputChooser.showSaveDialog(this);
@@ -262,10 +221,10 @@ public class MesMan extends JFrame implements ActionListener
 				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
 			}
 		}
-		// Character Size
-		else if(e.getActionCommand().equals(CHAR_SIZE))
-		{
-			this.charDialog.show();
-		}
+//		// Character Size
+//		else if(e.getSource() == )
+//		{
+//			this.charDialog.show();
+//		}
 	}
 }
