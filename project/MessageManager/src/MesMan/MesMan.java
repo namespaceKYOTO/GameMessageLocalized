@@ -133,11 +133,11 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// create message table
 		String[] languages = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
-		this.mesTable = new MesTable(languages, (size.width / 3) * 2 - 10, size.height);
+		this.mesTable = new MesTable(mesman, languages, (size.width / 3) * 2 - 10, size.height);
 		
 		// create tab table
 		String[] tag = {"Tag Name", "Description", "Code"};
-		this.tagTable = new TagTable(tag, (size.width / 3) * 1 - 10, size.height);
+		this.tagTable = new TagTable(mesman, tag, (size.width / 3) * 1 - 10, size.height);
 		
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
@@ -151,7 +151,7 @@ public class MesMan extends JFrame implements ActionListener
 		
 		this.mtblChooser = new JFileChooser();
 		
-		this.charDialog = new CharacterDialog(this, x, y, width, height);
+		this.charDialog = new CharacterDialog(this, mesman, x, y, width, height);
 		
 		getContentPane().validate();
 		

@@ -13,9 +13,9 @@ public class MesTable extends TableEx
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
-	public MesTable(String[] columns, int width, int height)
+	public MesTable(MessageManager messageMan, String[] columns, int width, int height)
 	{
-		super(columns, width, height);
+		super(messageMan, columns, width, height);
 	}
 	
 	/*---------------------------------------------------------------------*/

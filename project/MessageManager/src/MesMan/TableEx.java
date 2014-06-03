@@ -19,11 +19,6 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	private Stack<Stack<String>> row;
 	private Stack<String> columnName;
 	
-	private String POPUP_ADD_ROW = "add row";
-	private String POPUP_INSERT_ROW = "insert row";
-	private String POPUP_REMOVE_ROW = "remove row";
-	private String POPUP_ADD_COLUMN = "add column";
-	private String POPUP_REMOVE_COLUMN = "remove column";
 	private String POPUP_NUM_1 = "1";
 	private String POPUP_NUM_10 = "10";
 	private String POPUP_NUM_100 = "100";
@@ -33,19 +28,21 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	private JTable				table;
 	private DefaultTableModel	tableModel;
 	private JPopupMenu			popup;
-//	private JPopupMenu			popupNum;
 	private JMenu				addItem;
 	private JMenu				insertItem;
-	private String				selectMenu;
+	private JMenuItem			removeItem;
+	private JMenuItem			addColumn;
+	private JMenuItem			removeColumn;
+	private Object				selectMenu;
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
-	public TableEx(String[] columns, int width, int height)
+	public TableEx(MessageManager messageMan, String[] columns, int width, int height)
 	{
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
-		this.selectMenu = "";
+		this.selectMenu = null;
 		for(String str : columns)
 		{
 			this.columnName.push(str);
@@ -67,16 +64,16 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		this.panel.add(this.scrollPane);
 		//this.panel.setPreferredSize(preferredMesTable);
 		
-		this.addItem = new JMenu(POPUP_ADD_ROW);
-		this.insertItem = new JMenu(POPUP_INSERT_ROW);
-		JMenuItem removeItem = new JMenuItem(POPUP_REMOVE_ROW);
-		JMenuItem addColumn = new JMenuItem(POPUP_ADD_COLUMN);
-		JMenuItem removeColumn = new JMenuItem(POPUP_REMOVE_COLUMN);
+		this.addItem = new JMenu(messageMan.getMessage(MesTableDefine.mes_add_row));
+		this.insertItem = new JMenu(messageMan.getMessage(MesTableDefine.mes_intert_row));
+		this.removeItem = new JMenuItem(messageMan.getMessage(MesTableDefine.mes_remove_row));
+		this.addColumn = new JMenuItem(messageMan.getMessage(MesTableDefine.mes_add_column));
+		this.removeColumn = new JMenuItem(messageMan.getMessage(MesTableDefine.mes_remove_column));
 		this.addItem.addActionListener(this);
 		this.insertItem.addActionListener(this);
-		removeItem.addActionListener(this);
-		addColumn.addActionListener(this);
-		removeColumn.addActionListener(this);
+		this.removeItem.addActionListener(this);
+		this.addColumn.addActionListener(this);
+		this.removeColumn.addActionListener(this);
 		this.popup = new JPopupMenu();
 		this.popup.add(this.addItem);
 		this.popup.add(this.insertItem);
@@ -173,17 +170,11 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	public void actionPerformed(ActionEvent e)
 	{
 		String command = e.getActionCommand();
-		System.out.println("Command : " + command);
-		// add row
-		if(command.equals(POPUP_ADD_ROW))
-		{
-		}
-		// intert row
-		else if(command.equals(POPUP_INSERT_ROW))
-		{
-		}
+//		System.out.println("Command : " + command);
+		Object source = e.getSource();
+		
 		// remove row
-		else if(command.equals(POPUP_REMOVE_ROW))
+		if(source == removeItem)
 		{
 			//int selectedRow = this.table.getSelectedRow();
 			//if(selectedRow != -1)
@@ -205,7 +196,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 			}
 		}
 		// add column
-		else if(command.equals(POPUP_ADD_COLUMN))
+		else if(source == this.addColumn)
 		{
 			JOptionPane pane = new JOptionPane("add column name", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("add column name");
@@ -215,7 +206,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 			}
 		}
 		// remove column
-		else if(command.equals(POPUP_REMOVE_COLUMN))
+		else if(source == this.removeColumn)
 		{
 			JOptionPane pane = new JOptionPane("remove column name", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("remove column name");
@@ -232,16 +223,15 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		// add, insert 1
 		else if(command.equals(POPUP_NUM_1) || command.equals(POPUP_NUM_10) || command.equals(POPUP_NUM_100))
 		{
-			if(this.selectMenu.equals(POPUP_ADD_ROW))
+			if(this.selectMenu == this.addItem)
 			{
 				this.addRow(Integer.valueOf(command).intValue());
-				this.selectMenu = "";
+				this.selectMenu = null;
 			}
-			else if(this.selectMenu.equals(POPUP_INSERT_ROW))
+			else if(this.selectMenu == this.insertItem)
 			{
-				System.out.println("Insert Row");
 				this.insertRow(Integer.valueOf(command).intValue());
-				this.selectMenu = "";
+				this.selectMenu = null;
 			}
 		}
 	}
@@ -257,11 +247,11 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		System.out.println("Menu Selected");
 		if(e.getSource() == this.addItem)
 		{
-			this.selectMenu = POPUP_ADD_ROW;
+			this.selectMenu = this.addItem;
 		}
 		else if(e.getSource() == this.insertItem)
 		{
-			this.selectMenu = POPUP_INSERT_ROW;
+			this.selectMenu = this.insertItem;
 		}
 	}
 	

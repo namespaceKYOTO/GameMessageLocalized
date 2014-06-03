@@ -22,9 +22,9 @@ public class MesTableDefine
 	static int mes_language = 8;
 	static int mes_help = 9;
 	static int mes_tools = 10;
-	static int mse_add_row = 11;
-	static int mse_intert_row = 12;
-	static int mse_remove_row = 13;
+	static int mes_add_row = 11;
+	static int mes_intert_row = 12;
+	static int mes_remove_row = 13;
 	static int mes_add_column = 14;
 	static int mes_remove_column = 15;
 	static int mes_JPN = 16;

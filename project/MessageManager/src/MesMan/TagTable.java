@@ -13,9 +13,9 @@ public class TagTable extends TableEx
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
-	public TagTable(String[] columns, int width, int height)
+	public TagTable(MessageManager messageMan, String[] columns, int width, int height)
 	{
-		super(columns, width, height);
+		super(messageMan, columns, width, height);
 	}
 	
 	/*---------------------------------------------------------------------*/

@@ -5,7 +5,6 @@
 /*---------------------------------------------------------------------*/
 package MesMan;
 
-import java.lang.*;
 import java.io.*;
 
 public class MessageManager

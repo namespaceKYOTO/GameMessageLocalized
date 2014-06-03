@@ -22,12 +22,12 @@ public class CharacterDialog implements ActionListener {
 	JDialog dialog;
 	TableEx table;
 
-	public CharacterDialog(Frame owner, int x, int y, int width, int height) {
+	public CharacterDialog(Frame owner, MessageManager messageMan, int x, int y, int width, int height) {
 		dialog = new JDialog(owner, charset, Dialog.ModalityType.MODELESS);
 		dialog.setBounds(x, y, width, height);
 		
 		String[] columns = {"char", "size"};
-		table = new TableEx(columns, width, height);
+		table = new TableEx(messageMan, columns, width, height);
 		
 		// menu bar
 		JMenuBar menuBar = new JMenuBar();
