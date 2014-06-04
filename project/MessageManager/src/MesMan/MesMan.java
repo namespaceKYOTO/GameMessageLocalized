@@ -44,6 +44,8 @@ public class MesMan extends JFrame implements ActionListener
 	private JMenuItem fra = null;
 	private JMenuItem ita = null;
 	private JMenuItem spa = null;
+	private JMenuItem rus = null;
+	private JMenuItem tha = null;
 	
 	private CharacterDialog charDialog;
 	
@@ -127,18 +129,24 @@ public class MesMan extends JFrame implements ActionListener
 			fra = new JMenuItem(mesman.getMessage(MesTableDefine.mes_FRA));
 			ita = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ITA));
 			spa = new JMenuItem(mesman.getMessage(MesTableDefine.mes_SPA));
+			rus = new JMenuItem(mesman.getMessage(MesTableDefine.mes_RUS));
+			tha = new JMenuItem(mesman.getMessage(MesTableDefine.mes_THA));
 			jpn.addActionListener(this);
 			eng.addActionListener(this);
 			deu.addActionListener(this);
 			fra.addActionListener(this);
 			ita.addActionListener(this);
 			spa.addActionListener(this);
+			rus.addActionListener(this);
+			tha.addActionListener(this);
 			language.add(jpn);
 			language.add(eng);
 			language.add(deu);
 			language.add(fra);
 			language.add(ita);
 			language.add(spa);
+			language.add(rus);
+			language.add(tha);
 		}
 		
 		// tools
@@ -275,6 +283,8 @@ public class MesMan extends JFrame implements ActionListener
 		else if(src == fra){languageNo = MesTableDefine.Language_FRA; }
 		else if(src == ita){languageNo = MesTableDefine.Language_ITA; }
 		else if(src == spa){languageNo = MesTableDefine.Language_SPA; }
+		else if(src == rus){languageNo = MesTableDefine.Language_RUS; }
+		else if(src == tha){languageNo = MesTableDefine.Language_THA; }
 		 
 		mesman.setLanguageNo(languageNo);
 		

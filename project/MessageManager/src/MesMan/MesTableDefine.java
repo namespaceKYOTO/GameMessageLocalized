@@ -9,6 +9,8 @@ public class MesTableDefine
 	static int Language_FRA = 3;
 	static int Language_ITA = 4;
 	static int Language_SPA = 5;
+	static int Language_RUS = 6;
+	static int Language_THA = 7;
 
 	// Number of Message
 	static int mes_file = 0;
@@ -33,5 +35,7 @@ public class MesTableDefine
 	static int mes_FRA = 19;
 	static int mes_ITA = 20;
 	static int mes_SPA = 21;
+	static int mes_RUS = 22;
+	static int mes_THA = 23;
 
 }
