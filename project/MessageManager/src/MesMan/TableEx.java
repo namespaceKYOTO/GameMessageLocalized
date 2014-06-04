@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableColumnModel;
 
 public class TableEx implements MouseListener, ActionListener, MenuListener
 {
+	MessageManager messageMan;
+	
 	private Stack<Stack<String>> row;
 	private Stack<String> columnName;
 	
@@ -40,6 +42,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	/*---------------------------------------------------------------------*/
 	public TableEx(MessageManager messageMan, String[] columns, int width, int height)
 	{
+		this.messageMan = messageMan;
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
 		this.selectMenu = null;
@@ -289,7 +292,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	//*!brief	insert row
 	/*---------------------------------------------------------------------*/
 	public void insertRow(int num)
-{
+	{
 		int selectedRow = this.table.getSelectedRow();
 		if(selectedRow != -1)
 		{
@@ -304,5 +307,17 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		{
 			System.out.println("not select row");
 		}
+	}
+	
+	/**
+	 * 言語設定
+	 */
+	public void LanguageChange()
+	{
+		addItem.setText(messageMan.getMessage(MesTableDefine.mes_add_row));
+		insertItem.setText(messageMan.getMessage(MesTableDefine.mes_intert_row));
+		removeItem.setText(messageMan.getMessage(MesTableDefine.mes_remove_row));
+		addColumn.setText(messageMan.getMessage(MesTableDefine.mes_add_column));
+		removeColumn.setText(messageMan.getMessage(MesTableDefine.mes_remove_column));
 	}
 }

@@ -24,11 +24,26 @@ public class MesMan extends JFrame implements ActionListener
 	private String FRAME_TITLE = "Message Manager";
 	private String CHAR_SIZE = "Character Size";
 	
+	JMenu file;
+	JMenu setting;
+	JMenu language;
+	JMenu help;
+	JMenu tools;
+	JMenu open;
+	JMenu save;
+	
 	private JMenuItem openMesTbl = null;
 	private JMenuItem openTabTbl = null;
 	private JMenuItem saveMesTbl = null;
 	private JMenuItem saveTabTbl = null;
 	private JMenuItem output = null;
+
+	private JMenuItem jpn = null;
+	private JMenuItem eng = null;
+	private JMenuItem deu = null;
+	private JMenuItem fra = null;
+	private JMenuItem ita = null;
+	private JMenuItem spa = null;
 	
 	private CharacterDialog charDialog;
 	
@@ -61,35 +76,35 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// menu bar
 		JMenuBar menuBar = new JMenuBar();
-		JMenu file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
-		JMenu setting = new JMenu(mesman.getMessage(MesTableDefine.mes_setting));
-		JMenu language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
-		JMenu help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
-		JMenu tools = new JMenu(mesman.getMessage(MesTableDefine.mes_tools));
+		file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
+		setting = new JMenu(mesman.getMessage(MesTableDefine.mes_setting));
+		language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
+		help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
+		tools = new JMenu(mesman.getMessage(MesTableDefine.mes_tools));
 		
 		//// File
 		// Open
 		{
-			JMenu menu = new JMenu(mesman.getMessage(MesTableDefine.mes_open));
+			open = new JMenu(mesman.getMessage(MesTableDefine.mes_open));
 			openMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
 			openTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
 			openMesTbl.addActionListener(this);
 			openTabTbl.addActionListener(this);
-			menu.add(openMesTbl);
-			menu.add(openTabTbl);
-			file.add(menu);
+			open.add(openMesTbl);
+			open.add(openTabTbl);
+			file.add(open);
 		}
 		
 		// Save
 		{
-			JMenu menu = new JMenu(mesman.getMessage(MesTableDefine.mes_save));
+			save = new JMenu(mesman.getMessage(MesTableDefine.mes_save));
 			saveMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
 			saveTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
 			saveMesTbl.addActionListener(this);
 			saveTabTbl.addActionListener(this);
-			menu.add(saveMesTbl);
-			menu.add(saveTabTbl);
-			file.add(menu);
+			save.add(saveMesTbl);
+			save.add(saveTabTbl);
+			file.add(save);
 		}
 		
 		// Output
@@ -106,13 +121,31 @@ public class MesMan extends JFrame implements ActionListener
 		
 		// Language
 		{
+			jpn = new JMenuItem(mesman.getMessage(MesTableDefine.mes_JPN));
+			eng = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ENG));
+			deu = new JMenuItem(mesman.getMessage(MesTableDefine.mes_DEU));
+			fra = new JMenuItem(mesman.getMessage(MesTableDefine.mes_FRA));
+			ita = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ITA));
+			spa = new JMenuItem(mesman.getMessage(MesTableDefine.mes_SPA));
+			jpn.addActionListener(this);
+			eng.addActionListener(this);
+			deu.addActionListener(this);
+			fra.addActionListener(this);
+			ita.addActionListener(this);
+			spa.addActionListener(this);
+			language.add(jpn);
+			language.add(eng);
+			language.add(deu);
+			language.add(fra);
+			language.add(ita);
+			language.add(spa);
 		}
 		
 		// tools
 		{
-			JMenuItem item = new JMenuItem(CHAR_SIZE);
-			item.addActionListener(this);
-			tools.add(item);
+//			JMenuItem item = new JMenuItem(CHAR_SIZE);
+//			item.addActionListener(this);
+//			tools.add(item);
 		}
 		
 		menuBar.add(file);
@@ -226,5 +259,43 @@ public class MesMan extends JFrame implements ActionListener
 //		{
 //			this.charDialog.show();
 //		}
+		// Language Change
+		else
+		{
+			LanguageChange(e.getSource());
+		}
+	}
+	
+	private void LanguageChange(Object src)
+	{
+		int languageNo = 0;
+			 if(src == jpn){languageNo = MesTableDefine.Language_JPN; }
+		else if(src == eng){languageNo = MesTableDefine.Language_ENG; }
+		else if(src == deu){languageNo = MesTableDefine.Language_DEU; }
+		else if(src == fra){languageNo = MesTableDefine.Language_FRA; }
+		else if(src == ita){languageNo = MesTableDefine.Language_ITA; }
+		else if(src == spa){languageNo = MesTableDefine.Language_SPA; }
+		 
+		mesman.setLanguageNo(languageNo);
+		
+
+		file.setText(mesman.getMessage(MesTableDefine.mes_file));
+		setting.setText(mesman.getMessage(MesTableDefine.mes_setting));
+		language.setText(mesman.getMessage(MesTableDefine.mes_language));
+		help.setText(mesman.getMessage(MesTableDefine.mes_help));
+		tools.setText(mesman.getMessage(MesTableDefine.mes_tools));
+		
+		open.setText(mesman.getMessage(MesTableDefine.mes_open));
+		openMesTbl.setText(mesman.getMessage(MesTableDefine.mes_mtbl));
+		openTabTbl.setText(mesman.getMessage(MesTableDefine.mes_ttbl));
+		
+		save.setText(mesman.getMessage(MesTableDefine.mes_save));
+		saveMesTbl.setText(mesman.getMessage(MesTableDefine.mes_mtbl));
+		saveTabTbl.setText(mesman.getMessage(MesTableDefine.mes_ttbl));
+
+		output.setText(mesman.getMessage(MesTableDefine.mes_output));
+		
+		mesTable.LanguageChange();
+		tagTable.LanguageChange();
 	}
 }
