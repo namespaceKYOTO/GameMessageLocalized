@@ -14,7 +14,8 @@ import javax.swing.*;
 
 public class MesMan extends JFrame implements ActionListener
 {
-	private static MessageManager mesman = null;
+	private MessageManager mesman;
+	private Setting set;
 	private MesTable mesTable;
 	private TagTable tagTable;
 	private CheckParamPanel checkParam;
@@ -37,6 +38,9 @@ public class MesMan extends JFrame implements ActionListener
 	private JMenuItem saveMesTbl = null;
 	private JMenuItem saveTabTbl = null;
 	private JMenuItem output = null;
+	
+	private JMenuItem defaulttDirectory = null;
+	private JMenuItem defaultLanguage = null;
 
 	private JMenuItem jpn = null;
 	private JMenuItem eng = null;
@@ -55,16 +59,19 @@ public class MesMan extends JFrame implements ActionListener
 		{
 			System.out.println(arg);
 		}
-		mesman = new MessageManager("res/MesTableDefine.bin");
-		mesman.setLanguageNo(MesTableDefine.Language_ENG);
-		for(int i = MesTableDefine.mes_file; i <= MesTableDefine.mes_SPA; ++i ) {
-			System.out.println(mesman.getMessage(i));
-		}
+		
 		MesMan mesMan = new MesMan();
 	}
 	
 	public MesMan()
 	{
+		mesman = new MessageManager("res/MesTableDefine.bin");
+		mesman.setLanguageNo(MesTableDefine.Language_ENG);
+//		for(int i = MesTableDefine.mes_file; i <= MesTableDefine.mes_SPA; ++i ) {
+//			System.out.println(mesman.getMessage(i));
+//		}
+		set = new Setting("res/config.txt");
+		
 		setTitle(FRAME_TITLE);
 		
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -209,6 +216,8 @@ public class MesMan extends JFrame implements ActionListener
 		
 		if(e.getSource() == openMesTbl)
 		{
+			File file = new File(set.getDefaultDirectory());
+			this.mtblChooser.setCurrentDirectory(file);
 			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
 			int ret = this.mtblChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
@@ -220,6 +229,8 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		else if(e.getSource() == openTabTbl)
 		{
+			File file = new File(set.getDefaultDirectory());
+			this.mtblChooser.setCurrentDirectory(file);
 			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
 			int ret = this.mtblChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
@@ -231,6 +242,8 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		else if(e.getSource() == saveMesTbl)
 		{
+			File file = new File(set.getDefaultDirectory());
+			this.mtblChooser.setCurrentDirectory(file);
 			this.mtblChooser.setFileFilter(new FileFilterEx(".mtbl","Message Table(.mtbl)"));
 			int ret = this.mtblChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
@@ -242,6 +255,8 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		else if(e.getSource() == saveTabTbl) 
 		{
+			File file = new File(set.getDefaultDirectory());
+			this.mtblChooser.setCurrentDirectory(file);
 			this.mtblChooser.setFileFilter(new FileFilterEx(".ttbl","Tag Table(.ttbl)"));
 			int ret = this.mtblChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
@@ -253,6 +268,8 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		else if(e.getSource() == output)
 		{
+			File file = new File(set.getDefaultDirectory());
+			this.outputChooser.setCurrentDirectory(file);
 			this.outputChooser.setFileFilter(null);
 			int ret = this.outputChooser.showSaveDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
