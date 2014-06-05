@@ -102,8 +102,8 @@ public class MessageManager
 						((int)this.readData[offset + 1])<<16 | 
 						((int)this.readData[offset + 2])<<8 |
 						((int)this.readData[offset + 3]);
-			System.out.println(String.format("Get Byte : %x %x %x %x",this.readData[offset + 0],this.readData[offset + 1],this.readData[offset + 2],this.readData[offset + 3]));
-			System.out.println(String.format("         : %x", ret));
+//			System.out.println(String.format("Get Byte : %x %x %x %x",this.readData[offset + 0],this.readData[offset + 1],this.readData[offset + 2],this.readData[offset + 3]));
+//			System.out.println(String.format("         : %x", ret));
 			
 			return ret;
 		}

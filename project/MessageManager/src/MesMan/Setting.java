@@ -29,6 +29,8 @@ public class Setting {
 			defaultDirectory = br.readLine().substring(DefaultDirectoryLabel.length());
 			defaultLanguage = br.readLine().substring(DefaultLanguageLabel.length());
 			
+			br.close();
+			
 			System.out.println(defaultDirectory + " " + defaultLanguage);
 		}
 		catch(IOException e)
@@ -40,6 +42,17 @@ public class Setting {
 	
 	public String getDefaultLanguage() {
 		return defaultLanguage;
+	}
+	public int getDefaultLanguageNo() {
+			 if(defaultLanguage.equals("JPN")) { return MesTableDefine.Language_JPN; }
+		else if(defaultLanguage.equals("ENG")) { return MesTableDefine.Language_ENG; }
+		else if(defaultLanguage.equals("DEU")) { return MesTableDefine.Language_DEU; }
+		else if(defaultLanguage.equals("FRA")) { return MesTableDefine.Language_FRA; }
+		else if(defaultLanguage.equals("ITA")) { return MesTableDefine.Language_ITA; }
+		else if(defaultLanguage.equals("SPA")) { return MesTableDefine.Language_SPA; }
+		else if(defaultLanguage.equals("RUS")) { return MesTableDefine.Language_RUS; }
+		else if(defaultLanguage.equals("THA")) { return MesTableDefine.Language_THA; }
+		return MesTableDefine.Language_ENG;
 	}
 
 	public void setDefaultLanguage(String defaultLanguage)

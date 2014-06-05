@@ -65,12 +65,12 @@ public class MesMan extends JFrame implements ActionListener
 	
 	public MesMan()
 	{
+		set = new Setting("res/config.txt");
 		mesman = new MessageManager("res/MesTableDefine.bin");
-		mesman.setLanguageNo(MesTableDefine.Language_ENG);
+		mesman.setLanguageNo(set.getDefaultLanguageNo());
 //		for(int i = MesTableDefine.mes_file; i <= MesTableDefine.mes_SPA; ++i ) {
 //			System.out.println(mesman.getMessage(i));
 //		}
-		set = new Setting("res/config.txt");
 		
 		setTitle(FRAME_TITLE);
 		
@@ -126,6 +126,12 @@ public class MesMan extends JFrame implements ActionListener
 		//// Setting
 		// CharSize
 		{
+			defaulttDirectory = new JMenuItem ("Directory");
+			defaultLanguage = new JMenuItem ("Language");
+			defaulttDirectory.addActionListener(this);
+			defaultLanguage.addActionListener(this);
+			setting.add(defaulttDirectory);
+			setting.add(defaultLanguage);
 		}
 		
 		// Language
