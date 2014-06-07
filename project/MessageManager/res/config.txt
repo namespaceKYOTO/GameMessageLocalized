@@ -1,2 +1,2 @@
-"defaultDirectory":c:\\
+"defaultDirectory":C:\
 "defaultLanguage":1

@@ -40,10 +40,19 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private JMenuItem openTabTbl;
 	private JMenuItem saveMesTbl;
 	private JMenuItem saveTabTbl;
-	private JMenuItem output = null;
+	private JMenuItem output;
 	
-	private JMenuItem defaulttDirectory = null;
-	private JMenu defaultLanguage = null;
+	private JMenuItem defaulttDirectory;
+	private JMenu defaultLanguage;
+	private JMenuItem setting_jpn;
+	private JMenuItem setting_eng;
+	private JMenuItem setting_deu;
+	private JMenuItem setting_fra;
+	private JMenuItem setting_ita;
+	private JMenuItem setting_spa;
+	private JMenuItem setting_rus;
+	private JMenuItem setting_tha;
+	private JMenuItem reset;
 
 	private JMenuItem jpn;
 	private JMenuItem eng;
@@ -53,14 +62,6 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private JMenuItem spa;
 	private JMenuItem rus;
 	private JMenuItem tha;
-	private JMenuItem setting_jpn;
-	private JMenuItem setting_eng;
-	private JMenuItem setting_deu;
-	private JMenuItem setting_fra;
-	private JMenuItem setting_ita;
-	private JMenuItem setting_spa;
-	private JMenuItem setting_rus;
-	private JMenuItem setting_tha;
 	
 	private CharacterDialog charDialog;
 	
@@ -142,9 +143,11 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		{
 			defaulttDirectory = new JMenuItem ("Default Directory");
 			defaultLanguage = new JMenu("Default Language");
+			reset = new JMenuItem("reset");
 			defaulttDirectory.addActionListener(this);
 			defaultLanguage.addActionListener(this);
 			defaultLanguage.addMenuListener(this);
+			reset.addActionListener(this);
 			
 			setting_jpn = new JMenuItem(mesman.getMessage(MesTableDefine.mes_JPN));
 			setting_eng = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ENG));
@@ -174,6 +177,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 			
 			setting.add(defaulttDirectory);
 			setting.add(defaultLanguage);
+			setting.add(reset);
 		}
 		
 		// Language
@@ -331,13 +335,18 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
 			}
 		}
-		else if(e.getSource() == this.defaulttDirectory) {
+		else if(e.getSource() == this.defaulttDirectory)
+		{
 			int ret = this.directoryChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
 				File file = this.directoryChooser.getSelectedFile();
 				this.set.setDefaultDirectory(file.getPath());
 			}
+		}
+		else if(e.getSource() == this.reset)
+		{
+			this.set.reset();
 		}
 //		// Character Size
 //		else if(e.getSource() == )
