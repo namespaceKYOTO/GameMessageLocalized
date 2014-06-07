@@ -5,18 +5,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.LinkedList;
 
 public class Setting {
 	
 	private String fileName;
 	private String defaultDirectory;
-	private String defaultLanguage;
+	private Integer defaultLanguage;
+	LinkedList<String> buffer;
 	
 	private String DefaultDirectoryLabel = "\"defaultDirectory\":";
 	private String DefaultLanguageLabel = "\"defaultLanguage\":";
+	
+	private static int directoryIdx = 0;
+	private static int languageIdx = 1;
 
 	public Setting(String settingFile)
 	{
+		buffer = new LinkedList<String>();
 		try
 		{
 			fileName = settingFile;
@@ -25,11 +32,14 @@ public class Setting {
 			BufferedReader br = new BufferedReader(fr);
 			
 			// ファイルから情報取得
-			
-			defaultDirectory = br.readLine().substring(DefaultDirectoryLabel.length());
-			defaultLanguage = br.readLine().substring(DefaultLanguageLabel.length());
-			
+			String line = null;
+			while((line = br.readLine()) != null) {
+				buffer.add(line);
+			}
 			br.close();
+			
+			defaultDirectory = buffer.get(directoryIdx).substring(DefaultDirectoryLabel.length());
+			defaultLanguage = Integer.valueOf(buffer.get(languageIdx).substring(DefaultLanguageLabel.length()));
 			
 			System.out.println(defaultDirectory + " " + defaultLanguage);
 		}
@@ -40,24 +50,15 @@ public class Setting {
 		}
 	}
 	
-	public String getDefaultLanguage() {
+	public Integer getDefaultLanguage() {
 		return defaultLanguage;
 	}
-	public int getDefaultLanguageNo() {
-			 if(defaultLanguage.equals("JPN")) { return MesTableDefine.Language_JPN; }
-		else if(defaultLanguage.equals("ENG")) { return MesTableDefine.Language_ENG; }
-		else if(defaultLanguage.equals("DEU")) { return MesTableDefine.Language_DEU; }
-		else if(defaultLanguage.equals("FRA")) { return MesTableDefine.Language_FRA; }
-		else if(defaultLanguage.equals("ITA")) { return MesTableDefine.Language_ITA; }
-		else if(defaultLanguage.equals("SPA")) { return MesTableDefine.Language_SPA; }
-		else if(defaultLanguage.equals("RUS")) { return MesTableDefine.Language_RUS; }
-		else if(defaultLanguage.equals("THA")) { return MesTableDefine.Language_THA; }
-		return MesTableDefine.Language_ENG;
-	}
 
-	public void setDefaultLanguage(String defaultLanguage)
+	public void setDefaultLanguage(int defaultLanguage)
 	{
-		// 言語名は正しい?
+		buffer.remove(languageIdx);
+		buffer.add(languageIdx, DefaultLanguageLabel + String.valueOf(defaultLanguage));
+		this.defaultLanguage = new Integer(defaultLanguage);
 	}
 	
 	public String getDefaultDirectory()
@@ -66,15 +67,39 @@ public class Setting {
 	}
 	public void setDefaultDirectory(String defaultDirectory)
 	{
-		// directoryが正しい?
-//		defaultDirectory = 
+		buffer.remove(directoryIdx);
+		buffer.add(directoryIdx, DefaultDirectoryLabel + defaultDirectory);
+		this.defaultDirectory = defaultDirectory;
 	}
 	
 	public void reset()
 	{
 		defaultDirectory = new String("C:\\");
-		defaultLanguage = new String("ENG");
+		defaultLanguage = MesTableDefine.Language_ENG;
 		
-		// ファイルに書き出し
+		buffer.clear();
+		buffer.add(directoryIdx, DefaultDirectoryLabel + defaultDirectory);
+		buffer.add(languageIdx, DefaultLanguageLabel + String.valueOf(defaultLanguage));
+	}
+	
+	public void save()
+	{
+		try
+		{
+			File file = new File(fileName);
+			PrintWriter pw = new PrintWriter(file);
+			
+			for (String str : this.buffer) {
+				pw.write(str);
+				pw.write("\n");
+			}
+			pw.flush();
+			pw.close();
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 }

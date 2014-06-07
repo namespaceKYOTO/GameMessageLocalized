@@ -11,8 +11,10 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
-public class MesMan extends JFrame implements ActionListener
+public class MesMan extends JFrame implements ActionListener, MenuListener, WindowListener
 {
 	private MessageManager mesman;
 	private Setting set;
@@ -25,33 +27,43 @@ public class MesMan extends JFrame implements ActionListener
 	private String FRAME_TITLE = "Message Manager";
 	private String CHAR_SIZE = "Character Size";
 	
-	JMenu file;
-	JMenu setting;
-	JMenu language;
-	JMenu help;
-	JMenu tools;
-	JMenu open;
-	JMenu save;
+	private JMenu file;
+	private JMenu setting;
+	private JMenu language;
+	private JMenu help;
+	private JMenu tools;
+	private JMenu open;
+	private JMenu save;
 	
-	private JMenuItem openMesTbl = null;
-	private JMenuItem openTabTbl = null;
-	private JMenuItem saveMesTbl = null;
-	private JMenuItem saveTabTbl = null;
+	private JMenuItem openMesTbl;
+	private JMenuItem openTabTbl;
+	private JMenuItem saveMesTbl;
+	private JMenuItem saveTabTbl;
 	private JMenuItem output = null;
 	
 	private JMenuItem defaulttDirectory = null;
-	private JMenuItem defaultLanguage = null;
+	private JMenu defaultLanguage = null;
 
-	private JMenuItem jpn = null;
-	private JMenuItem eng = null;
-	private JMenuItem deu = null;
-	private JMenuItem fra = null;
-	private JMenuItem ita = null;
-	private JMenuItem spa = null;
-	private JMenuItem rus = null;
-	private JMenuItem tha = null;
+	private JMenuItem jpn;
+	private JMenuItem eng;
+	private JMenuItem deu;
+	private JMenuItem fra;
+	private JMenuItem ita;
+	private JMenuItem spa;
+	private JMenuItem rus;
+	private JMenuItem tha;
+	private JMenuItem setting_jpn;
+	private JMenuItem setting_eng;
+	private JMenuItem setting_deu;
+	private JMenuItem setting_fra;
+	private JMenuItem setting_ita;
+	private JMenuItem setting_spa;
+	private JMenuItem setting_rus;
+	private JMenuItem setting_tha;
 	
 	private CharacterDialog charDialog;
+	
+	private Object selectMenu = null;
 	
 	public static void main(String[] args)
 	{
@@ -65,12 +77,11 @@ public class MesMan extends JFrame implements ActionListener
 	
 	public MesMan()
 	{
+		addWindowListener(this);
+		
 		set = new Setting("res/config.txt");
 		mesman = new MessageManager("res/MesTableDefine.bin");
-		mesman.setLanguageNo(set.getDefaultLanguageNo());
-//		for(int i = MesTableDefine.mes_file; i <= MesTableDefine.mes_SPA; ++i ) {
-//			System.out.println(mesman.getMessage(i));
-//		}
+		mesman.setLanguageNo(set.getDefaultLanguage());
 		
 		setTitle(FRAME_TITLE);
 		
@@ -90,6 +101,9 @@ public class MesMan extends JFrame implements ActionListener
 		language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
 		help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
 		tools = new JMenu(mesman.getMessage(MesTableDefine.mes_tools));
+		
+		language.addMenuListener(this);
+		
 		
 		//// File
 		// Open
@@ -124,12 +138,39 @@ public class MesMan extends JFrame implements ActionListener
 		}
 		
 		//// Setting
-		// CharSize
 		{
-			defaulttDirectory = new JMenuItem ("Directory");
-			defaultLanguage = new JMenuItem ("Language");
+			defaulttDirectory = new JMenuItem ("Default Directory");
+			defaultLanguage = new JMenu("Default Language");
 			defaulttDirectory.addActionListener(this);
 			defaultLanguage.addActionListener(this);
+			defaultLanguage.addMenuListener(this);
+			
+			setting_jpn = new JMenuItem(mesman.getMessage(MesTableDefine.mes_JPN));
+			setting_eng = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ENG));
+			setting_deu = new JMenuItem(mesman.getMessage(MesTableDefine.mes_DEU));
+			setting_fra = new JMenuItem(mesman.getMessage(MesTableDefine.mes_FRA));
+			setting_ita = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ITA));
+			setting_spa = new JMenuItem(mesman.getMessage(MesTableDefine.mes_SPA));
+			setting_rus = new JMenuItem(mesman.getMessage(MesTableDefine.mes_RUS));
+			setting_tha = new JMenuItem(mesman.getMessage(MesTableDefine.mes_THA));
+			setting_jpn.addActionListener(this);
+			setting_eng.addActionListener(this);
+			setting_deu.addActionListener(this);
+			setting_fra.addActionListener(this);
+			setting_ita.addActionListener(this);
+			setting_spa.addActionListener(this);
+			setting_rus.addActionListener(this);
+			setting_tha.addActionListener(this);
+			defaultLanguage.add(setting_jpn);
+			defaultLanguage.add(setting_eng);
+			defaultLanguage.add(setting_deu);
+			defaultLanguage.add(setting_fra);
+			defaultLanguage.add(setting_ita);
+			defaultLanguage.add(setting_spa);
+			defaultLanguage.add(setting_rus);
+			defaultLanguage.add(setting_tha);
+
+			
 			setting.add(defaulttDirectory);
 			setting.add(defaultLanguage);
 		}
@@ -293,23 +334,32 @@ public class MesMan extends JFrame implements ActionListener
 		// Language Change
 		else
 		{
-			LanguageChange(e.getSource());
+			if(this.selectMenu == this.language) {
+				LanguageChange(e.getSource());
+			}
+			else if(this.selectMenu == this.defaultLanguage) {
+				int languageNo = this.getLanguageNo(e.getSource());
+				this.set.setDefaultLanguage(languageNo);
+			}
 		}
+	}
+	
+	private int getLanguageNo(Object src)
+	{
+			 if(src == jpn || src == setting_jpn){return MesTableDefine.Language_JPN; }
+		else if(src == eng || src == setting_eng){return MesTableDefine.Language_ENG; }
+		else if(src == deu || src == setting_deu){return MesTableDefine.Language_DEU; }
+		else if(src == fra || src == setting_fra){return MesTableDefine.Language_FRA; }
+		else if(src == ita || src == setting_ita){return MesTableDefine.Language_ITA; }
+		else if(src == spa || src == setting_spa){return MesTableDefine.Language_SPA; }
+		else if(src == rus || src == setting_rus){return MesTableDefine.Language_RUS; }
+		else if(src == tha || src == setting_tha){return MesTableDefine.Language_THA; }
+		return MesTableDefine.Language_ENG;
 	}
 	
 	private void LanguageChange(Object src)
 	{
-		int languageNo = 0;
-			 if(src == jpn){languageNo = MesTableDefine.Language_JPN; }
-		else if(src == eng){languageNo = MesTableDefine.Language_ENG; }
-		else if(src == deu){languageNo = MesTableDefine.Language_DEU; }
-		else if(src == fra){languageNo = MesTableDefine.Language_FRA; }
-		else if(src == ita){languageNo = MesTableDefine.Language_ITA; }
-		else if(src == spa){languageNo = MesTableDefine.Language_SPA; }
-		else if(src == rus){languageNo = MesTableDefine.Language_RUS; }
-		else if(src == tha){languageNo = MesTableDefine.Language_THA; }
-		 
-		mesman.setLanguageNo(languageNo);
+		mesman.setLanguageNo(this.getLanguageNo(src));
 		
 
 		file.setText(mesman.getMessage(MesTableDefine.mes_file));
@@ -331,4 +381,21 @@ public class MesMan extends JFrame implements ActionListener
 		mesTable.LanguageChange();
 		tagTable.LanguageChange();
 	}
+
+	public void menuCanceled(MenuEvent arg0) {}
+	public void menuDeselected(MenuEvent arg0) {}
+	public void menuSelected(MenuEvent arg0) {
+		this.selectMenu = arg0.getSource();
+	}
+
+	public void windowActivated(WindowEvent arg0) {}
+	public void windowClosed(WindowEvent arg0) {}
+	public void windowClosing(WindowEvent arg0) {
+		// 終了時処理
+		this.set.save();
+	}
+	public void windowDeactivated(WindowEvent arg0) {}
+	public void windowDeiconified(WindowEvent arg0) {}
+	public void windowIconified(WindowEvent arg0) {}
+	public void windowOpened(WindowEvent arg0) {}
 }
