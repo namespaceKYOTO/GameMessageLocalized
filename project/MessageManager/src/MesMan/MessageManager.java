@@ -152,7 +152,7 @@ public class MessageManager
 			int idx = (mesNo * languageNum) + languageNo;
 			int mesLength = this.messageOffset[idx + 1] - this.messageOffset[idx];
 			int offset = this.mesDataIdx + this.messageOffset[idx]; 
-			System.out.println(String.format("Message Offset %x", offset));
+//			System.out.println(String.format("Message Offset %x", offset));
 			ret = new String(this.readData, offset, mesLength, this.charset);
 		}
 		catch(UnsupportedEncodingException e)

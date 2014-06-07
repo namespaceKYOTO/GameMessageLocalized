@@ -23,6 +23,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private CheckParamPanel checkParam;
 	private JFileChooser mtblChooser;
 	private JFileChooser outputChooser;
+	private JFileChooser directoryChooser;
 	
 	private String FRAME_TITLE = "Message Manager";
 	private String CHAR_SIZE = "Character Size";
@@ -242,7 +243,11 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		// file Chooser
 		this.checkParam = new CheckParamPanel();
 		this.outputChooser = new JFileChooser();
+		this.directoryChooser = new JFileChooser();
+		
 		this.outputChooser.setAccessory(this.checkParam.getPanel());
+		this.directoryChooser.setDialogType(JFileChooser.CUSTOM_DIALOG);
+		this.directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
 		this.mtblChooser = new JFileChooser();
 		
@@ -324,6 +329,14 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 				File outFile = this.outputChooser.getSelectedFile();
 				OutPuter outPuter = new OutPuter();
 				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
+			}
+		}
+		else if(e.getSource() == this.defaulttDirectory) {
+			int ret = this.directoryChooser.showOpenDialog(this);
+			if(ret == JFileChooser.APPROVE_OPTION)
+			{
+				File file = this.directoryChooser.getSelectedFile();
+				this.set.setDefaultDirectory(file.getPath());
 			}
 		}
 //		// Character Size
