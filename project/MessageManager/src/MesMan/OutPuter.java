@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Stack;
 
@@ -181,7 +182,7 @@ public class OutPuter
 			outputStream.write(this.getByteData(date, 1, BIG_ENDIAN));
 			
 			// Message Num (4Byte)
-			byte[] messageNum = this.getByteData(mesTable.getRow().size(), 4, BIG_ENDIAN);
+			byte[] messageNum = this.getByteData(mesTable.getMessageNum(), 4, BIG_ENDIAN);
 			outputStream.write(messageNum);
 			
 			// Language Num (4Byte)
@@ -197,43 +198,10 @@ public class OutPuter
 			outputStream.write(charsetByte);
 			
 			// Message Offset (Message Num * Language Num * 4Byte)
-//			for(Stack<String> row : mesTable.getRow())
-//			{
-//				for(String column : row)
-//				{
-//					if(columnCount != labelIdx && columnCount != descIdx)
-//					{
-//						byte[] mesOffset = this.getByteData(messageOffset, 4, BIG_ENDIAN);
-//						outputStream.write(mesOffset);
-//						outputStream.flush();
-//						byte[] message = this.outWrite(column, tagTable, charset);
-//						System.out.println(column +  String.format(" %d : %01x %01x %01x %01x", message.length, mesOffset[0], mesOffset[1], mesOffset[2], mesOffset[3]));
-//						int size = message.length /*+ newLine.length()*/;
-//						messageOffset += size;
-//					}
-//					++columnCount;
-//				}
-//				columnCount = 0;
-//			}
-			outputMessageOffset( outputStream, tagTable, mesTable, charset);
+			outputMessage( 0, outputStream, tagTable, mesTable, charset);
 			
 			// Messsage
-//			columnCount = 0;
-//			for(Stack<String> row : mesTable.getRow())
-//			{
-//				for(String column : row)
-//				{
-//					if(columnCount != labelIdx && columnCount != descIdx)
-//					{
-//						outputStream.write(this.outWrite(column, tagTable, charset));
-//						//outputStream.write(newLine);	// Message End Code
-//						outputStream.flush();
-//					}
-//					++columnCount;
-//				}
-//				columnCount = 0;
-//			}
-			outputMessage( outputStream, tagTable, mesTable, charset);
+			outputMessage( 1, outputStream, tagTable, mesTable, charset);
 			
 			outputStream.flush();
 			outputStream.close();
@@ -243,168 +211,111 @@ public class OutPuter
 			System.out.println("Faild Output Message : " + e.getMessage());
 		}
 	}
-	
-	private void outputMessageOffset(FileOutputStream outputStream, TagTable tagTable, MesTable mesTable, String charset)
+
+	private void outputMessageOffset(FileOutputStream outputStream, int messageOffset)
 	{
-		int messageOffset = 0;
-		int labelIdx = mesTable.getColumnIndex(LABEL);
-		int descIdx = mesTable.getColumnIndex(DESCRIPTION);
-		int columnCount = 0;
-		boolean labelExist = false;
-		Stack<String> work = new Stack<String>();
-		int languageNum = mesTable.getLanguageNum() + 2;
-		work.ensureCapacity(languageNum);
-		for(int i = 0; i < languageNum; ++i){
-			work.add(i, "");
+		byte[] mesOffset = this.getByteData(messageOffset, 4, BIG_ENDIAN);
+		try {
+			outputStream.write(mesOffset);
+			outputStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		try 
-		{
-			for(Stack<String> row : mesTable.getRow())
-			{
-				if(labelExist)
-				{
-					// 現在のWorkを書き出し
-					int count = 0;
-					for (String string : work)
-					{
-						if(count != labelIdx && count != descIdx)
-						{
-							byte[] mesOffset = this.getByteData(messageOffset, 4, BIG_ENDIAN);
-							outputStream.write(mesOffset);
-							outputStream.flush();
-							byte[] message = this.outWrite(string, tagTable, charset);
-							System.out.println(string +  String.format(" %d : %01x %01x %01x %01x", message.length, mesOffset[0], mesOffset[1], mesOffset[2], mesOffset[3]));
-							int size = message.length /*+ newLine.length()*/;
-							messageOffset += size;
-						}
-						++count;
-					}
-					labelExist = false;
-					work.clear();
-					work.ensureCapacity(languageNum);
-					for(int i = 0; i < languageNum; ++i){
-						work.add(i, "");
-					}
-				}
-				boolean _labelExist = false;
-				for(String column : row)
-				{
-					if(columnCount != labelIdx && columnCount != descIdx)
-					{
-						if( column != null )
-						{
-							String str = "";
-							str = work.get(columnCount);
-							work.remove(columnCount);
-							if(labelExist) {
-								str = str + "\n";
-							}
-							work.add(columnCount, str + column);
-						}
-					}
-					if( columnCount == labelIdx && column != null ) {
-						_labelExist = true;
-					}
-					++columnCount;
-				}
-				labelExist = _labelExist;
-				columnCount = 0;	
-			}
-			int count = 0;
-			for (String string : work)
-			{
-				if(count != labelIdx && count != descIdx)
-				{
-					byte[] mesOffset = this.getByteData(messageOffset, 4, BIG_ENDIAN);
-					outputStream.write(mesOffset);
-					outputStream.flush();
-					byte[] message = this.outWrite(string, tagTable, charset);
-					System.out.println(string +  String.format(" %d : %01x %01x %01x %01x", message.length, mesOffset[0], mesOffset[1], mesOffset[2], mesOffset[3]));
-					int size = message.length /*+ newLine.length()*/;
-					messageOffset += size;
-				}
-				++count;
-			}
-		}
-		catch(IOException e)
-		{
-			System.out.println("Faild Output Message : " + e.getMessage());
-		}	
 	}
 	
-	private void outputMessage(FileOutputStream outputStream, TagTable tagTable, MesTable mesTable, String charset)
+	private void outputMessageData(FileOutputStream outputStream, byte[] data)
 	{
-		boolean labelExist = false;
-		int columnCount = 0;
-		Stack<String> work = new Stack<String>();
+		try {
+			outputStream.write(data);
+			outputStream.flush();	
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private void outputMessage(int type, FileOutputStream outputStream, TagTable tagTable, MesTable mesTable, String charset)
+	{
 		int labelIdx = mesTable.getColumnIndex(LABEL);
 		int descIdx = mesTable.getColumnIndex(DESCRIPTION);
+		System.out.println(String.format("Label : %d, Desc : %d", labelIdx, descIdx));
+		Stack<String> work = new Stack<String>();
+		int messageOffset = 0;
+		int columnCount = 0;
 		int languageNum = mesTable.getLanguageNum() + 2;
+		boolean first = true;
+		
 		work.ensureCapacity(languageNum);
 		for(int i = 0; i < languageNum; ++i){
 			work.add(i, "");
 		}
-		try 
+		
+		for(Stack<String> row : mesTable.getRow())
 		{
-			for(Stack<String> row : mesTable.getRow())
+			if(row.get(labelIdx) != null && row.get(labelIdx).length() > 0)
 			{
-				if(labelExist) {
-					// 現在のWorkを書き出し
-					int count = 0;
+				// 現在のWorkを書き出し
+				int count = 0;
+				if(!first)
+				{
 					for (String string : work)
 					{
 						if(count != labelIdx && count != descIdx)
 						{
-							outputStream.write(this.outWrite(string, tagTable, charset));
-							outputStream.flush();	
+							if(type == 0) {
+								this.outputMessageOffset(outputStream, messageOffset);
+								byte[] message = this.outWrite(new String(string), tagTable, charset);
+								int size = message.length;
+								messageOffset += size;
+								System.out.println("Out Message : " + string);
+							}
+							else {
+								this.outputMessageData(outputStream, this.outWrite(new String(string), tagTable, charset));
+							}
 						}
 						++count;
 					}
-					labelExist = false;
-					work.clear();
-					work.ensureCapacity(languageNum);
-					for(int i = 0; i < languageNum; ++i){
-						work.add(i, "");
-					}
 				}
-				boolean _labelExist = false;
-				for(String column : row)
-				{
-					if(columnCount != labelIdx && columnCount != descIdx)
-					{
-						if( column != null )
-						{
-							String str = "";
-							str = work.get(columnCount);
-							work.remove(columnCount);
-							if(labelExist) {
-								str = str + "\n";
-							}
-							work.add(columnCount, str + column);
-						}
-					}
-					if( columnCount == labelIdx && column != null ) {
-						_labelExist = true;
-					}
-					++columnCount;
+				work.clear();
+				work.ensureCapacity(languageNum);
+				first = false;
+				for(int i = 0; i < languageNum; ++i){
+					work.add(i, "");
 				}
-				labelExist = _labelExist;
-				columnCount = 0;
 			}
-			int count = 0;
-			for (String string : work)
+			for(String column : row)
 			{
-				if(count != labelIdx && count != descIdx)
+				if(columnCount != labelIdx && columnCount != descIdx)
 				{
-					outputStream.write(this.outWrite(string, tagTable, charset));
-					outputStream.flush();
+					if( column != null )
+					{
+						String str = work.get(columnCount);
+						work.remove(columnCount);
+						if(str.length() > 0) {
+							str = str + "\r\n";
+						}
+						work.add(columnCount, new String(str + column));
+					}
 				}
-				++count;
+				++columnCount;
 			}
+			columnCount = 0;
 		}
-		catch(IOException e)
+		int count = 0;
+		for (String string : work)
 		{
-			System.out.println("Faild Output Message : " + e.getMessage());
+			if(count != labelIdx && count != descIdx)
+			{
+				if(type == 0) {
+					this.outputMessageOffset(outputStream, messageOffset);
+					byte[] message = this.outWrite(new String(string), tagTable, charset);
+					int size = message.length;
+					messageOffset += size;
+					System.out.println("Out Message : " + string);
+				}
+				else {
+					this.outputMessageData(outputStream, this.outWrite(new String(string), tagTable, charset));
+				}
+			}
+			++count;
 		}
 	}
 	
@@ -483,15 +394,19 @@ public class OutPuter
 					++languageCount;
 				}
 			}
+			pw.write(String.format("\tstatic int LanguageNum = %d;\n", languageCount));
 			pw.write("\n");
 			
 			pw.write("\t// Number of Message\n");
 			int index = 0;
 			for (Stack<String> strings : row) {
 				String string = strings.elementAt(labelIdx);
-				pw.write(String.format("\tstatic int %s = %d;\n", string, index));
-				++index;
+				if(string != null && string.length() > 0) {
+					pw.write(String.format("\tstatic int %s = %d;\n", string, index));
+					++index;
+				}
 			}
+			pw.write(String.format("\tstatic int MessageNum = %d;\n", index));
 			
 
 			pw.write("\n}\n");
@@ -508,70 +423,134 @@ public class OutPuter
 	/*---------------------------------------------------------------------*/
 	private byte[] outWrite(String str, TagTable tagTable, String charset)
 	{
-		String _str = str;
-		Stack<Stack<String>> row = tagTable.getRow();
 		ArrayList<Byte> stack = new ArrayList<Byte>();
+		Stack<Stack<String>> row = tagTable.getRow();
+		String[] split = null;
+		Byte[] tagCode = null;
 		int count = 0;
-		byte[] ret = null;
 		
-		try
+		if(str == null) {
+			return new byte[0];
+		}
+
+		// tag replace
+		for(Stack<String> column : row )
 		{
-			// tag replace
-			for(Stack<String> column : row )
+			int index = -1;
+			String tagName = column.get(0);
+			if(tagName == null) continue;
+			index = str.indexOf(tagName);
+			if(tagName != null && index != -1)
 			{
-				int index = -1;
-				String tagName = column.get(0);
-				if(tagName != null && (index = _str.indexOf(tagName)) != -1)
-				{
-					// character befor of tag
-					if(index != 0)
-					{
-//						String preTagStr = _str.substring(0, index - 1);
-						byte[] strByte = _str.getBytes(charset);
-						for(byte b : strByte)
-						{
-							stack.add(new Byte(b));
-						}
-					}
-					
-					// tag 
-					Byte[] tagCode = tagTable.getTagCode(count, charset);
-					for(Byte code : tagCode)
-					{
-						stack.add(code);
-					}
-					
-					// character after of tag
-					_str = _str.substring(index + tagName.length());
-				}
-				++count;
+				System.out.println(str + " : " + tagName);
+				split = str.split(tagName);
+				tagCode = tagTable.getTagCode(count, charset);
+				break;
 			}
-			if(_str.length() > 0)
-			{
-				byte[] strByte = _str.getBytes(charset);
-				for(byte b : strByte)
-				{
-					stack.add(new Byte(b));
+			++count;
+		}
+		boolean first = true;
+		if(split != null) {
+			for (String string : split) {
+				System.out.println("split string : " + string);
+				if(string.length() == 0) continue;
+				byte[] splitByte = this.outWrite(new String(string), tagTable, charset);
+
+				if( !first ) {
+					stack.addAll(Arrays.asList(tagCode));
 				}
-			}
-			
-			Byte[] stackData = new Byte[stack.size()];
-			stack.toArray(stackData);
-//			System.out.println("stack : " + stack.toString());
-			
-			int index = 0;
-			ret = new byte[stack.size()];
-			for(Byte data : stackData)
-			{
-				ret[index++] = data.byteValue();
+				for (byte b : splitByte) {
+					stack.add(b);
+				}
+				first = false;
 			}
 		}
-		catch(UnsupportedEncodingException e)
-		{
-			System.out.println("Faild Output Message : " + e.getMessage());
+		else {
+			try {
+				byte[] byteData = str.getBytes(charset);
+				for (byte b : byteData) {
+					stack.add(b);
+				}
+			} catch (UnsupportedEncodingException e) {
+				System.out.println(e.getMessage());
+			}
+			
 		}
+		
+		byte[] ret = new byte[stack.size()];
+		int i = 0;
+		for (byte b : stack) {
+			ret[i++] = b;
+		}
+		
 		return ret;
 	}
+//	private byte[] outWrite(String str, TagTable tagTable, String charset)
+//	{
+//		String _str = str;
+//		Stack<Stack<String>> row = tagTable.getRow();
+//		ArrayList<Byte> stack = new ArrayList<Byte>();
+//		int count = 0;
+//		byte[] ret = null;
+//		
+//		try
+//		{
+//			// tag replace
+//			for(Stack<String> column : row )
+//			{
+//				int index = -1;
+//				String tagName = column.get(0);
+//				if(tagName != null && (index = _str.indexOf(tagName)) != -1)
+//				{
+//					// character befor of tag
+//					if(index != 0)
+//					{
+////						String preTagStr = _str.substring(0, index - 1);
+//						byte[] strByte = _str.getBytes(charset);
+//						for(byte b : strByte)
+//						{
+//							stack.add(new Byte(b));
+//						}
+//					}
+//					
+//					// tag 
+//					Byte[] tagCode = tagTable.getTagCode(count, charset);
+//					for(Byte code : tagCode)
+//					{
+//						stack.add(code);
+//					}
+//					
+//					// character after of tag
+//					_str = _str.substring(index + tagName.length());
+//				}
+//				++count;
+//			}
+//			if(_str.length() > 0)
+//			{
+//				byte[] strByte = _str.getBytes(charset);
+//				for(byte b : strByte)
+//				{
+//					stack.add(new Byte(b));
+//				}
+//			}
+//			
+//			Byte[] stackData = new Byte[stack.size()];
+//			stack.toArray(stackData);
+////			System.out.println("stack : " + stack.toString());
+//			
+//			int index = 0;
+//			ret = new byte[stack.size()];
+//			for(Byte data : stackData)
+//			{
+//				ret[index++] = data.byteValue();
+//			}
+//		}
+//		catch(UnsupportedEncodingException e)
+//		{
+//			System.out.println("Faild Output Message : " + e.getMessage());
+//		}
+//		return ret;
+//	}
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	get byte data

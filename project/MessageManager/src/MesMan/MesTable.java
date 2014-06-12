@@ -18,6 +18,24 @@ public class MesTable extends TableEx
 		super(messageMan, columns, width, height);
 	}
 	
+	public int getMessageNum()
+	{
+		int mesNum = 0;
+		int labelIdx = this.getColumnIndex("Label");
+		
+		for (Stack<String> column : this.getRow()) {
+			int columnCount = 0;
+			for (String string : column) {
+				if( columnCount == labelIdx && string != null && string.length() > 0) {
+					++mesNum;
+				}
+				++columnCount;
+			}
+		}
+		
+		return mesNum;
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	get Language Num
 	/*---------------------------------------------------------------------*/
