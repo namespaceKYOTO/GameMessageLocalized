@@ -40,6 +40,10 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	protected int SIZE_OFFSET_X = 10;
 	protected int SIZE_OFFSET_Y = 40;
 	
+	protected JPopupMenu getPopup() {
+		return this.popup;
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
