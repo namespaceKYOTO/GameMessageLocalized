@@ -6,28 +6,32 @@
 package MesMan;
 
 import java.awt.event.*;
+import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.util.Stack;
 
 public class MyComponentListener implements ComponentListener
 {
+	private Container contener;
 	private MesTable mesTable;
 	private TagTable tagTable;
+	Stack<TableEx> tables;
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
-	public MyComponentListener(MesTable mesTable, TagTable tagTable)
+	public MyComponentListener(Container base, Stack<TableEx> tables)
 	{
-		this.mesTable = mesTable;
-		this.tagTable = tagTable;
+		this.contener = base;
+		this.tables = tables;
 	}
 	
 	public void componentResized(ComponentEvent e)
 	{
-		Rectangle bound = e.getComponent().getBounds();
-		this.mesTable.resize(new Dimension((bound.width / 3) * 2, bound.height - 40));
-		this.tagTable.resize(new Dimension((bound.width / 3) * 1, bound.height - 40));
+		Dimension dimention = contener.getSize();
+		for (TableEx table : tables) {
+			table.resize(new Dimension(dimention.width, dimention.height));
+		}
 	}
 	
 	public void componentMoved(ComponentEvent e){};

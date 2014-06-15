@@ -7,6 +7,7 @@
 package MesMan;
 
 import java.io.*;
+import java.util.Stack;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -20,13 +21,13 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private Setting set;
 	private MesTable mesTable;
 	private TagTable tagTable;
+	private CharacterSizeTable charSizeTable;
 	private CheckParamPanel checkParam;
 	private JFileChooser mtblChooser;
 	private JFileChooser outputChooser;
 	private JFileChooser directoryChooser;
 	
 	private String FRAME_TITLE = "Message Manager";
-	private String CHAR_SIZE = "Character Size";
 	
 	private JMenu file;
 	private JMenu setting;
@@ -35,6 +36,8 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private JMenu tools;
 	private JMenu open;
 	private JMenu save;
+
+	private JTabbedPane tab;
 	
 	private JMenuItem openMesTbl;
 	private JMenuItem openTabTbl;
@@ -62,8 +65,6 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private JMenuItem spa;
 	private JMenuItem rus;
 	private JMenuItem tha;
-	
-	private CharacterDialog charDialog;
 	
 	private Object selectMenu = null;
 	
@@ -96,16 +97,21 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		setBounds( x, y, width, height );		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// menu bar
+		//// menu bar
 		JMenuBar menuBar = new JMenuBar();
-		file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
-		setting = new JMenu(mesman.getMessage(MesTableDefine.mes_setting));
-		language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
-		help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
-		tools = new JMenu(mesman.getMessage(MesTableDefine.mes_tools));
+		{
+			file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
+			setting = new JMenu(mesman.getMessage(MesTableDefine.mes_setting));
+			language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
+			help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
+			tools = new JMenu(mesman.getMessage(MesTableDefine.mes_tools));
+			language.addMenuListener(this);
+		}
 		
-		language.addMenuListener(this);
-		
+		//// 
+		{
+			tab = new JTabbedPane();
+		}
 		
 		//// File
 		// Open
@@ -221,28 +227,34 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		menuBar.add(help);
 		menuBar.add(tools);
 		
+		add(tab, BorderLayout.CENTER);
+		
 		setJMenuBar(menuBar);
 		
 		setVisible(true);
 		
 		// size
 		Dimension size = getContentPane().getSize();
-		width = size.width;
-		height = size.height;
-		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
+//		width = size.width;
+//		height = size.height;
+//		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
 		
 		// create message table
 		String[] languages = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
-		this.mesTable = new MesTable(mesman, languages, (size.width / 3) * 2 - 10, size.height);
+		this.mesTable = new MesTable(mesman, languages, size.width, size.height);
 		
 		// create tab table
 		String[] tag = {"Tag Name", "Description", "Code"};
-		this.tagTable = new TagTable(mesman, tag, (size.width / 3) * 1 - 10, size.height);
+		this.tagTable = new TagTable(mesman, tag, size.width, size.height);
+		
+		String[] character = {"Character", "Size"};
+		this.charSizeTable = new CharacterSizeTable(mesman, character, width, height);
 		
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
-		add(this.tagTable.getPanel());
-		add(this.mesTable.getPanel());
+		tab.addTab("Tag", this.tagTable.getPanel());
+		tab.addTab("Message", this.mesTable.getPanel());
+		tab.addTab("CharacterSize", this.charSizeTable.getPanel());
 		
 		// file Chooser
 		this.checkParam = new CheckParamPanel();
@@ -255,12 +267,16 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		
 		this.mtblChooser = new JFileChooser();
 		
-		this.charDialog = new CharacterDialog(this, mesman, x, y, width, height);
-		
 		getContentPane().validate();
 		
 		// resize listener
-		addComponentListener(new MyComponentListener(this.mesTable, this.tagTable));
+		{
+			Stack<TableEx> tables = new Stack<TableEx>();
+			tables.push(this.tagTable);
+			tables.push(this.mesTable);
+			tables.push(this.charSizeTable);
+			addComponentListener(new MyComponentListener(getContentPane(), tables));
+		}
 	}
 	
 	/*---------------------------------------------------------------------*/

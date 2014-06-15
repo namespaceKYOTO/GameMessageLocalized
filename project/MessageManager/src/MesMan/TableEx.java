@@ -37,6 +37,9 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	private JMenuItem			removeColumn;
 	private Object				selectMenu;
 	
+	protected int SIZE_OFFSET_X = 10;
+	protected int SIZE_OFFSET_Y = 40;
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
@@ -51,21 +54,22 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 			this.columnName.push(str);
 		}
 		
-		Dimension preferredMesTable = new Dimension(width, height);
+		Dimension preferredSize = new Dimension(width - this.SIZE_OFFSET_X, height - this.SIZE_OFFSET_Y);
 		this.tableModel = new DefaultTableModel(this.row, this.columnName);
 		this.tableModel.addRow(new Stack<String>());
 		this.table = new JTable(this.tableModel);
 		//this.table.setPreferredSize(preferredMesTable));
-		this.table.setSize(preferredMesTable);
+		this.table.setSize(preferredSize);
 		this.table.addMouseListener(this);
 		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		this.scrollPane = new JScrollPane(this.table);
-		this.scrollPane.setPreferredSize(preferredMesTable);
+		this.scrollPane.setPreferredSize(preferredSize);
 		
 		this.panel = new JPanel();
 		this.panel.add(this.scrollPane);
 		//this.panel.setPreferredSize(preferredMesTable);
+//		this.panel.setSize(width, height);
 		
 		this.addItem = new JMenu(messageMan.getMessage(MesTableDefine.mes_add_row));
 		this.insertItem = new JMenu(messageMan.getMessage(MesTableDefine.mes_intert_row));
@@ -263,8 +267,8 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	/*---------------------------------------------------------------------*/
 	public void resize(Dimension dimension)
 	{
-		System.out.println("== Resize ==");
-		Dimension tabelDimension = new Dimension(dimension.width - 32, dimension.height - 32);
+		Dimension tabelDimension = new Dimension(dimension.width - this.SIZE_OFFSET_X, dimension.height - this.SIZE_OFFSET_Y);
+		System.out.println(String.format("Resize width : %d, height : %d", dimension.width, dimension.height));
 		
 //		this.table.setPreferredSize(tabelDimension);
 		this.scrollPane.setPreferredSize(tabelDimension);
