@@ -6,4 +6,8 @@ public class CharacterSizeTable extends TableEx {
 	{
 		super(messageMan, columns, width, height);
 	}
+	
+	public void check(MesTable mestable, TagTable tagtable)
+	{
+	}
 }

@@ -5,7 +5,6 @@
 /*---------------------------------------------------------------------*/
 package MesMan;
 
-import java.lang.*;
 import java.io.*;
 
 public class MessageManager
@@ -55,6 +54,7 @@ public class MessageManager
 			File file = new File(mtblFileName);
 			FileInputStream fileStream = new FileInputStream(file);
 			this.readData = new byte[(int)file.length()];
+			System.out.println(String.format("read byte %d", file.length()));
 			int readBytes = fileStream.read(this.readData);
 			
 			// Singnature
@@ -102,8 +102,8 @@ public class MessageManager
 						((int)this.readData[offset + 1])<<16 | 
 						((int)this.readData[offset + 2])<<8 |
 						((int)this.readData[offset + 3]);
-			System.out.println(String.format("Get Byte : %x %x %x %x",this.readData[offset + 0],this.readData[offset + 1],this.readData[offset + 2],this.readData[offset + 3]));
-			System.out.println(String.format("         : %x", ret));
+//			System.out.println(String.format("Get Byte : %x %x %x %x",this.readData[offset + 0],this.readData[offset + 1],this.readData[offset + 2],this.readData[offset + 3]));
+//			System.out.println(String.format("         : %x", ret));
 			
 			return ret;
 		}
@@ -130,11 +130,17 @@ public class MessageManager
 	{
 		this.messageOffset = new int[messageNum*languageNum];
 		for(int i = 0; i < (messageNum*languageNum); ++i) {
-			int dataIdx = offset + (i *4);
-			this.messageOffset[i] = ((int)this.readData[dataIdx + 0])<<24 | 
-									((int)this.readData[dataIdx + 1])<<16 | 
-									((int)this.readData[dataIdx + 2])<< 8 |
-									((int)this.readData[dataIdx + 3]);
+			int dataIdx = offset + (i * 4);
+			int byte1 = (((int)this.readData[dataIdx + 0])<<24) & 0xFF000000;
+			int byte2 = (((int)this.readData[dataIdx + 1])<<16) & 0x00FF0000;
+			int byte3 = (((int)this.readData[dataIdx + 2])<< 8) & 0x0000FF00;
+			int byte4 = (((int)this.readData[dataIdx + 3])    ) & 0x000000FF;
+			this.messageOffset[i] = byte1 + byte2 + byte3 + byte4;
+//			System.out.println(String.format("%d : 0x%04x : 0x%02x 0x%02x 0x%02x 0x%02x", i, this.messageOffset[i], 
+//					this.readData[dataIdx + 0],
+//					this.readData[dataIdx + 1],
+//					this.readData[dataIdx + 2],
+//					this.readData[dataIdx + 3]));
 		}
 	}
 	
@@ -146,6 +152,7 @@ public class MessageManager
 			int idx = (mesNo * languageNum) + languageNo;
 			int mesLength = this.messageOffset[idx + 1] - this.messageOffset[idx];
 			int offset = this.mesDataIdx + this.messageOffset[idx]; 
+//			System.out.println(String.format("Message Offset %x", offset));
 			ret = new String(this.readData, offset, mesLength, this.charset);
 		}
 		catch(UnsupportedEncodingException e)

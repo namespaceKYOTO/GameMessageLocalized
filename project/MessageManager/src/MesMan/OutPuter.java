@@ -21,9 +21,6 @@ public class OutPuter
 {
 	static int LITTLE_ENDIAN = 1;
 	static int BIG_ENDIAN = 2;
-	
-	private static String LABEL = "Label";
-	private static String DESCRIPTION = "Description";
 
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
@@ -234,13 +231,13 @@ public class OutPuter
 	}
 	private void outputMessage(int type, FileOutputStream outputStream, TagTable tagTable, MesTable mesTable, String charset)
 	{
-		int labelIdx = mesTable.getColumnIndex(LABEL);
-		int descIdx = mesTable.getColumnIndex(DESCRIPTION);
+		int labelIdx = mesTable.getColumnLabelIndex();
+		int descIdx = mesTable.getColumnDescriptionIndex();
 		System.out.println(String.format("Label : %d, Desc : %d", labelIdx, descIdx));
 		Stack<String> work = new Stack<String>();
 		int messageOffset = 0;
 		int columnCount = 0;
-		int languageNum = mesTable.getLanguageNum() + 2;
+		int languageNum = mesTable.getColumnNum();
 		boolean first = true;
 		
 		work.ensureCapacity(languageNum);

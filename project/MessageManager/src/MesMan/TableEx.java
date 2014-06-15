@@ -152,6 +152,11 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		return this.columnName.size() - this.columnName.search(column);
 	}
 	
+	public int getColumnNum()
+	{
+		return this.columnName.size();
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	Mouse event
 	/*---------------------------------------------------------------------*/

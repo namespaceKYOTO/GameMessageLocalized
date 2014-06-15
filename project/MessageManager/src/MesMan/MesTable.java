@@ -10,6 +10,9 @@ import java.util.Stack;
 
 public class MesTable extends TableEx
 {
+	private static String LABEL = "Label";
+	private static String DESCRIPTION = "Description";
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
@@ -54,5 +57,15 @@ public class MesTable extends TableEx
 		}
 		
 		return size;
+	}
+	
+	public int getColumnLabelIndex()
+	{
+		return getColumnIndex(LABEL);
+	}
+	
+	public int getColumnDescriptionIndex()
+	{
+		return getColumnIndex(DESCRIPTION);	
 	}
 }
