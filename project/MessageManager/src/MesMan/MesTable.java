@@ -17,9 +17,16 @@ public class MesTable extends TableEx
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
-	public MesTable(MessageManager messageMan, String[] columns, int width, int height)
+	public MesTable(MessageManager messageMan, int width, int height)
 	{
-		super(messageMan, columns, width, height);
+		super(messageMan, width, height);
+		
+		String[] columns = {LABEL, DESCRIPTION, SIZE, "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
+		addColumnNames(columns);
+		
+		addNotDeleteColumn(LABEL);
+		addNotDeleteColumn(DESCRIPTION);
+		addNotDeleteColumn(SIZE);
 	}
 	
 	public int getMessageNum()

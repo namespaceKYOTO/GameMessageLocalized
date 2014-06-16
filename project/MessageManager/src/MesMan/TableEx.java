@@ -45,20 +45,13 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		return this.popup;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
-	public TableEx(MessageManager messageMan, String[] columns, int width, int height)
+	private void init(MessageManager messageMan, int width, int height)
 	{
 		this.messageMan = messageMan;
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
 		this.notDeleteColumn = new Stack<String>();
 		this.selectMenu = null;
-		for(String str : columns)
-		{
-			this.columnName.push(str);
-		}
 		
 		Dimension preferredSize = new Dimension(width - this.SIZE_OFFSET_X, height - this.SIZE_OFFSET_Y);
 		this.tableModel = new DefaultTableModel(this.row, this.columnName);
@@ -118,6 +111,30 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 			this.insertItem.add(Item10);
 			this.insertItem.add(Item100);
 			this.insertItem.addMenuListener(this);
+		}
+		
+	}
+	
+	public TableEx(MessageManager messageMan, int width, int height)
+	{
+		init( messageMan, width, height);
+	}
+	
+	public TableEx(MessageManager messageMan, String[] columns, int width, int height)
+	{
+		init( messageMan, width, height);
+		addColumnNames(columns);
+	}
+	
+	protected void addColumnName(String str)
+	{
+		this.tableModel.addColumn(str);
+	}
+	
+	protected void addColumnNames(String[] strs)
+	{
+		for (String string : strs) {
+			addColumnName(string);
 		}
 	}
 	

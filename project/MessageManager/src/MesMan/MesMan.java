@@ -250,15 +250,13 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 //		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
 		
 		// create message table
-		String[] languages = {"Label", "Description", "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
-		this.mesTable = new MesTable(mesman, languages, size.width, size.height);
+		this.mesTable = new MesTable(mesman, size.width, size.height);
 		
 		// create tab table
-		String[] tag = {"Tag Name", "Description", "Code"};
-		this.tagTable = new TagTable(mesman, tag, size.width, size.height);
+		this.tagTable = new TagTable(mesman, size.width, size.height);
 		
-		String[] character = {"Character", "Size"};
-		this.charSizeTable = new CharacterSizeTable(mesman, character, width, height);
+		//
+		this.charSizeTable = new CharacterSizeTable(mesman, width, height);
 		
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
@@ -370,7 +368,9 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		// Character Size
 		else if(obj == this.check)
 		{
-//			this.charSizeTable.check(this.mesTable, this.tagTable, language);
+			JOptionPane pane = new JOptionPane("language select", JOptionPane.YES_OPTION);
+			String input = pane.showInputDialog("language select");
+			this.charSizeTable.check(this.mesTable, this.tagTable, input);
 		}
 		// Language Change
 		else

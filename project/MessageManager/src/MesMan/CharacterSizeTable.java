@@ -7,9 +7,15 @@ public class CharacterSizeTable extends TableEx
 	private static String CHARACTER = "Character";
 	private static String SIZE = "Size";
 
-	public CharacterSizeTable(MessageManager messageMan, String[] columns, int width, int height)
+	public CharacterSizeTable(MessageManager messageMan, int width, int height)
 	{
-		super(messageMan, columns, width, height);
+		super(messageMan, width, height);
+		
+		String[] columns = {CHARACTER, SIZE};
+		addColumnNames(columns);
+		
+		addNotDeleteColumn(CHARACTER);
+		addNotDeleteColumn(SIZE);
 	}
 	
 	private void sort()

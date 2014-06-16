@@ -10,12 +10,23 @@ import java.util.*;
 
 public class TagTable extends TableEx
 {
+	private String TAG = "Tag Name";
+	private String DESCRIPTION = "Description";
+	private String CODE = "Code";
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
 	/*---------------------------------------------------------------------*/
-	public TagTable(MessageManager messageMan, String[] columns, int width, int height)
+	public TagTable(MessageManager messageMan, int width, int height)
 	{
-		super(messageMan, columns, width, height);
+		super(messageMan, width, height);
+		
+		String[] columns = {TAG, DESCRIPTION, CODE};
+		addColumnNames(columns);
+		
+		addNotDeleteColumn(TAG);
+		addNotDeleteColumn(DESCRIPTION);
+		addNotDeleteColumn(CODE);
 	}
 	
 	/*---------------------------------------------------------------------*/
