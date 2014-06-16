@@ -437,7 +437,7 @@ public class OutPuter
 			String tagName = column.get(0);
 			if(tagName == null) continue;
 			index = str.indexOf(tagName);
-			if(tagName != null && index != -1)
+			if(index != -1)
 			{
 				System.out.println(str + " : " + tagName);
 				split = str.split(tagName);
@@ -482,72 +482,6 @@ public class OutPuter
 		
 		return ret;
 	}
-//	private byte[] outWrite(String str, TagTable tagTable, String charset)
-//	{
-//		String _str = str;
-//		Stack<Stack<String>> row = tagTable.getRow();
-//		ArrayList<Byte> stack = new ArrayList<Byte>();
-//		int count = 0;
-//		byte[] ret = null;
-//		
-//		try
-//		{
-//			// tag replace
-//			for(Stack<String> column : row )
-//			{
-//				int index = -1;
-//				String tagName = column.get(0);
-//				if(tagName != null && (index = _str.indexOf(tagName)) != -1)
-//				{
-//					// character befor of tag
-//					if(index != 0)
-//					{
-////						String preTagStr = _str.substring(0, index - 1);
-//						byte[] strByte = _str.getBytes(charset);
-//						for(byte b : strByte)
-//						{
-//							stack.add(new Byte(b));
-//						}
-//					}
-//					
-//					// tag 
-//					Byte[] tagCode = tagTable.getTagCode(count, charset);
-//					for(Byte code : tagCode)
-//					{
-//						stack.add(code);
-//					}
-//					
-//					// character after of tag
-//					_str = _str.substring(index + tagName.length());
-//				}
-//				++count;
-//			}
-//			if(_str.length() > 0)
-//			{
-//				byte[] strByte = _str.getBytes(charset);
-//				for(byte b : strByte)
-//				{
-//					stack.add(new Byte(b));
-//				}
-//			}
-//			
-//			Byte[] stackData = new Byte[stack.size()];
-//			stack.toArray(stackData);
-////			System.out.println("stack : " + stack.toString());
-//			
-//			int index = 0;
-//			ret = new byte[stack.size()];
-//			for(Byte data : stackData)
-//			{
-//				ret[index++] = data.byteValue();
-//			}
-//		}
-//		catch(UnsupportedEncodingException e)
-//		{
-//			System.out.println("Faild Output Message : " + e.getMessage());
-//		}
-//		return ret;
-//	}
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	get byte data

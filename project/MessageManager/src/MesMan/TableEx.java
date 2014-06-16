@@ -18,8 +18,9 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 {
 	MessageManager messageMan;
 	
-	private Stack<Stack<String>> row;
-	private Stack<String> columnName;
+	private Stack<Stack<String>>	row;
+	private Stack<String>			columnName;
+	private Stack<String>			notDeleteColumn;
 	
 	private String POPUP_NUM_1 = "1";
 	private String POPUP_NUM_10 = "10";
@@ -52,6 +53,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		this.messageMan = messageMan;
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
+		this.notDeleteColumn = new Stack<String>();
 		this.selectMenu = null;
 		for(String str : columns)
 		{
@@ -157,6 +159,16 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		return this.columnName.size();
 	}
 	
+	public void addNotDeleteColumn(String str)
+	{
+		this.notDeleteColumn.push(str);
+	}
+	
+	public void removeNotDeleteColumn(String str)
+	{
+		this.notDeleteColumn.remove(str);
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	Mouse event
 	/*---------------------------------------------------------------------*/
@@ -226,6 +238,11 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		{
 			JOptionPane pane = new JOptionPane("remove column name", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("remove column name");
+			
+			for (String str : notDeleteColumn) {
+				if(str.equals(input)) { return; }
+			}
+			
 			DefaultTableColumnModel model = (DefaultTableColumnModel)this.table.getColumnModel();
 			try
 			{

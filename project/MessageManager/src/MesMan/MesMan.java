@@ -26,6 +26,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private JFileChooser tblChooser;
 	private JFileChooser outputChooser;
 	private JFileChooser directoryChooser;
+	private Object selectMenu = null;
 	
 	private String FRAME_TITLE = "Message Manager";
 	
@@ -68,7 +69,8 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private JMenuItem rus;
 	private JMenuItem tha;
 	
-	private Object selectMenu = null;
+	private JMenuItem check;
+	
 	
 	public static void main(String[] args)
 	{
@@ -224,9 +226,9 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		
 		// tools
 		{
-//			JMenuItem item = new JMenuItem(CHAR_SIZE);
-//			item.addActionListener(this);
-//			tools.add(item);
+			check = new JMenuItem("Message Sizes Check");
+			check.addActionListener(this);
+			tools.add(check);
 		}
 		
 		menuBar.add(file);
@@ -365,11 +367,11 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		{
 			this.set.reset();
 		}
-//		// Character Size
-//		else if(e.getSource() == )
-//		{
-//			this.charDialog.show();
-//		}
+		// Character Size
+		else if(obj == this.check)
+		{
+//			this.charSizeTable.check(this.mesTable, this.tagTable, language);
+		}
 		// Language Change
 		else
 		{

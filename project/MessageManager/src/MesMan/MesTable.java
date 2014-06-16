@@ -12,6 +12,7 @@ public class MesTable extends TableEx
 {
 	private static String LABEL = "Label";
 	private static String DESCRIPTION = "Description";
+	private static String SIZE = "Size";
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
@@ -67,5 +68,10 @@ public class MesTable extends TableEx
 	public int getColumnDescriptionIndex()
 	{
 		return getColumnIndex(DESCRIPTION);	
+	}
+	
+	public int getColumnSizeIndex()
+	{
+		return getColumnIndex(SIZE);	
 	}
 }
