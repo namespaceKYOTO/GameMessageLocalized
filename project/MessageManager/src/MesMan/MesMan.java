@@ -301,10 +301,11 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 			String description =null;
 			String charset = "UTF-16";
 			TableEx table = null;
+			int tabIdx = 0;
 
-			     if(obj == openMesTbl ) { suffix = ".mtbl"; description = "Message Table(.mtbl)"; table = this.mesTable; }
-			else if(obj == openTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tagTable; }
-			else if(obj == openCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.charSizeTable; }
+			     if(obj == openMesTbl ) { suffix = ".mtbl"; description = "Message Table(.mtbl)"; table = this.mesTable; tabIdx = 1; }
+			else if(obj == openTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tagTable; tabIdx = 0; }
+			else if(obj == openCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.charSizeTable; tabIdx = 2; }
 			
 			File file = new File(set.getDefaultDirectory());
 			this.tblChooser.setCurrentDirectory(file);
@@ -315,6 +316,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 				File inputFile = this.tblChooser.getSelectedFile();
 				TableFile tableFile = new TableFile(suffix, charset);
 				tableFile.open(inputFile, table);
+				this.tab.setSelectedIndex(tabIdx);
 			}
 		}
 		else if(obj == saveMesTbl || obj == saveTabTbl || obj == saveCharTbl)

@@ -120,7 +120,9 @@ public class TableFile
 				Stack<String> columnData = rowData.get(row);
 				for(int column = 0; column < columnData.size(); ++column)
 				{
-					pw.print(columnData.get(column));
+					String str = columnData.get(column);
+					if(str == null) str = "";
+					pw.print(str);
 					if(column + 1 < columnData.size())
 					{
 						pw.print(DELIMITER);

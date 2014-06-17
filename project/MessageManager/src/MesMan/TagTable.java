@@ -10,9 +10,10 @@ import java.util.*;
 
 public class TagTable extends TableEx
 {
-	private String TAG = "Tag Name";
+	private String TAG = "Tag";
 	private String DESCRIPTION = "Description";
 	private String CODE = "Code";
+	private String SUBSTITUTION = "Substitution";
 	
 	/*---------------------------------------------------------------------*/
 	//*!brief	constructor
@@ -21,12 +22,13 @@ public class TagTable extends TableEx
 	{
 		super(messageMan, width, height);
 		
-		String[] columns = {TAG, DESCRIPTION, CODE};
+		String[] columns = {TAG, DESCRIPTION, CODE, SUBSTITUTION};
 		addColumnNames(columns);
 		
 		addNotDeleteColumn(TAG);
 		addNotDeleteColumn(DESCRIPTION);
 		addNotDeleteColumn(CODE);
+		addNotDeleteColumn(SUBSTITUTION);
 	}
 	
 	/*---------------------------------------------------------------------*/
@@ -70,5 +72,25 @@ public class TagTable extends TableEx
 		Byte[] ret = new Byte[codeList.size()];
 		codeList.toArray(ret);
 		return ret;
+	}
+	
+	public int getColumnTagIndex()
+	{
+		return getColumnIndex(TAG);
+	}
+	
+	public int getColumnDescriptionIndex()
+	{
+		return getColumnIndex(DESCRIPTION);
+	}
+	
+	public int getColumnCodeIndex()
+	{
+		return getColumnIndex(CODE);
+	}
+	
+	public int getColumnSubstitution()
+	{
+		return getColumnIndex(SUBSTITUTION);
 	}
 }

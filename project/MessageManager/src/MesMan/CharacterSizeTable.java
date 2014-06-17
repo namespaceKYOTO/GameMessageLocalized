@@ -1,5 +1,6 @@
 package MesMan;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
 public class CharacterSizeTable extends TableEx
@@ -18,17 +19,17 @@ public class CharacterSizeTable extends TableEx
 		addNotDeleteColumn(SIZE);
 	}
 	
-	private void sort()
-	{
-		
-	}
+//	private void sort()
+//	{
+//		
+//	}
 	
 	public void check(MesTable mestable, TagTable tagtable, String language)
 	{
 		int languageIdx = mestable.getColumnIndex(language);
 		if( languageIdx < 0 ) { return; }
 		
-		Stack<Stack<String>> row = getRow();
+		Stack<Stack<String>> row = mestable.getRow();
 		int labelIdx = mestable.getColumnLabelIndex();
 		int sizeIdx = mestable.getColumnSizeIndex();
 		int mesLimitSize = 0;
@@ -43,7 +44,7 @@ public class CharacterSizeTable extends TableEx
 				line = 0;
 			}
 			
-			int mesSize = getMessageSize(column.get(labelIdx), tagtable);
+			int mesSize = getMessageSize(column.get(languageIdx), tagtable);
 			if( mesLimitSize < mesSize ) {
 				// サイズオーバー
 				String str = String.format("%s : line %d, over %d", label, line, mesSize - mesLimitSize);
@@ -54,30 +55,47 @@ public class CharacterSizeTable extends TableEx
 		}
 	}
 	
-	public int getCharacterSize(String src)
+	public int getCharacterSize(String src, int leftIdx, int rightIdx)
 	{
-		int leftIdx = 0;
-		int rightIdx = getRow().size() - 2;
-		int charIdx = this.getCharacterSize(CHARACTER);
-		int sizeIdx = this.getColumnIndex(SIZE);
-		int size = 0;
 		Stack<Stack<String>> row = getRow();
-		int dstValue = valueOf(src.getBytes());
+		int charIdx = this.getColumnIndex(CHARACTER);
+		int sizeIdx = this.getColumnIndex(SIZE);
+		String charset = "UTF-16";
+		int dstValue = 0;
+		try {
+			dstValue = valueOf(src.getBytes(charset));
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+			return 0;
+		}
+		int size = 0;
 		
 		while(leftIdx < rightIdx)
 		{
 			int middleIdx = (leftIdx + rightIdx) / 2;
 			Stack<String> column = row.get(middleIdx);
-			int charValue = valueOf(column.get(charIdx).getBytes());
+			String c = column.get(charIdx);
+			if(c == null || c.length() <= 0) {
+				// 空白があった場合はエラーにする
+				// エラーをスローする？
+			}
+			int charValue = 0;
+			try {
+				charValue = valueOf(c.getBytes(charset));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return 0;
+			}
 			int diff = dstValue - charValue;
 			if( diff == 0 ) {
 				size = Integer.valueOf(column.get(sizeIdx));
 				break;
 			}
-			else if( diff > 0 ) { rightIdx = middleIdx - 1; }
-			else				{ leftIdx = middleIdx + 1; }
+			else if( diff > 0 ) { leftIdx = middleIdx + 1; }
+			else				{ rightIdx = middleIdx - 1; }
 		}
-		
+
+		System.out.println("Check : " + src + String.format("  size %d  value 0x%x", size, dstValue));
 		return size;
 	}
 	
@@ -98,17 +116,21 @@ public class CharacterSizeTable extends TableEx
 		
 		int ret = 0;
 		Stack<Stack<String>> row = tagtable.getRow();
+		int tagIndex = tagtable.getColumnTagIndex();
+		int substitutionIndex = tagtable.getColumnSubstitution();
 		String[] split = null;
+		boolean existTag = false;
 		
 		for (Stack<String> column : row) {
-			String tagName = column.get(0);
+			String tagName = column.get(tagIndex);
 			if(tagName == null) continue;
+			existTag = true;
 			
-			String tagMessage = column.get(2);
+			String tagMessage = column.get(substitutionIndex);
 			int tagSize = 0;
 			for(int i = 0; i < tagMessage.length(); ++i)
 			{
-				tagSize += getCharacterSize(tagMessage.substring(i, i+1));
+				tagSize += getCharacterSize(tagMessage.substring(i, i+1), 0, getRow().size() - 2);
 			} 
 			
 			int index = str.indexOf(tagName);
@@ -118,13 +140,24 @@ public class CharacterSizeTable extends TableEx
 				for (String string : split) {
 					ret += getMessageSize(string, tagtable);
 				}
-				ret += (split.length - 1) * tagSize;
+				ret += ((split.length - 1) * tagSize);
 			}
 			else {
 				for(int i = 0; i < str.length(); ++i)
 				{
-					ret += getCharacterSize(tagMessage.substring(i, i+1));
+					String c = str.substring(i, i+1);
+					System.out.print(c + " ");
+					ret += getCharacterSize(str.substring(i, i+1), 0, getRow().size() - 2);
 				}
+				System.out.print("\n");
+			}
+		}
+		
+		if(existTag == false)
+		{
+			for(int i = 0; i < str.length(); ++i)
+			{
+				ret += getCharacterSize(str.substring(i, i+1), 0, getRow().size() - 2);
 			}
 		}
 		
