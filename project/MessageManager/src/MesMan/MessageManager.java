@@ -51,7 +51,8 @@ public class MessageManager
 	{
 		try
 		{
-			File file = new File(mtblFileName);
+			File uriPath = new File(mtblFileName);
+			File file = new File(uriPath.toURI());
 			FileInputStream fileStream = new FileInputStream(file);
 			this.readData = new byte[(int)file.length()];
 			System.out.println(String.format("read byte %d", file.length()));

@@ -7,6 +7,8 @@
 package MesMan;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Stack;
 import java.awt.*;
 import java.awt.event.*;
@@ -87,8 +89,19 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	{
 		addWindowListener(this);
 		
-		set = new Setting("res/config.txt");
-		mesman = new MessageManager("res/MesTableDefine.bin");
+		{
+			URL url = this.getClass().getResource("src/res/config.txt");
+			File file;
+			try {
+				file = new File(url.toURI());
+				System.out.println(file.toURI());
+			} catch (URISyntaxException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+		set = new Setting("MessageManager/jar/res/config.txt");
+		mesman = new MessageManager("MessageManager/jar/res/MesTableDefine.bin");
 		mesman.setLanguageNo(set.getDefaultLanguage());
 		
 		setTitle(FRAME_TITLE);

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.LinkedList;
 
 public class Setting {
@@ -17,6 +18,8 @@ public class Setting {
 	
 	private String DefaultDirectoryLabel = "\"defaultDirectory\":";
 	private String DefaultLanguageLabel = "\"defaultLanguage\":";
+	private String DefaultDirectory = "C:\\";
+	private int Defaultlanguage = MesTableDefine.Language_ENG;
 	
 	private static int directoryIdx = 0;
 	private static int languageIdx = 1;
@@ -24,10 +27,25 @@ public class Setting {
 	public Setting(String settingFile)
 	{
 		buffer = new LinkedList<String>();
+		fileName = null;
+		defaultDirectory = new String(DefaultDirectory);
+		defaultLanguage = Defaultlanguage;
 		try
 		{
+			File test = new File("C:\\Users\\t_sato\\Desktop\\MessageManger_test.txt");
+			test.createNewFile();
+			PrintWriter pw = new PrintWriter(test);
+			
 			fileName = settingFile;
-			File file = new File(settingFile);
+			File uriPath = new File(settingFile);
+			{
+				URI uri = uriPath.toURI();
+				pw.write(uri.toString());
+				pw.flush();
+//				pw.close();
+			}
+			
+			File file = new File(uriPath.toURI());
 			FileReader fr = new FileReader(file);
 			BufferedReader br = new BufferedReader(fr);
 			
@@ -41,7 +59,8 @@ public class Setting {
 			defaultDirectory = buffer.get(directoryIdx).substring(DefaultDirectoryLabel.length());
 			defaultLanguage = Integer.valueOf(buffer.get(languageIdx).substring(DefaultLanguageLabel.length()));
 			
-			System.out.println(defaultDirectory + " " + defaultLanguage);
+			pw.write("Open Success");
+			pw.close();
 		}
 		catch(IOException e)
 		{
@@ -74,7 +93,7 @@ public class Setting {
 	
 	public void reset()
 	{
-		defaultDirectory = new String("C:\\");
+		defaultDirectory = new String(DefaultDirectory);
 		defaultLanguage = MesTableDefine.Language_ENG;
 		
 		buffer.clear();
@@ -86,7 +105,8 @@ public class Setting {
 	{
 		try
 		{
-			File file = new File(fileName);
+			File uriPaht = new File(fileName);
+			File file = new File(uriPaht.toURI());
 			PrintWriter pw = new PrintWriter(file);
 			
 			for (String str : this.buffer) {
