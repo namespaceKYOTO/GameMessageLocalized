@@ -24,7 +24,7 @@ public class CharacterSizeTable extends TableEx
 //		
 //	}
 	
-	public void check(MesTable mestable, TagTable tagtable, String language)
+	public void check(MesTable mestable, TagTable tagtable, ResultTable resultTable, String language)
 	{
 		int languageIdx = mestable.getColumnIndex(language);
 		if( languageIdx < 0 ) { return; }
@@ -35,7 +35,8 @@ public class CharacterSizeTable extends TableEx
 		int mesLimitSize = 0;
 		int line = 0;
 		
-		Stack<String> sizeOverStack = new Stack<String>();
+		// 前回の結果などが残っていないように消しておく 
+		resultTable.removeAll();
 		
 		for (Stack<String> column : row) {
 			String label = column.get(labelIdx);
@@ -46,10 +47,11 @@ public class CharacterSizeTable extends TableEx
 			
 			int mesSize = getMessageSize(column.get(languageIdx), tagtable);
 			if( mesLimitSize < mesSize ) {
-				// サイズオーバー
-				String str = String.format("%s : line %d, over %d", label, line, mesSize - mesLimitSize);
-				sizeOverStack.push(str);
-				System.out.println(str);
+				// 結果を格納
+				Stack<String> result = new Stack<String>();
+				result.push(label);
+				result.push(String.format("%d Over", mesSize - mesLimitSize));
+				resultTable.getTableModel().addRow(result);
 			}
 			++line;
 		}

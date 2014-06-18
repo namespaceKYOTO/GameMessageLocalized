@@ -138,6 +138,37 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		}
 	}
 	
+	public void removeAll()
+	{
+		int length = this.row.size();
+		for(int i = 0; i < length; ++i)
+		{
+			this.tableModel.removeRow(0);
+		}
+		if(this.tableModel.getRowCount() == 0)
+		{
+			this.addRow(1);
+		}
+		int rc = this.tableModel.getRowCount() - 1;
+		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+	}
+	
+	public void remove(int[] row)
+	{
+		int removeCount = 0;
+		for(int i = 0; i < row.length; ++i)
+		{
+			this.tableModel.removeRow(row[i] + removeCount);
+			--removeCount;
+		}
+		if(this.tableModel.getRowCount() == 0)
+		{
+			this.addRow(1);
+		}
+		int rc = this.tableModel.getRowCount() - 1;
+		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+	}
+	
 	/*---------------------------------------------------------------------*/
 	//*!brief	getter
 	/*---------------------------------------------------------------------*/
@@ -226,18 +257,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 			int[] selectedRows = this.table.getSelectedRows();
 			if(selectedRows.length > 0)
 			{
-				int removeCount = 0;
-				for(int i = 0; i < selectedRows.length; ++i)
-				{
-					this.tableModel.removeRow(selectedRows[i] + removeCount);
-					--removeCount;
-				}
-				if(this.tableModel.getRowCount() == 0)
-				{
-					this.addRow(1);
-				}
-				int rc = this.tableModel.getRowCount() - 1;
-				this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
+				this.remove(selectedRows);
 			}
 		}
 		// add column

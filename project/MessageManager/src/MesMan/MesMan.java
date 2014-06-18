@@ -22,6 +22,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	private MesTable mesTable;
 	private TagTable tagTable;
 	private CharacterSizeTable charSizeTable;
+	private ResultTable resultTable;
 	private CheckParamPanel checkParam;
 	private JFileChooser tblChooser;
 	private JFileChooser outputChooser;
@@ -251,18 +252,19 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		
 		// create message table
 		this.mesTable = new MesTable(mesman, size.width, size.height);
-		
 		// create tab table
 		this.tagTable = new TagTable(mesman, size.width, size.height);
-		
 		//
 		this.charSizeTable = new CharacterSizeTable(mesman, width, height);
+		//
+		this.resultTable = new ResultTable(mesman, width, height);
 		
 		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
 		setLayout(layout);
 		tab.addTab("Tag", this.tagTable.getPanel());
 		tab.addTab("Message", this.mesTable.getPanel());
 		tab.addTab("CharacterSize", this.charSizeTable.getPanel());
+		tab.addTab("Result", this.resultTable.getPanel());
 		
 		// file Chooser
 		this.checkParam = new CheckParamPanel();
@@ -283,6 +285,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 			tables.push(this.tagTable);
 			tables.push(this.mesTable);
 			tables.push(this.charSizeTable);
+			tables.push(this.resultTable);
 			addComponentListener(new MyComponentListener(getContentPane(), tables));
 		}
 	}
@@ -372,7 +375,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		{
 			JOptionPane pane = new JOptionPane("language select", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("language select");
-			this.charSizeTable.check(this.mesTable, this.tagTable, input);
+			this.charSizeTable.check(this.mesTable, this.tagTable, this.resultTable, input);
 		}
 		// Language Change
 		else
