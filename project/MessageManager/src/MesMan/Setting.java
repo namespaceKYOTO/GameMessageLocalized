@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.LinkedList;
@@ -32,22 +34,10 @@ public class Setting {
 		defaultLanguage = Defaultlanguage;
 		try
 		{
-			File test = new File("C:\\Users\\t_sato\\Desktop\\MessageManger_test.txt");
-			test.createNewFile();
-			PrintWriter pw = new PrintWriter(test);
-			
 			fileName = settingFile;
-			File uriPath = new File(settingFile);
-			{
-				URI uri = uriPath.toURI();
-				pw.write(uri.toString());
-				pw.flush();
-//				pw.close();
-			}
-			
-			File file = new File(uriPath.toURI());
-			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
+			InputStream inputStream = this.getClass().getResourceAsStream(fileName);
+//			FileReader fr = new FileReader(file);
+			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 			
 			// ファイルから情報取得
 			String line = null;
@@ -58,9 +48,6 @@ public class Setting {
 			
 			defaultDirectory = buffer.get(directoryIdx).substring(DefaultDirectoryLabel.length());
 			defaultLanguage = Integer.valueOf(buffer.get(languageIdx).substring(DefaultLanguageLabel.length()));
-			
-			pw.write("Open Success");
-			pw.close();
 		}
 		catch(IOException e)
 		{

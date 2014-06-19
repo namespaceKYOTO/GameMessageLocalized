@@ -51,11 +51,12 @@ public class MessageManager
 	{
 		try
 		{
-			File uriPath = new File(mtblFileName);
-			File file = new File(uriPath.toURI());
-			FileInputStream fileStream = new FileInputStream(file);
-			this.readData = new byte[(int)file.length()];
-			System.out.println(String.format("read byte %d", file.length()));
+//			File uriPath = new File(mtblFileName);
+//			File file = new File(uriPath.toURI());
+			InputStream fileStream = this.getClass().getResourceAsStream(mtblFileName);
+//			FileInputStream fileStream = new FileInputStream(file);
+			this.readData = new byte[(int)fileStream.available()];
+			System.out.println(String.format("read byte %d", this.readData.length));
 			int readBytes = fileStream.read(this.readData);
 			
 			// Singnature
