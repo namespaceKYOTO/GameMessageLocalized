@@ -1,22 +1,24 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Message Table
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.util.Stack;
 
+/**
+ * メッセージテーブル.
+ * @author t_sato
+ *
+ */
 public class MesTable extends TableEx
 {
 	private static String LABEL = "Label";
 	private static String DESCRIPTION = "Description";
 	private static String SIZE = "Size";
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ.
+	 * @param messageMan　メッセージ管理クラス
+	 * @param width　UI幅
+	 * @param height UI高さ
+	 */
 	public MesTable(MessageManager messageMan, int width, int height)
 	{
 		super(messageMan, width, height);
@@ -29,6 +31,10 @@ public class MesTable extends TableEx
 		addNotDeleteColumn(SIZE);
 	}
 	
+	/**
+	 * メッセージ数取得.
+	 * @return メッセージ数
+	 */
 	public int getMessageNum()
 	{
 		int mesNum = 0;
@@ -47,9 +53,10 @@ public class MesTable extends TableEx
 		return mesNum;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get Language Num
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 言語数取得.
+	 * @return 言語数
+	 */
 	public int getLanguageNum()
 	{
 		Stack<String> columnName = this.getColumnName();
@@ -67,16 +74,28 @@ public class MesTable extends TableEx
 		return size;
 	}
 	
+	/**
+	 * ラベルの列番号取得.
+	 * @return　ラベルの列番号
+	 */
 	public int getColumnLabelIndex()
 	{
 		return getColumnIndex(LABEL);
 	}
 	
+	/**
+	 * 説明の列番号取得.
+	 * @return 説明の列番号
+	 */
 	public int getColumnDescriptionIndex()
 	{
 		return getColumnIndex(DESCRIPTION);	
 	}
 	
+	/**
+	 * サイズの列番号取得.
+	 * @return　サイズの列番号
+	 */
 	public int getColumnSizeIndex()
 	{
 		return getColumnIndex(SIZE);	

@@ -1,14 +1,6 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Message Manager
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Stack;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,6 +9,12 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+/**
+ * メッセージ管理クラス.
+ * @author t_sato
+ * 
+ *
+ */
 public class MesMan extends JFrame implements ActionListener, MenuListener, WindowListener
 {
 	private MessageManager mesman;
@@ -85,6 +83,9 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		MesMan mesMan = new MesMan();
 	}
 	
+	/**
+	 * コンストラクタ.
+	 */
 	public MesMan()
 	{
 		addWindowListener(this);
@@ -292,9 +293,6 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	invoked when an action occurs
-	/*---------------------------------------------------------------------*/
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println(e.paramString());
@@ -392,6 +390,11 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		}
 	}
 	
+	/**
+	 * 言語番号取得.
+	 * @param src メニューアイテム
+	 * @return 言語番号
+	 */
 	private int getLanguageNo(Object src)
 	{
 			 if(src == jpn || src == setting_jpn){return MesTableDefine.Language_JPN; }
@@ -405,6 +408,10 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		return MesTableDefine.Language_ENG;
 	}
 	
+	/**
+	 * UIの表示言語変更.
+	 * @param src　メニューアイテム
+	 */
 	private void LanguageChange(Object src)
 	{
 		mesman.setLanguageNo(this.getLanguageNo(src));

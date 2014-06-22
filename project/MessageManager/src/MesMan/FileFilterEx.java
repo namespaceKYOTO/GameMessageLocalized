@@ -1,49 +1,56 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	file filter
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
+
 package MesMan;
 
 import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
 
+/**
+ * ファイルフィルター.
+ * @author t_sato
+ *
+ */
 public class FileFilterEx extends FileFilter
 {
 	String suffix;
 	String description;
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ.
+	 */
 	public FileFilterEx()
 	{
 		suffix = new String("");
 		description = new String("");
 	}
+	/**
+	 *　コンストラクタ. 
+	 * @param suffix 制限する拡張子
+	 * @param description 制限に対する説明
+	 */
 	public FileFilterEx(String suffix, String description)
 	{
 		this.suffix = suffix;
 		this.description = description;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	setter
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 制限する拡張子の設定.
+	 * @param str 制限する拡張子 
+	 */
 	void setSuffix(String str)
 	{
 		this.suffix = str;
 	}
+	/**
+	 * 制限に対する説明設定.
+	 * @param str 制限に対する説明
+	 */
 	void setDescription(String str)
 	{
 		this.description = str;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	Whether the given file is accepted by this filter.
-	/*---------------------------------------------------------------------*/
 	@Override
 	public boolean accept(File f)
 	{
@@ -60,9 +67,6 @@ public class FileFilterEx extends FileFilter
 		return false;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	Whether the given file is accepted by this filter.
-	/*---------------------------------------------------------------------*/
 	@Override
 	public String getDescription()
 	{

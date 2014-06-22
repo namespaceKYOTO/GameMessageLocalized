@@ -1,9 +1,3 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Out file param
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.awt.Color;
@@ -12,6 +6,11 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+/**
+ * 出力に関する項目.
+ * @author t_sato
+ *
+ */
 public class CheckParamPanel implements ItemListener
 {
 	private JPanel panel;
@@ -44,9 +43,9 @@ public class CheckParamPanel implements ItemListener
 	public static int CHARA_CODE_UTF16BE = 0x00000002;
 	public static int CHARA_CODE_UTF16LE = 0x00000004;
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ.
+	 */
 	public CheckParamPanel()
 	{
 		outFileFlag = 0;
@@ -96,27 +95,30 @@ public class CheckParamPanel implements ItemListener
 		this.panel.setLayout(panelLayout);
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	getter
-	/*---------------------------------------------------------------------*/
+	/**
+	 * @return パネル.
+	 */
 	public JPanel getPanel()
 	{
 		return this.panel;
 	}
 	
+	/**
+	 * @return　出力するファイル形式.
+	 */
 	public int getOutFileFlag()
 	{
 		return this.outFileFlag;
 	}
 	
+	/**
+	 * @return 出力する文字コード.
+	 */
 	public int getCaraCodeFlag()
 	{
 		return this.charactorCodeFlag;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	inheritance ItemListener
-	/*---------------------------------------------------------------------*/
 	public void itemStateChanged(ItemEvent e)
 	{
 		Object source = e.getItem();

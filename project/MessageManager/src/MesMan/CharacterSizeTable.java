@@ -3,11 +3,22 @@ package MesMan;
 import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
+/**
+ * 文字サイズテーブル.
+ * @author t_sato
+ *
+ */
 public class CharacterSizeTable extends TableEx
 {
 	private static String CHARACTER = "Character";
 	private static String SIZE = "Size";
 
+	/**
+	 * コンストラクタ.
+	 * @param messageMan メッセージクラス
+	 * @param width　UI幅
+	 * @param height UI幅
+	 */
 	public CharacterSizeTable(MessageManager messageMan, int width, int height)
 	{
 		super(messageMan, width, height);
@@ -24,6 +35,13 @@ public class CharacterSizeTable extends TableEx
 //		
 //	}
 	
+	/**
+	 * 文字サイズチェック.
+	 * @param mestable チェックするメッセージテーブル
+	 * @param tagtable メッセージで使用しているタグテーブル
+	 * @param resultTable チェック結果表示先テーブル
+	 * @param language チェックする言語
+	 */
 	public void check(MesTable mestable, TagTable tagtable, ResultTable resultTable, String language)
 	{
 		int languageIdx = mestable.getColumnIndex(language);
@@ -57,6 +75,13 @@ public class CharacterSizeTable extends TableEx
 		}
 	}
 	
+	/**
+	 * 文字サイズ取得.
+	 * @param src　サイズを取得する文字
+	 * @param leftIdx 検索範囲最小(テーブル内を２分探索用)
+	 * @param rightIdx 検索範囲最大(テーブル内を２分探索用)
+	 * @return　文字サイズ
+	 */
 	public int getCharacterSize(String src, int leftIdx, int rightIdx)
 	{
 		Stack<Stack<String>> row = getRow();
@@ -101,6 +126,11 @@ public class CharacterSizeTable extends TableEx
 		return size;
 	}
 	
+	/**
+	 * byte配列をintに変換.
+	 * @param src　byte配列
+	 * @return　変換した値
+	 */
 	public int valueOf(byte[] src)
 	{
 		int  ret = 0;
@@ -112,6 +142,12 @@ public class CharacterSizeTable extends TableEx
 		return ret;
 	}
 	
+	/**
+	 * メッセージのサイズを取得.
+	 * @param str メッセージ
+	 * @param tagtable メッセージで使用しているタグテーブル
+	 * @return メッセージサイズ
+	 */
 	public int getMessageSize(String str, TagTable tagtable)
 	{
 		if(str == null){ return 0; }
