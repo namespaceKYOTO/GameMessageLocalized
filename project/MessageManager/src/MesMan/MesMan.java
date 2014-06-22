@@ -1,6 +1,7 @@
 package MesMan;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Stack;
 import java.awt.*;
 import java.awt.event.*;
@@ -74,12 +75,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	
 	
 	public static void main(String[] args)
-	{
-		for(String arg : args)
-		{
-			System.out.println(arg);
-		}
-		
+	{	
 		MesMan mesMan = new MesMan();
 	}
 	
