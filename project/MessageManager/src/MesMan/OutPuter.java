@@ -1,8 +1,3 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	file output
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.io.File;
@@ -17,21 +12,31 @@ import java.util.Stack;
 
 import BtoC.BtoC;
 
+/**
+ * 出力クラス.
+ * @author t_sato
+ *
+ */
 public class OutPuter
 {
 	static int LITTLE_ENDIAN = 1;
 	static int BIG_ENDIAN = 2;
 
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ.
+	 */
 	public OutPuter()
 	{
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	file output
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 出力.
+	 * @param file 出力ファイル名
+	 * @param tagTable メッセージで使用されているタグテーブル
+	 * @param mesTable 出力メッセージテーブル
+	 * @param outFileFlag 出力拡張子
+	 * @param charaCodeFlag 出力文字コード
+	 */
 	public void outPut(File file, TagTable tagTable, MesTable mesTable, int outFileFlag, int charaCodeFlag)
 	{
 		String outPutBaseFileName = getOutputBaseFileName(file);
@@ -96,9 +101,11 @@ public class OutPuter
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get Output File Name
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 拡張子なしファイル名取得.
+	 * @param file　拡張子なしファイル名取得元　
+	 * @return ファイル名
+	 */
 	private String getOutputBaseFileName(File file)
 	{
 		System.out.println(file.getName());
@@ -123,9 +130,14 @@ public class OutPuter
 		return ret;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get Output File Name
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 実際に出力するファイル名の取得.
+	 * @param baseName ベースとなるファイル名
+	 * @param charset 文字コード
+	 * @param suffix　拡張子
+	 * @param charCodeFlag　出力文字コード
+	 * @return ファイル名
+	 */
 	private String getOutputFileName(String baseName, String charset, String suffix, int charCodeFlag)
 	{
 		// To avoid naming fogged
@@ -139,9 +151,14 @@ public class OutPuter
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	output file
-	/*---------------------------------------------------------------------*/
+	/**
+	 * バイナリファイル出力.
+	 * @param parent 出力先ディレクトリ
+	 * @param name　出力ファイル名
+	 * @param tagTable メッセージで使用されているタグテーブル
+	 * @param mesTable 出力するメッセージテーブル
+	 * @param charset 文字コード
+	 */
 	private void outputBinary(String parent, String name, TagTable tagTable, MesTable mesTable, String charset)
 	{
 		try
@@ -209,6 +226,11 @@ public class OutPuter
 		}
 	}
 
+	/**
+	 * メッセージのOffset出力.
+	 * @param outputStream 出力先ファイルストリーム
+	 * @param messageOffset 出力するOffset値
+	 */
 	private void outputMessageOffset(FileOutputStream outputStream, int messageOffset)
 	{
 		byte[] mesOffset = this.getByteData(messageOffset, 4, BIG_ENDIAN);
@@ -220,6 +242,11 @@ public class OutPuter
 		}
 	}
 	
+	/**
+	 * メッセージの出力.
+	 * @param outputStream 出力先ファイルストリーム
+	 * @param data　出力するメッセージのbyte配列
+	 */
 	private void outputMessageData(FileOutputStream outputStream, byte[] data)
 	{
 		try {
@@ -229,6 +256,15 @@ public class OutPuter
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * メッセージ関連の出力.
+	 * @param type 0:メッセージのOffset値, 1:メッセージ
+	 * @param outputStream 出力先ファイルストリーム
+	 * @param tagTable メッセージで使用されているタグテーブル
+	 * @param mesTable 出力するメッセージテーブル
+	 * @param charset 文字コード
+	 */
 	private void outputMessage(int type, FileOutputStream outputStream, TagTable tagTable, MesTable mesTable, String charset)
 	{
 		int labelIdx = mesTable.getColumnLabelIndex();
@@ -259,13 +295,13 @@ public class OutPuter
 						{
 							if(type == 0) {
 								this.outputMessageOffset(outputStream, messageOffset);
-								byte[] message = this.outWrite(new String(string), tagTable, charset);
+								byte[] message = this.getMessageByte(new String(string), tagTable, charset);
 								int size = message.length;
 								messageOffset += size;
 								System.out.println("Out Message : " + string);
 							}
 							else {
-								this.outputMessageData(outputStream, this.outWrite(new String(string), tagTable, charset));
+								this.outputMessageData(outputStream, this.getMessageByte(new String(string), tagTable, charset));
 							}
 						}
 						++count;
@@ -303,13 +339,13 @@ public class OutPuter
 			{
 				if(type == 0) {
 					this.outputMessageOffset(outputStream, messageOffset);
-					byte[] message = this.outWrite(new String(string), tagTable, charset);
+					byte[] message = this.getMessageByte(new String(string), tagTable, charset);
 					int size = message.length;
 					messageOffset += size;
 					System.out.println("Out Message : " + string);
 				}
 				else {
-					this.outputMessageData(outputStream, this.outWrite(new String(string), tagTable, charset));
+					this.outputMessageData(outputStream, this.getMessageByte(new String(string), tagTable, charset));
 				}
 			}
 			++count;
@@ -317,9 +353,10 @@ public class OutPuter
 	}
 	
 	/**
-	 * @param parent	Parent directory
-	 * @param name		file name
-	 * @param mesTable	source data
+	 * .cファイルのタグファイル出力.
+	 * @param parent 出力先ディレクトリー
+	 * @param name 出力ファイル名
+	 * @param mesTable 出力するメッセージテーブル
 	 */
 	private void outputCTagFile(String parent, String name, MesTable mesTable)
 	{
@@ -361,9 +398,10 @@ public class OutPuter
 	}
 	
 	/**
-	 * @param parent	parent Directory
-	 * @param name		file name
-	 * @param mesTable	source data
+	 * .javaファイル出力.
+	 * @param parent 出力先ディレクトリー
+	 * @param name 出力ファイル名
+	 * @param mesTable　出力するメッセージテーブル
 	 */
 	private void outputJavaFile(String parent, String name, MesTable mesTable)
 	{
@@ -415,10 +453,14 @@ public class OutPuter
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	out write
-	/*---------------------------------------------------------------------*/
-	private byte[] outWrite(String str, TagTable tagTable, String charset)
+	/**
+	 * メッセージのバイト配列の取得.
+	 * @param str メッセージ
+	 * @param tagTable メッセージで使用されているタグテーブル
+	 * @param charset 文字コード
+	 * @return バイト配列
+	 */
+	private byte[] getMessageByte(String str, TagTable tagTable, String charset)
 	{
 		ArrayList<Byte> stack = new ArrayList<Byte>();
 		Stack<Stack<String>> row = tagTable.getRow();
@@ -451,7 +493,7 @@ public class OutPuter
 			for (String string : split) {
 				System.out.println("split string : " + string);
 				if(string.length() == 0) continue;
-				byte[] splitByte = this.outWrite(new String(string), tagTable, charset);
+				byte[] splitByte = this.getMessageByte(new String(string), tagTable, charset);
 
 				if( !first ) {
 					stack.addAll(Arrays.asList(tagCode));
@@ -483,10 +525,13 @@ public class OutPuter
 		return ret;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get byte data
-	//*!note	Only in little endian still
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 整数のバイト配列の取得.
+	 * @param value	整数値
+	 * @param byteSize 整数値のバイトサイズ
+	 * @param endian エンディアン
+	 * @return 整数のバイト配列
+	 */
 	private byte[] getByteData(long value, int byteSize, int endian)
 	{
 		byte[] ret = new byte[byteSize];

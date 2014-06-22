@@ -1,9 +1,3 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Table File Base
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.io.*;
@@ -11,6 +5,11 @@ import java.util.*;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * テーブルのファイル操作関係.
+ * @author t_sato
+ *
+ */
 public class TableFile
 {
 	static private String DELIMITER = "\t";
@@ -19,18 +18,22 @@ public class TableFile
 	private String suffix;
 	private String charset;
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ.
+	 * @param suffix 拡張子
+	 * @param charset 文字コード
+	 */
 	public TableFile(String suffix, String charset)
 	{
 		this.suffix = suffix;
 		this.charset = charset;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	Table File Open
-	/*---------------------------------------------------------------------*/
+	/**
+	 * ファイルオープン.
+	 * @param file オープンするファイル名
+	 * @param tableEx 読み込み結果格納先テーブル
+	 */
 	public void open(File file, TableEx tableEx)
 	{
 		JTable table = tableEx.getTable();
@@ -81,9 +84,11 @@ public class TableFile
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	Table File Save
-	/*---------------------------------------------------------------------*/
+	/**
+	 * テーブル内容の保存.
+	 * @param file 保存ファイル名
+	 * @param table 保存テーブル
+	 */
 	public void save(File file, TableEx table)
 	{
 		try

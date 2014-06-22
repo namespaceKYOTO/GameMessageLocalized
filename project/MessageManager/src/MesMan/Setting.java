@@ -3,14 +3,17 @@ package MesMan;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.URI;
 import java.util.LinkedList;
 
+/**
+ * 設定.
+ * @author t_sato
+ *
+ */
 public class Setting {
 	
 	private String fileName;
@@ -26,6 +29,10 @@ public class Setting {
 	private static int directoryIdx = 0;
 	private static int languageIdx = 1;
 
+	/**
+	 * コンストラクタ.
+	 * @param settingFile 設定ファイル
+	 */
 	public Setting(String settingFile)
 	{
 		buffer = new LinkedList<String>();
@@ -56,10 +63,18 @@ public class Setting {
 		}
 	}
 	
+	/**
+	 * デフォルト言語取得.
+	 * @return 言語番号
+	 */
 	public Integer getDefaultLanguage() {
 		return defaultLanguage;
 	}
 
+	/**
+	 * デフォルト言語設定.
+	 * @param defaultLanguage 言語番号
+	 */
 	public void setDefaultLanguage(int defaultLanguage)
 	{
 		buffer.remove(languageIdx);
@@ -67,10 +82,18 @@ public class Setting {
 		this.defaultLanguage = new Integer(defaultLanguage);
 	}
 	
+	/**
+	 * デフォルトディレクト取得.
+	 * @return
+	 */
 	public String getDefaultDirectory()
 	{
 		return defaultDirectory;
 	}
+	/**
+	 * デフォルトディレクトリ設定.
+	 * @param defaultDirectory ディレクトリ
+	 */
 	public void setDefaultDirectory(String defaultDirectory)
 	{
 		buffer.remove(directoryIdx);
@@ -78,6 +101,9 @@ public class Setting {
 		this.defaultDirectory = defaultDirectory;
 	}
 	
+	/**
+	 * 設定のリセット.
+	 */
 	public void reset()
 	{
 		defaultDirectory = new String(DefaultDirectory);
@@ -88,6 +114,9 @@ public class Setting {
 		buffer.add(languageIdx, DefaultLanguageLabel + String.valueOf(defaultLanguage));
 	}
 	
+	/**
+	 * 設定の保存.
+	 */
 	public void save()
 	{
 		try

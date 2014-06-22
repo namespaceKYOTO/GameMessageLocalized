@@ -1,9 +1,3 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Message Table
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.util.*;
@@ -14,6 +8,11 @@ import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableColumnModel;
 
+/**
+ * テーブルクラス.
+ * @author t_sato
+ *
+ */
 public class TableEx implements MouseListener, ActionListener, MenuListener
 {
 	MessageManager messageMan;
@@ -45,6 +44,12 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		return this.popup;
 	}
 	
+	/**
+	 * 初期化.
+	 * @param messageMan メッセージ管理
+	 * @param width UI幅
+	 * @param height UI高さ
+	 */
 	private void init(MessageManager messageMan, int width, int height)
 	{
 		this.messageMan = messageMan;
@@ -115,22 +120,43 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		
 	}
 	
+	/**
+	 * コンストラクタ.
+	 * @param messageMan メッセージ管理
+	 * @param width UI幅
+	 * @param height UI高さ
+	 */
 	public TableEx(MessageManager messageMan, int width, int height)
 	{
 		init( messageMan, width, height);
 	}
 	
+	/**
+	 * コンストラクタ.
+	 * @param messageMan メッセージ管理
+	 * @param columns 列文字列
+	 * @param width UI幅
+	 * @param height UI高さ
+	 */
 	public TableEx(MessageManager messageMan, String[] columns, int width, int height)
 	{
 		init( messageMan, width, height);
 		addColumnNames(columns);
 	}
 	
+	/**
+	 * 列追加.
+	 * @param str 列名
+	 */
 	protected void addColumnName(String str)
 	{
 		this.tableModel.addColumn(str);
 	}
 	
+	/**
+	 * 列追加.
+	 * @param strs　列名s
+	 */
 	protected void addColumnNames(String[] strs)
 	{
 		for (String string : strs) {
@@ -138,6 +164,9 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		}
 	}
 	
+	/**
+	 * すべての行削除.
+	 */
 	public void removeAll()
 	{
 		int length = this.row.size();
@@ -153,6 +182,10 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 	}
 	
+	/**
+	 * 行削除.
+	 * @param row 削除する行番号の配列
+	 */
 	public void remove(int[] row)
 	{
 		int removeCount = 0;
@@ -169,57 +202,88 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	getter
-	/*---------------------------------------------------------------------*/
+	/**
+	 * パネル取得.
+	 * @return パネル
+	 */
 	public JPanel getPanel()
 	{
 		return this.panel;
 	}
 	
+	/**
+	 * テーブル取得.
+	 * @return テーブル
+	 */
 	public JTable getTable()
 	{
 		return this.table;
 	}
 	
+	/**
+	 * テーブルモデルの取得.
+	 * @return テーブルモデル
+	 */
 	public DefaultTableModel getTableModel()
 	{
 		return this.tableModel;
 	}
 	
+	/**
+	 * 列の名前取得.
+	 * @return 列の名前
+	 */
 	public Stack<String> getColumnName()
 	{
 		return this.columnName;
 	}
 	
+	/**
+	 * 行取得.
+	 * @return 行
+	 */
 	public Stack<Stack<String>> getRow()
 	{
 		return this.row;
 	}
 	
+	/**
+	 * 指定した列名の列番号を取得.
+	 * @param column 列名
+	 * @return 列番号
+	 */
 	public int getColumnIndex(String column)
 	{
 		return this.columnName.size() - this.columnName.search(column);
 	}
 	
+	/**
+	 * 列数の取得.
+	 * @return 列数
+	 */
 	public int getColumnNum()
 	{
 		return this.columnName.size();
 	}
 	
+	/**
+	 * 削除できない列の追加.
+	 * @param str 列名
+	 */
 	public void addNotDeleteColumn(String str)
 	{
 		this.notDeleteColumn.push(str);
 	}
 	
+	/**
+	 * 指定列を削除できるようにする.
+	 * @param str 列名
+	 */
 	public void removeNotDeleteColumn(String str)
 	{
 		this.notDeleteColumn.remove(str);
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	Mouse event
-	/*---------------------------------------------------------------------*/
 	public void mousePressed(MouseEvent e)
 	{
 		if(e.isPopupTrigger())
@@ -240,9 +304,6 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	public void mouseEntered(MouseEvent e){}
 	public void mouseExited(MouseEvent e){}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	action event
-	/*---------------------------------------------------------------------*/
 	public void actionPerformed(ActionEvent e)
 	{
 		String command = e.getActionCommand();
@@ -252,8 +313,6 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		// remove row
 		if(source == removeItem)
 		{
-			//int selectedRow = this.table.getSelectedRow();
-			//if(selectedRow != -1)
 			int[] selectedRows = this.table.getSelectedRows();
 			if(selectedRows.length > 0)
 			{
@@ -306,9 +365,6 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	action event
-	/*---------------------------------------------------------------------*/
 	public void menuCanceled(MenuEvent e){}
 	public void menuDeselected(MenuEvent e){}
 	
@@ -325,9 +381,10 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	resize
-	/*---------------------------------------------------------------------*/
+	/**
+	 * テーブルのリサイズ.
+	 * @param dimension リサイズ時の大きさ
+	 */
 	public void resize(Dimension dimension)
 	{
 		Dimension tabelDimension = new Dimension(dimension.width - this.SIZE_OFFSET_X, dimension.height - this.SIZE_OFFSET_Y);
@@ -342,9 +399,10 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		this.panel.setSize(dimension);
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	add row
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 行の追加.
+	 * @param num 追加行数
+	 */
 	public void addRow(int num)
 	{
 		for(int i = 0; i < num; ++i)
@@ -355,9 +413,10 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		this.table.scrollRectToVisible(this.table.getCellRect(rc, 0, true));
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	insert row
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 行の挿入.
+	 * @param num 挿入数
+	 */
 	public void insertRow(int num)
 	{
 		int selectedRow = this.table.getSelectedRow();
@@ -377,7 +436,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	}
 	
 	/**
-	 * 言語設定
+	 * UIの表示言語変更.
 	 */
 	public void LanguageChange()
 	{

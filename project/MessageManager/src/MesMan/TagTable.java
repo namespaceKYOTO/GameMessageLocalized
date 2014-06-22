@@ -1,13 +1,12 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Tab Table
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.util.*;
 
+/**
+ * タグテーブル.
+ * @author t_sato
+ *
+ */
 public class TagTable extends TableEx
 {
 	private String TAG = "Tag";
@@ -15,9 +14,12 @@ public class TagTable extends TableEx
 	private String CODE = "Code";
 	private String SUBSTITUTION = "Substitution";
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ.
+	 * @param messageMan メッセージ管理
+	 * @param width UI幅
+	 * @param height UI高さ
+	 */
 	public TagTable(MessageManager messageMan, int width, int height)
 	{
 		super(messageMan, width, height);
@@ -31,9 +33,12 @@ public class TagTable extends TableEx
 		addNotDeleteColumn(SUBSTITUTION);
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get tag code
-	/*---------------------------------------------------------------------*/
+	/**
+	 * タグのバイトを取得.
+	 * @param index 取得するタグの番号
+	 * @param charset 文字コード
+	 * @return バイト配列
+	 */
 	public Byte[] getTagCode(int index, String charset)
 	{
 		ArrayList<Byte> codeList = new ArrayList<Byte>();
@@ -74,21 +79,37 @@ public class TagTable extends TableEx
 		return ret;
 	}
 	
+	/**
+	 * タグの列番号取得
+	 * @return タグの列番号
+	 */
 	public int getColumnTagIndex()
 	{
 		return getColumnIndex(TAG);
 	}
 	
+	/**
+	 * 説明列番号取得.
+	 * @return 説明列番号
+	 */
 	public int getColumnDescriptionIndex()
 	{
 		return getColumnIndex(DESCRIPTION);
 	}
 	
+	/**
+	 * コードの列番号取得.
+	 * @return コードの列番号
+	 */
 	public int getColumnCodeIndex()
 	{
 		return getColumnIndex(CODE);
 	}
 	
+	/**
+	 * 置き換え文字の列番号取得.
+	 * @return　置き換え文字の列番号
+	 */
 	public int getColumnSubstitution()
 	{
 		return getColumnIndex(SUBSTITUTION);
