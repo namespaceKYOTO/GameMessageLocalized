@@ -86,7 +86,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	{
 		addWindowListener(this);
 		
-		set = new Setting("/res/config.txt");
+		set = new Setting("./config.txt");
 		mesman = new MessageManager("/res/MesTableDefine.bin");
 		mesman.setLanguageNo(set.getDefaultLanguage());
 		

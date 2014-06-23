@@ -3,6 +3,7 @@ package MesMan;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,9 +43,13 @@ public class Setting {
 		try
 		{
 			fileName = settingFile;
-			InputStream inputStream = this.getClass().getResourceAsStream(fileName);
-//			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+			File file = new File(fileName);
+			if(!file.exists())
+			{
+				buffer.add(DefaultDirectoryLabel + DefaultDirectory);
+				buffer.add(DefaultLanguageLabel + String.format("%d", Defaultlanguage));
+			}
+			BufferedReader br = new BufferedReader(new FileReader(file));
 			
 			// ファイルから情報取得
 			String line = null;
@@ -121,21 +126,23 @@ public class Setting {
 	{
 		try
 		{
-			File uriPaht = new File(fileName);
-			File file = new File(uriPaht.toURI());
+			File file = new File(fileName);
+			if(!file.exists()) {
+				file.createNewFile();
+			}
 			PrintWriter pw = new PrintWriter(file);
 			
 			for (String str : this.buffer) {
 				pw.write(str);
-				pw.write("\n");
+				pw.write("\r\n");
+				pw.flush();
 			}
-			pw.flush();
 			pw.close();
 		}
-		catch (FileNotFoundException e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
+			return;
 		}
-		
 	}
 }
