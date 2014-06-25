@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import MesMan.MenuBar.FileMenu;
+
 /**
  * メッセージ管理クラス.
  * @author t_sato
@@ -20,27 +22,29 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 {
 	private MessageManager mesman;
 	private Setting set;
-	private MesTable mesTable;
-	private TagTable tagTable;
-	private CharacterSizeTable charSizeTable;
-	private ResultTable resultTable;
-	private CheckParamPanel checkParam;
-	private JFileChooser tblChooser;
-	private JFileChooser outputChooser;
+	private FileMenu fileMenu;
+//	private MesTable mesTable;
+//	private TagTable tagTable;
+//	private CharacterSizeTable charSizeTable;
+//	private ResultTable resultTable;
+	private TableMenu tableMenu;
+//	private CheckParamPanel checkParam;
+//	private JFileChooser tblChooser;
+//	private JFileChooser outputChooser;
 	private JFileChooser directoryChooser;
 	private Object selectMenu = null;
 	
 	private String FRAME_TITLE = "Message Manager";
 	
-	private JMenu file;
+//	private JMenu file;
 	private JMenu setting;
 	private JMenu language;
 	private JMenu help;
 	private JMenu tools;
-	private JMenu open;
-	private JMenu save;
+//	private JMenu open;
+//	private JMenu save;
 
-	private JTabbedPane tab;
+//	private JTabbedPane tab;
 	
 	private JMenuItem openMesTbl;
 	private JMenuItem openTabTbl;
@@ -104,7 +108,8 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		//// menu bar
 		JMenuBar menuBar = new JMenuBar();
 		{
-			file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
+//			file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
+			fileMenu = new FileMenu(this, mesman, tableMenu, mesman.getMessage(MesTableDefine.mes_file));
 			setting = new JMenu(mesman.getMessage(MesTableDefine.mes_setting));
 			language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
 			help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
@@ -112,48 +117,43 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 			language.addMenuListener(this);
 		}
 		
-		//// 
-		{
-			tab = new JTabbedPane();
-		}
-		
-		//// File
-		// Open
-		{
-			open = new JMenu(mesman.getMessage(MesTableDefine.mes_open));
-			openMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
-			openTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
-			openCharTbl = new JMenuItem("ctbl");
-			openMesTbl.addActionListener(this);
-			openTabTbl.addActionListener(this);
-			openCharTbl.addActionListener(this);
-			open.add(openMesTbl);
-			open.add(openTabTbl);
-			open.add(openCharTbl);
-			file.add(open);
-		}
-		
-		// Save
-		{
-			save = new JMenu(mesman.getMessage(MesTableDefine.mes_save));
-			saveMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
-			saveTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
-			saveCharTbl = new JMenuItem("ctbl");
-			saveMesTbl.addActionListener(this);
-			saveTabTbl.addActionListener(this);
-			saveCharTbl.addActionListener(this);
-			save.add(saveMesTbl);
-			save.add(saveTabTbl);
-			save.add(saveCharTbl);
-			file.add(save);
-		}
-		
-		// Output
-		{
-			output = new JMenuItem(mesman.getMessage(MesTableDefine.mes_output));
-			output.addActionListener(this);
-			file.add(output);
-		}
+//		//// File
+//		// Open
+//		{
+//			open = new JMenu(mesman.getMessage(MesTableDefine.mes_open));
+//			openMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
+//			openTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
+//			openCharTbl = new JMenuItem("ctbl");
+//			openMesTbl.addActionListener(this);
+//			openTabTbl.addActionListener(this);
+//			openCharTbl.addActionListener(this);
+//			open.add(openMesTbl);
+//			open.add(openTabTbl);
+//			open.add(openCharTbl);
+//			file.add(open);
+//		}
+//		
+//		// Save
+//		{
+//			save = new JMenu(mesman.getMessage(MesTableDefine.mes_save));
+//			saveMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
+//			saveTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
+//			saveCharTbl = new JMenuItem("ctbl");
+//			saveMesTbl.addActionListener(this);
+//			saveTabTbl.addActionListener(this);
+//			saveCharTbl.addActionListener(this);
+//			save.add(saveMesTbl);
+//			save.add(saveTabTbl);
+//			save.add(saveCharTbl);
+//			file.add(save);
+//		}
+//		
+//		// Output
+//		{
+//			output = new JMenuItem(mesman.getMessage(MesTableDefine.mes_output));
+//			output.addActionListener(this);
+//			file.add(output);
+//		}
 		
 		//// Setting
 		{
@@ -237,54 +237,52 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		menuBar.add(help);
 		menuBar.add(tools);
 		
-		add(tab, BorderLayout.CENTER);
-		
 		setJMenuBar(menuBar);
 		
 		setVisible(true);
 		
 		// size
 		Dimension size = getContentPane().getSize();
-//		width = size.width;
-//		height = size.height;
-//		System.out.println(String.format("Dimension ** width : %d, height : %d", size.width, size.height));
 		
-		// create message table
-		this.mesTable = new MesTable(mesman, size.width, size.height);
-		// create tab table
-		this.tagTable = new TagTable(mesman, size.width, size.height);
-		//
-		this.charSizeTable = new CharacterSizeTable(mesman, width, height);
-		//
-		this.resultTable = new ResultTable(mesman, width, height);
+//		// create message table
+//		this.mesTable = new MesTable(mesman, size.width, size.height);
+//		// create tab table
+//		this.tagTable = new TagTable(mesman, size.width, size.height);
+//		//
+//		this.charSizeTable = new CharacterSizeTable(mesman, width, height);
+//		//
+//		this.resultTable = new ResultTable(mesman, width, height);
+//		
+//		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
+//		setLayout(layout);
+//		tab.addTab("Tag", this.tagTable.getPanel());
+//		tab.addTab("Message", this.mesTable.getPanel());
+//		tab.addTab("CharacterSize", this.charSizeTable.getPanel());
+//		tab.addTab("Result", this.resultTable.getPanel());
+		this.tableMenu = new TableMenu(this.mesman, size.width, size.height);
+		add(this.tableMenu.getComponent(), BorderLayout.CENTER);
 		
-		BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.X_AXIS);
-		setLayout(layout);
-		tab.addTab("Tag", this.tagTable.getPanel());
-		tab.addTab("Message", this.mesTable.getPanel());
-		tab.addTab("CharacterSize", this.charSizeTable.getPanel());
-		tab.addTab("Result", this.resultTable.getPanel());
 		
 		// file Chooser
-		this.checkParam = new CheckParamPanel();
-		this.outputChooser = new JFileChooser();
+//		this.checkParam = new CheckParamPanel();
+//		this.outputChooser = new JFileChooser();
 		this.directoryChooser = new JFileChooser();
 		
-		this.outputChooser.setAccessory(this.checkParam.getPanel());
+//		this.outputChooser.setAccessory(this.checkParam.getPanel());
 		this.directoryChooser.setDialogType(JFileChooser.CUSTOM_DIALOG);
 		this.directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
-		this.tblChooser = new JFileChooser();
+//		this.tblChooser = new JFileChooser();
 		
 		getContentPane().validate();
 		
 		// resize listener
 		{
 			Stack<TableEx> tables = new Stack<TableEx>();
-			tables.push(this.tagTable);
-			tables.push(this.mesTable);
-			tables.push(this.charSizeTable);
-			tables.push(this.resultTable);
+			tables.push(this.tableMenu.getTagTable());
+			tables.push(this.tableMenu.getMesTable());
+			tables.push(this.tableMenu.getCharsizeTable());
+			tables.push(this.tableMenu.getResultTable());
 			addComponentListener(new MyComponentListener(getContentPane(), tables));
 		}
 	}
@@ -294,66 +292,67 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		System.out.println(e.paramString());
 		Object obj = e.getSource();
 		
-		if(obj == openMesTbl || obj == openTabTbl || obj == openCharTbl)
-		{
-			String suffix = null;
-			String description =null;
-			String charset = "UTF-16";
-			TableEx table = null;
-			int tabIdx = 0;
-
-			     if(obj == openMesTbl ) { suffix = ".mtbl"; description = "Message Table(.mtbl)"; table = this.mesTable; tabIdx = 1; }
-			else if(obj == openTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tagTable; tabIdx = 0; }
-			else if(obj == openCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.charSizeTable; tabIdx = 2; }
-			
-			File file = new File(set.getDefaultDirectory());
-			this.tblChooser.setCurrentDirectory(file);
-			this.tblChooser.setFileFilter(new FileFilterEx(suffix,description));
-			int ret = this.tblChooser.showOpenDialog(this);
-			if(ret == JFileChooser.APPROVE_OPTION)
-			{
-				File inputFile = this.tblChooser.getSelectedFile();
-				TableFile tableFile = new TableFile(suffix, charset);
-				tableFile.open(inputFile, table);
-				this.tab.setSelectedIndex(tabIdx);
-			}
-		}
-		else if(obj == saveMesTbl || obj == saveTabTbl || obj == saveCharTbl)
-		{
-			String suffix = null;
-			String description =null;
-			String charset = "UTF-16";
-			TableEx table = null;
-
-			     if(obj == saveMesTbl ) { suffix = ".mtbl"; description = "Message Table(.mtbl)"; table = this.mesTable; }
-			else if(obj == saveTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tagTable; }
-			else if(obj == saveCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.charSizeTable; }
-			     
-			File file = new File(set.getDefaultDirectory());
-			this.tblChooser.setCurrentDirectory(file);
-			this.tblChooser.setFileFilter(new FileFilterEx(suffix, description));
-			int ret = this.tblChooser.showSaveDialog(this);
-			if(ret == JFileChooser.APPROVE_OPTION)
-			{
-				File inputFile = this.tblChooser.getSelectedFile();
-				TableFile tableFile = new TableFile(suffix, charset);
-				tableFile.save(inputFile, table);
-			}	
-		}
-		else if(obj == output)
-		{
-			File file = new File(set.getDefaultDirectory());
-			this.outputChooser.setCurrentDirectory(file);
-			this.outputChooser.setFileFilter(null);
-			int ret = this.outputChooser.showSaveDialog(this);
-			if(ret == JFileChooser.APPROVE_OPTION)
-			{
-				File outFile = this.outputChooser.getSelectedFile();
-				OutPuter outPuter = new OutPuter();
-				outPuter.outPut(outFile, this.tagTable, this.mesTable, this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
-			}
-		}
-		else if(obj == this.defaulttDirectory)
+//		if(obj == openMesTbl || obj == openTabTbl || obj == openCharTbl)
+//		{
+//			String suffix = null;
+//			String description =null;
+//			String charset = "UTF-16";
+//			TableEx table = null;
+//			int tabIdx = 0;
+//
+//			     if(obj == openMesTbl ) { suffix = ".mtbl"; description = "Message Table(.mtbl)"; table = this.tableMenu.getMesTable(); tabIdx = 1; }
+//			else if(obj == openTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tableMenu.getTagTable(); tabIdx = 0; }
+//			else if(obj == openCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.tableMenu.getCharsizeTable(); tabIdx = 2; }
+//			
+//			File file = new File(set.getDefaultDirectory());
+//			this.tblChooser.setCurrentDirectory(file);
+//			this.tblChooser.setFileFilter(new FileFilterEx(suffix,description));
+//			int ret = this.tblChooser.showOpenDialog(this);
+//			if(ret == JFileChooser.APPROVE_OPTION)
+//			{
+//				File inputFile = this.tblChooser.getSelectedFile();
+//				TableFile tableFile = new TableFile(suffix, charset);
+//				tableFile.open(inputFile, table);
+//				this.tableMenu.setTabSelectedIndex(tabIdx);
+//			}
+//		}
+//		else if(obj == saveMesTbl || obj == saveTabTbl || obj == saveCharTbl)
+//		{
+//			String suffix = null;
+//			String description =null;
+//			String charset = "UTF-16";
+//			TableEx table = null;
+//
+//			     if(obj == saveMesTbl ) { suffix = ".mtbl"; description = "Message Table(.mtbl)"; table = this.tableMenu.getMesTable(); }
+//			else if(obj == saveTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tableMenu.getTagTable(); }
+//			else if(obj == saveCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.tableMenu.getCharsizeTable(); }
+//			     
+//			File file = new File(set.getDefaultDirectory());
+//			this.tblChooser.setCurrentDirectory(file);
+//			this.tblChooser.setFileFilter(new FileFilterEx(suffix, description));
+//			int ret = this.tblChooser.showSaveDialog(this);
+//			if(ret == JFileChooser.APPROVE_OPTION)
+//			{
+//				File inputFile = this.tblChooser.getSelectedFile();
+//				TableFile tableFile = new TableFile(suffix, charset);
+//				tableFile.save(inputFile, table);
+//			}	
+//		}
+//		else if(obj == output)
+//		{
+//			File file = new File(set.getDefaultDirectory());
+//			this.outputChooser.setCurrentDirectory(file);
+//			this.outputChooser.setFileFilter(null);
+//			int ret = this.outputChooser.showSaveDialog(this);
+//			if(ret == JFileChooser.APPROVE_OPTION)
+//			{
+//				File outFile = this.outputChooser.getSelectedFile();
+//				OutPuter outPuter = new OutPuter();
+//				outPuter.outPut(outFile, this.tableMenu.getTagTable(), this.tableMenu.getMesTable(), this.checkParam.getOutFileFlag(), this.checkParam.getCaraCodeFlag());
+//			}
+//		}
+//		else 
+			if(obj == this.defaulttDirectory)
 		{
 			int ret = this.directoryChooser.showOpenDialog(this);
 			if(ret == JFileChooser.APPROVE_OPTION)
@@ -371,7 +370,7 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		{
 			JOptionPane pane = new JOptionPane("language select", JOptionPane.YES_OPTION);
 			String input = pane.showInputDialog("language select");
-			this.charSizeTable.check(this.mesTable, this.tagTable, this.resultTable, input);
+			this.tableMenu.checkMessageSize(input);
 		}
 		// Language Change
 		else
@@ -429,8 +428,9 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 
 		output.setText(mesman.getMessage(MesTableDefine.mes_output));
 		
-		mesTable.LanguageChange();
-		tagTable.LanguageChange();
+//		mesTable.LanguageChange();
+//		tagTable.LanguageChange();
+		this.tableMenu.LanguageChange();
 	}
 
 	public void menuCanceled(MenuEvent arg0) {}

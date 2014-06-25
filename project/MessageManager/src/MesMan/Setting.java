@@ -10,12 +10,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
+import MesMan.MenuBar.MenuBarBase;
+
 /**
  * 設定.
  * @author t_sato
  *
  */
-public class Setting {
+public class Setting extends MenuBarBase
+{
 	
 	private String fileName;
 	private String defaultDirectory;
@@ -34,8 +37,10 @@ public class Setting {
 	 * コンストラクタ.
 	 * @param settingFile 設定ファイル
 	 */
-	public Setting(String settingFile)
+	public Setting(MessageManager mesman, String menuName, String settingFile)
 	{
+		super(mesman, menuName);
+		
 		buffer = new LinkedList<String>();
 		fileName = null;
 		defaultDirectory = new String(DefaultDirectory);
