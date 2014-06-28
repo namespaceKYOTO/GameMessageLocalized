@@ -25,8 +25,8 @@ import MesMan.TableMenu;
  */
 public class FileMenu extends MenuBarBase
 {
-	private Component parent;
 	private TableMenu tableMenu;
+	private SettingMenu settingMenu;
 	private CheckParamPanel checkParam;
 	private JFileChooser tblChooser;
 	private JFileChooser outputChooser;
@@ -40,13 +40,20 @@ public class FileMenu extends MenuBarBase
 	private JMenuItem saveCharTbl;
 	private JMenuItem output;
 
-	public FileMenu(Component parent, MessageManager mesman, TableMenu tableMenu, String menuName)
+	
+	/**
+	 * コンストラクタ.
+	 * @param parent UIの親
+	 * @param mesman メッセージ管理
+	 * @param tableMenu テーブルメニュー
+	 * @param settingMenu 設定メニュー
+	 */
+	public FileMenu(Component parent, MessageManager mesman, TableMenu tableMenu, SettingMenu settingMenu)
 	{
-		super(mesman, menuName);
-		
-		this.parent = parent;
+		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_file));
 		
 		this.tableMenu = tableMenu;
+		this.settingMenu = settingMenu;
 		
 		this.tblChooser = new JFileChooser();
 		this.checkParam = new CheckParamPanel();
@@ -84,6 +91,21 @@ public class FileMenu extends MenuBarBase
 		menu.add(output);
 	}
 	
+	/**
+	 * UI表示言語変更.
+	 */
+	public void LanguageChange()
+	{
+		getMenu().setText(getMesman().getMessage(MesTableDefine.mes_file));
+		open.setText(getMesman().getMessage(MesTableDefine.mes_open));
+		openMesTbl.setText(getMesman().getMessage(MesTableDefine.mes_mtbl));
+		openTabTbl.setText(getMesman().getMessage(MesTableDefine.mes_ttbl));
+		save.setText(getMesman().getMessage(MesTableDefine.mes_save));
+		saveMesTbl.setText(getMesman().getMessage(MesTableDefine.mes_mtbl));
+		saveTabTbl.setText(getMesman().getMessage(MesTableDefine.mes_ttbl));
+		output.setText(getMesman().getMessage(MesTableDefine.mes_output));
+	}
+	
 	public void actionPerformed(ActionEvent arg0)
 	{
 		System.out.println(arg0.paramString());
@@ -101,10 +123,10 @@ public class FileMenu extends MenuBarBase
 			else if(obj == openTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tableMenu.getTagTable(); tabIdx = 0; }
 			else if(obj == openCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.tableMenu.getCharsizeTable(); tabIdx = 2; }
 			
-			File file = new File(set.getDefaultDirectory());
+			File file = new File(settingMenu.getDefaultDirectory());
 			this.tblChooser.setCurrentDirectory(file);
 			this.tblChooser.setFileFilter(new FileFilterEx(suffix,description));
-			int ret = this.tblChooser.showOpenDialog(this.parent);
+			int ret = this.tblChooser.showOpenDialog(this.getParent());
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
 				File inputFile = this.tblChooser.getSelectedFile();
@@ -124,10 +146,10 @@ public class FileMenu extends MenuBarBase
 			else if(obj == saveTabTbl ) { suffix = ".ttbl"; description = "Tag Table(.ttbl)"; table = this.tableMenu.getTagTable(); }
 			else if(obj == saveCharTbl) { suffix = ".ctbl"; description = "Character Size Table(.ctbl)"; table = this.tableMenu.getCharsizeTable(); }
 			     
-			File file = new File(set.getDefaultDirectory());
+			File file = new File(settingMenu.getDefaultDirectory());
 			this.tblChooser.setCurrentDirectory(file);
 			this.tblChooser.setFileFilter(new FileFilterEx(suffix, description));
-			int ret = this.tblChooser.showSaveDialog(this.parent);
+			int ret = this.tblChooser.showSaveDialog(this.getParent());
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
 				File inputFile = this.tblChooser.getSelectedFile();
@@ -137,10 +159,10 @@ public class FileMenu extends MenuBarBase
 		}
 		else if(obj == output)
 		{
-			File file = new File(set.getDefaultDirectory());
+			File file = new File(settingMenu.getDefaultDirectory());
 			this.outputChooser.setCurrentDirectory(file);
 			this.outputChooser.setFileFilter(null);
-			int ret = this.outputChooser.showSaveDialog(this.parent);
+			int ret = this.outputChooser.showSaveDialog(this.getParent());
 			if(ret == JFileChooser.APPROVE_OPTION)
 			{
 				File outFile = this.outputChooser.getSelectedFile();

@@ -1,5 +1,6 @@
 package MesMan.MenuBar;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,7 +15,9 @@ import MesMan.MessageManager;
  */
 public class MenuBarBase implements ActionListener
 {
+	private Component parent;
 	private MessageManager mesman;
+	private MenuBar menuBar;
 	private JMenu menu;
 	
 	/**
@@ -22,8 +25,9 @@ public class MenuBarBase implements ActionListener
 	 * @param mesman メッセージ管理
 	 * @param menuName メニュー名
 	 */
-	public MenuBarBase(MessageManager mesman, String menuName)
+	public MenuBarBase(Component parent, MessageManager mesman, String menuName)
 	{
+		this.parent = parent;
 		this.mesman = mesman;
 		this.menu = new JMenu(menuName);
 	}
@@ -34,14 +38,57 @@ public class MenuBarBase implements ActionListener
 	public void LanguageChange()
 	{
 	}
+	
+	/**
+	 * 親の取得.
+	 * @return UIの親
+	 */
+	public Component getParent()
+	{
+		return this.parent;
+	}
 
 	/**
 	 * メニュー取得.
-	 * @return
+	 * @return メニュー
 	 */
 	public JMenu getMenu()
 	{
 		return this.menu;
+	}
+
+	/**
+	 * メニューバー取得
+	 * @return メニューバー
+	 */
+	public MenuBar getMenuBar()
+	{
+		return this.menuBar;
+	}
+	
+	/**
+	 * メニューバーの設定
+	 * @param menu メニューバー
+	 */
+	public void setMenuBar(MenuBar menu)
+	{
+		this.menuBar = menu;
+	}
+	
+	/**
+	 * メッセージ管理の取得
+	 * @return メッセージ管理
+	 */
+	public MessageManager getMesman() {
+		return mesman;
+	}
+
+	/**
+	 * メッセージ管理の設定
+	 * @param mesman メッセージ管理
+	 */
+	public void setMesman(MessageManager mesman) {
+		this.mesman = mesman;
 	}
 
 	public void actionPerformed(ActionEvent arg0)
