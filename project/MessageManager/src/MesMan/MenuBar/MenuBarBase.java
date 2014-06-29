@@ -91,6 +91,9 @@ public class MenuBarBase implements ActionListener
 		this.mesman = mesman;
 	}
 
+	/* (非 Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent arg0)
 	{
 	}

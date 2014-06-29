@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
 import MesMan.MesTableDefine;
 import MesMan.MessageManager;
@@ -47,6 +46,9 @@ public class HelpMenu extends MenuBarBase
 		
 	}
 
+	/* (非 Javadoc)
+	 * @see MesMan.MenuBar.MenuBarBase#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent arg0)
 	{
 		System.out.println(arg0.paramString());

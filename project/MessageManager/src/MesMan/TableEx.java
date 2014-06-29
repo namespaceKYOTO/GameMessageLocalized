@@ -322,8 +322,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		// add column
 		else if(source == this.addColumn)
 		{
-			JOptionPane pane = new JOptionPane("add column name", JOptionPane.YES_OPTION);
-			String input = pane.showInputDialog("add column name");
+			String input = JOptionPane.showInputDialog("add column name");
 			if(input.length() > 0)
 			{
 				this.tableModel.addColumn(input);
@@ -332,8 +331,7 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		// remove column
 		else if(source == this.removeColumn)
 		{
-			JOptionPane pane = new JOptionPane("remove column name", JOptionPane.YES_OPTION);
-			String input = pane.showInputDialog("remove column name");
+			String input = JOptionPane.showInputDialog("remove column name");
 			
 			for (String str : notDeleteColumn) {
 				if(str.equals(input)) { return; }

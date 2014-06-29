@@ -60,6 +60,9 @@ public class ExCmdArg extends CmdArg
 		this.datas = new Stack<String>();
 	}
 	
+	/* (非 Javadoc)
+	 * @see Common.CmdArg#getArgumentsNum(java.lang.String)
+	 */
 	protected int getArgumentsNum(String option)
 	{
 		if("-v".equals(option) || "-version".equals(option))
@@ -85,6 +88,9 @@ public class ExCmdArg extends CmdArg
 		return 0;
 	}
 	
+	/* (非 Javadoc)
+	 * @see Common.CmdArg#optionAnalyze(java.lang.String, java.lang.String[])
+	 */
 	protected void optionAnalyze(String option, String[] args)
 	{
 		if("-v".equals(option) || "-version".equals(option))
@@ -115,6 +121,9 @@ public class ExCmdArg extends CmdArg
 		}
 	}
 	
+	/* (非 Javadoc)
+	 * @see Common.CmdArg#unknownArgumentAnalyze(java.util.Stack)
+	 */
 	protected void unknownArgumentAnalyze(Stack<String> args)
 	{
 		for(String arg : args)

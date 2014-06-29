@@ -13,8 +13,6 @@ import java.util.Stack;
 public class MyComponentListener implements ComponentListener
 {
 	private Container contener;
-	private MesTable mesTable;
-	private TagTable tagTable;
 	Stack<TableEx> tables;
 	
 	/**

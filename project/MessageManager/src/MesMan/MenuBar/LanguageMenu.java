@@ -9,6 +9,11 @@ import javax.swing.JMenuItem;
 import MesMan.MesTableDefine;
 import MesMan.MessageManager;
 
+/**
+ * 言語メニュー
+ * @author t_sato
+ *
+ */
 public class LanguageMenu extends MenuBarBase
 {
 	private JMenuItem jpn;
@@ -65,6 +70,9 @@ public class LanguageMenu extends MenuBarBase
 		getMenu().setText(getMesman().getMessage(MesTableDefine.mes_language));
 	}
 
+	/* (非 Javadoc)
+	 * @see MesMan.MenuBar.MenuBarBase#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent arg0)
 	{
 		Object obj = arg0.getSource();

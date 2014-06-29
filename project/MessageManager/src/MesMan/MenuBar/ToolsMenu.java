@@ -46,6 +46,9 @@ public class ToolsMenu extends MenuBarBase
 	{
 	}
 	
+	/* (非 Javadoc)
+	 * @see MesMan.MenuBar.MenuBarBase#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent arg0)
 	{
 		System.out.println(arg0.paramString());

@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 import MesMan.MesTableDefine;
 import MesMan.MessageManager;
@@ -23,7 +21,7 @@ import MesMan.MessageManager;
  * @author t_sato
  *
  */
-public class SettingMenu extends MenuBarBase implements MenuListener
+public class SettingMenu extends MenuBarBase
 {
 	
 	private String fileName;
@@ -134,7 +132,6 @@ public class SettingMenu extends MenuBarBase implements MenuListener
 		reset = new JMenuItem("reset");
 		defaulttDir.addActionListener(this);
 		defaultLang.addActionListener(this);
-		defaultLang.addMenuListener(this);
 		reset.addActionListener(this);
 		
 		setting_jpn = new JMenuItem(mesman.getMessage(MesTableDefine.mes_JPN));
@@ -257,6 +254,9 @@ public class SettingMenu extends MenuBarBase implements MenuListener
 		getMenu().setText(getMesman().getMessage(MesTableDefine.mes_setting));
 	}
 	
+	/* (非 Javadoc)
+	 * @see MesMan.MenuBar.MenuBarBase#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent arg0)
 	{
 		System.out.println(arg0.paramString());
@@ -281,11 +281,6 @@ public class SettingMenu extends MenuBarBase implements MenuListener
 			this.setDefaultLanguage(languageNo);
 		}
 	}
-	
-	public void menuCanceled(MenuEvent arg0) {}
-	public void menuDeselected(MenuEvent arg0) {}
-	public void menuSelected(MenuEvent arg0) {}
-
 	
 	/**
 	 * 言語番号取得.

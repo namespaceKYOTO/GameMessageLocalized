@@ -34,7 +34,7 @@ public class CmdArg
 	 */
 	private void Init()
 	{
-		this.optionPrefix = null;
+		this.optionPrefix = "";
 	}
 	
 	/**
@@ -45,21 +45,27 @@ public class CmdArg
 	protected int getArgumentsNum(String option)
 	{
 		// よくあるオプションについて記述しとく...
+		String v = optionPrefix + "v";
+		String h = optionPrefix + "h";
+		String o = optionPrefix + "o";
+		String version = optionPrefix + "version";
+		String help = optionPrefix + "help";
+		String out = optionPrefix + "out";
 		
 		// バージョン
-		if("-v".equals(option) || "-version".equals(option))
+		if(v.equals(option) || version.equals(option))
 		{
 			return 0;
 		}
 		// ヘルプ
-		else if("-h".equals(option) || "-help".equals(option))
+		else if(h.equals(option) || help.equals(option))
 		{
 			return 0;
 		}
 		// 出力ディレクトリ
-		else if("-o".equals(option) || "-out".equals(option))
+		else if(o.equals(option) || out.equals(option))
 		{
-			return 1;	// "-o"の後にはディレクトリの指定があるので1
+			return 1;	// "o"の後にはディレクトリの指定があるので1
 		}
 		// ...etc
 		return -1;

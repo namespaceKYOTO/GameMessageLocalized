@@ -1,16 +1,13 @@
 package MesMan;
 
-import java.io.*;
-import java.net.URL;
 import java.util.Stack;
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 import MesMan.MenuBar.FileMenu;
+import MesMan.MenuBar.HelpMenu;
 import MesMan.MenuBar.LanguageMenu;
 import MesMan.MenuBar.MenuBar;
 import MesMan.MenuBar.SettingMenu;
@@ -22,20 +19,23 @@ import MesMan.MenuBar.ToolsMenu;
  * 
  *
  */
-public class MesMan extends JFrame implements ActionListener, MenuListener, WindowListener
+public class MesMan extends JFrame implements ActionListener, WindowListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 715723283093561615L;
+	
 	private MessageManager mesman;
 	private MenuBar menubar;
 	private FileMenu fileMenu;
 	private SettingMenu settingMenu;
 	private LanguageMenu languageMenu;
 	private ToolsMenu toolsMenu;
+	private HelpMenu helpMenu;
 	private TableMenu tableMenu;
-	private Object selectMenu = null;
 	
 	private String FRAME_TITLE = "Message Manager";
-	
-	private JMenu help;
 	
 	
 	public static void main(String[] args)
@@ -77,15 +77,14 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 			fileMenu = new FileMenu(this, mesman, tableMenu, settingMenu);
 			languageMenu = new LanguageMenu(this, mesman);
 			toolsMenu = new ToolsMenu(this, mesman, tableMenu);
-			help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
-//			language.addMenuListener(this);
+			helpMenu = new HelpMenu(this, mesman);
 		}
 		
 		menubar.add(fileMenu);
 		menubar.add(settingMenu);
 		menubar.add(languageMenu);
 		menubar.add(toolsMenu);
-//		menuBar.add(help);
+		menubar.add(helpMenu);
 		
 		setJMenuBar(menubar.getMenuBar());
 		setVisible(true);
@@ -107,18 +106,13 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 	{
 	}
 
-	public void menuCanceled(MenuEvent arg0) {}
-	public void menuDeselected(MenuEvent arg0) {}
-	public void menuSelected(MenuEvent arg0) {
-		this.selectMenu = arg0.getSource();
-	}
-
 	public void windowActivated(WindowEvent arg0) {}
 	public void windowClosed(WindowEvent arg0) {}
 	public void windowClosing(WindowEvent arg0) {
 		// 終了時処理
 		this.settingMenu.save();
 	}
+	
 	public void windowDeactivated(WindowEvent arg0) {}
 	public void windowDeiconified(WindowEvent arg0) {}
 	public void windowIconified(WindowEvent arg0) {}

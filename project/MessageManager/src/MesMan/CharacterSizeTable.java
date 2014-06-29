@@ -51,7 +51,6 @@ public class CharacterSizeTable extends TableEx
 		int labelIdx = mestable.getColumnLabelIndex();
 		int sizeIdx = mestable.getColumnSizeIndex();
 		int mesLimitSize = 0;
-		int line = 0;
 		
 		// 前回の結果などが残っていないように消しておく 
 		resultTable.removeAll();
@@ -60,7 +59,6 @@ public class CharacterSizeTable extends TableEx
 			String label = column.get(labelIdx);
 			if(label != null && label.length() > 0) {
 				mesLimitSize = Integer.valueOf(column.get(sizeIdx));
-				line = 0;
 			}
 			
 			int mesSize = getMessageSize(column.get(languageIdx), tagtable);
@@ -71,7 +69,6 @@ public class CharacterSizeTable extends TableEx
 				result.push(String.format("%d Over", mesSize - mesLimitSize));
 				resultTable.getTableModel().addRow(result);
 			}
-			++line;
 		}
 	}
 	
