@@ -1,15 +1,14 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Extension Command Arguments class
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package BtoC;
 
 import java.util.Stack;
 import Common.*;
 
 
+/**
+ * 引数解析.
+ * @author t_sato
+ *
+ */
 public class ExCmdArg extends CmdArg
 {
 	public boolean			isVersion;
@@ -19,29 +18,38 @@ public class ExCmdArg extends CmdArg
 	public String			dataListDir;
 	public Stack<String>	datas;
 
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ.
+	 */
 	public ExCmdArg()
 	{
 		Init();
 	}
 	
+	/**
+	 * コンストラクタ.
+	 * @param optionPrefix 引数の接頭辞
+	 */
 	public ExCmdArg(String optionPrefix)
 	{
 		super(optionPrefix);
 		Init();
 	}
 	
+	/**
+	 * コンストラクタ.
+	 * @param optionPrefix 引数の接頭辞
+	 * @param args 引数
+	 */
 	public ExCmdArg(String optionPrefix, String[] args)
 	{
 		super(optionPrefix);
 		Init();
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	initialize method
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 初期化. 
+	 */
 	private void Init()
 	{
 		this.isVersion = false;
@@ -52,11 +60,6 @@ public class ExCmdArg extends CmdArg
 		this.datas = new Stack<String>();
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get the number of arguments of an option
-	//*!param	option	option string
-	//*!retval	-1 : get up the following options
-	/*---------------------------------------------------------------------*/
 	protected int getArgumentsNum(String option)
 	{
 		if("-v".equals(option) || "-version".equals(option))
@@ -82,11 +85,6 @@ public class ExCmdArg extends CmdArg
 		return 0;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	analyze command arguments
-	//*!param	option	option string
-	//*!param	args	option argument
-	/*---------------------------------------------------------------------*/
 	protected void optionAnalyze(String option, String[] args)
 	{
 		if("-v".equals(option) || "-version".equals(option))
@@ -117,10 +115,6 @@ public class ExCmdArg extends CmdArg
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	analyze unknown argument
-	//*!param	args	argument
-	/*---------------------------------------------------------------------*/
 	protected void unknownArgumentAnalyze(Stack<String> args)
 	{
 		for(String arg : args)

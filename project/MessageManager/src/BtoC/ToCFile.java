@@ -1,30 +1,30 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	do .c file
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package BtoC;
 
 import java.io.*;
 import java.util.Stack;
 
+/**
+ * .cファイル出力.
+ * @author t_sato
+ *
+ */
 public class ToCFile
 {
 	private Stack<String> dataList;
 	private byte[] dataContent;
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ. 
+	 */
 	public ToCFile()
 	{
 		this.dataList = new Stack<String>();
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	to .c file
-	/*---------------------------------------------------------------------*/
+	/**
+	 * .cファイルへ.
+	 * @param cmdArg 引数
+	 */
 	public void toCFile(ExCmdArg cmdArg)
 	{
 		// data list specified
@@ -52,9 +52,10 @@ public class ToCFile
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get data list
-	/*---------------------------------------------------------------------*/
+	/**
+	 * .cファイルにするバイナリファイル一覧を取得
+	 * @param path バイナリファイル一覧ファイル名
+	 */
 	private void getDataLists(String path)
 	{
 		try
@@ -77,9 +78,11 @@ public class ToCFile
 		}
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	data file read
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 出力ファイル名取得.
+	 * @param path 元となるファイル名
+	 * @return 出力ファイル名
+	 */
 	private String getFileName(String path)
 	{
 		File file = new File(path);
@@ -87,9 +90,10 @@ public class ToCFile
 		return name.replace(".", "_");
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	data file read
-	/*---------------------------------------------------------------------*/
+	/**
+	 * バイナリファイル読み込み
+	 * @param path バイナリファイルパス
+	 */
 	private void fileRead(String path)
 	{
 		try
@@ -114,9 +118,12 @@ public class ToCFile
 		
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	out file
-	/*---------------------------------------------------------------------*/
+	/**
+	 * ファイル書き出し
+	 * @param outDir 書き出しディレクトリ
+	 * @param fileName 書き出しファイル名
+	 * @param isExtern .cのextern定義の有無
+	 */
 	private void fileWrite(String outDir, String fileName, boolean isExtern)
 	{
 		try

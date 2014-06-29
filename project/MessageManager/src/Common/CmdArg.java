@@ -1,69 +1,91 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Command Argument class
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package Common;
 
 import java.util.Stack;
 
+/**
+ * 引数解析.
+ * @author t_sato
+ *
+ */
 public class CmdArg
 {
 	protected String optionPrefix;
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	constructor
-	/*---------------------------------------------------------------------*/
+	/**
+	 * コンストラクタ. 
+	 */
 	public CmdArg()
 	{
 		Init();
 	}
 	
+	/**
+	 * コンストラクタ.
+	 * @param optionPrefix 引数の接頭辞
+	 */
 	public CmdArg(String optionPrefix)
 	{
 		Init();
 		this.optionPrefix = new String(optionPrefix);
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	initialize method
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 初期化. 
+	 */
 	private void Init()
 	{
 		this.optionPrefix = null;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	get the number of arguments of an option
-	//*!param	option	option string
-	//*!retval	-1 : get up the following options
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 指定オプションに続く有効な引数の数取得.
+	 * @param option オプション
+	 * @return 有効な引数の数
+	 */
 	protected int getArgumentsNum(String option)
 	{
+		// よくあるオプションについて記述しとく...
+		
+		// バージョン
+		if("-v".equals(option) || "-version".equals(option))
+		{
+			return 0;
+		}
+		// ヘルプ
+		else if("-h".equals(option) || "-help".equals(option))
+		{
+			return 0;
+		}
+		// 出力ディレクトリ
+		else if("-o".equals(option) || "-out".equals(option))
+		{
+			return 1;	// "-o"の後にはディレクトリの指定があるので1
+		}
+		// ...etc
 		return -1;
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	analyze command arguments
-	//*!param	option	option string
-	//*!param	args	option argument
-	/*---------------------------------------------------------------------*/
+	/**
+	 * オプション解析.
+	 * @param option オプション
+	 * @param args 引数
+	 */
 	protected void optionAnalyze(String option, String[] args)
 	{
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	analyze unknown argument
-	//*!param	args	argument
-	/*---------------------------------------------------------------------*/
+	/**
+	 * オプションの指定がなかった引数の解析.
+	 * @param args 引数
+	 */
 	protected void unknownArgumentAnalyze(Stack<String> args)
 	{
 	}
 	
-	/*---------------------------------------------------------------------*/
-	//*!brief	analyze command arguments
-	/*---------------------------------------------------------------------*/
+	/**
+	 * 引数の解析.
+	 * @param args 引数
+	 */
 	public void analyzeCommandArguments(String[] args)
 	{
 		Stack<String> unknownArgument = new Stack<String>();

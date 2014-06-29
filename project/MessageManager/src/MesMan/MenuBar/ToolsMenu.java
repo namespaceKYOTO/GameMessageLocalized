@@ -39,6 +39,13 @@ public class ToolsMenu extends MenuBarBase
 		menu.add(check);
 	}
 	
+	/**
+	 * UI表示言語変更.
+	 */
+	public void LanguageChange()
+	{
+	}
+	
 	public void actionPerformed(ActionEvent arg0)
 	{
 		System.out.println(arg0.paramString());

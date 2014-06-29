@@ -1,7 +1,9 @@
 package MesMan.MenuBar;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import MesMan.MesTableDefine;
@@ -18,6 +20,10 @@ public class HelpMenu extends MenuBarBase
 	// ようこそ　-> Dialog標示
 	// ヘルプ目次　-> Dialog標示
 	// テストデータ -> テストデータ標示
+
+	private JMenuItem welcome;
+	private JMenuItem helpContent;
+	private JMenuItem sampleData;
 	
 	/**
 	 * コンストラクタ.
@@ -27,6 +33,10 @@ public class HelpMenu extends MenuBarBase
 	public HelpMenu(Component parent, MessageManager mesman)
 	{
 		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_help));
+		
+		welcome = new JMenuItem("Welcome");
+		helpContent = new JMenuItem("Help Content");
+		sampleData = new JMenuItem("Sample Data");
 	}
 
 	/**
@@ -35,5 +45,23 @@ public class HelpMenu extends MenuBarBase
 	public void LanguageChange()
 	{
 		
+	}
+
+	public void actionPerformed(ActionEvent arg0)
+	{
+		System.out.println(arg0.paramString());
+		Object obj = arg0.getSource();
+		
+		if(obj == welcome)
+		{
+		}
+		else if(obj == helpContent)
+		{
+			
+		}
+		else if(obj == sampleData)
+		{
+			
+		}
 	}
 }

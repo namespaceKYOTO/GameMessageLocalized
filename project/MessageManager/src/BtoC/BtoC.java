@@ -1,12 +1,11 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Binary file to .c file
- * @author	t_sato
- */
-/*---------------------------------------------------------------------*/
 package BtoC;
 
 
+/**
+ * バイナリファイルを.cファイルへ変換.
+ * @author t_sato
+ *
+ */
 public class BtoC
 {
 	static String version = "BtoC version \"1.0\"";
