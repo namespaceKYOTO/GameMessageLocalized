@@ -1,10 +1,11 @@
-package MesMan;
+package MesMan.MenuBar;
 
 import java.awt.Component;
 
 import javax.swing.JPanel;
 
-import MesMan.MenuBar.MenuBarBase;
+import MesMan.MesTableDefine;
+import MesMan.MessageManager;
 
 /**
  * ヘルプ.
