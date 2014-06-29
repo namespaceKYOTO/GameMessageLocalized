@@ -114,11 +114,8 @@ public class MesMan extends JFrame implements ActionListener, MenuListener, Wind
 		menubar = new MenuBar(this);
 		
 		{
-//			file = new JMenu(mesman.getMessage(MesTableDefine.mes_file));
 			fileMenu = new FileMenu(this, mesman, tableMenu, settingMenu);
-//			setting = new JMenu(mesman.getMessage(MesTableDefine.mes_setting));
 			settingMenu = new SettingMenu(this, mesman, "./config.txt");
-//			language = new JMenu(mesman.getMessage(MesTableDefine.mes_language));
 			language = new LanguageMenu(this, mesman);
 			help = new JMenu(mesman.getMessage(MesTableDefine.mes_help));
 			tools = new JMenu(mesman.getMessage(MesTableDefine.mes_tools));

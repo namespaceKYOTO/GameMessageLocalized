@@ -1,33 +1,31 @@
 package MesMan;
 
+import java.awt.Component;
+
 import javax.swing.JPanel;
+
+import MesMan.MenuBar.MenuBarBase;
 
 /**
  * ヘルプ.
  * @author t_sato
  *
  */
-public class Help
+public class HelpMenu extends MenuBarBase
 {
 //    JOptionPane.showMessageDialog(this, "JOptionPane");
 	// ようこそ　-> Dialog標示
 	// ヘルプ目次　-> Dialog標示
 	// テストデータ -> テストデータ標示
-	private MessageManager mesman;
-	private int width;
-	private int height;
 	
 	/**
 	 * コンストラクタ.
+	 * @param parent UIの親
 	 * @param mesman メッセージ管理
-	 * @param width　UI幅
-	 * @param height UI高さ
 	 */
-	public Help(MessageManager mesman, int width, int height)
+	public HelpMenu(Component parent, MessageManager mesman)
 	{
-		this.mesman = mesman;
-		this.width = width;
-		this.height = height;
+		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_help));
 	}
 
 	/**
