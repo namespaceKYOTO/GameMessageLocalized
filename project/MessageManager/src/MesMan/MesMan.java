@@ -41,9 +41,15 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	 */
 	public MesMan(String[] args)
 	{
+		System.out.println("-- args --");
+		for (String string : args) {
+			System.out.println(string);
+		}
+		System.out.println("-- ---- --");
+		
 		cmdArg = new CmdArgEx();
 		cmdArg.analyzeCommandArguments(args);
-		boolean isSampleMode = (cmdArg.getMode() == CmdArgEx.eMode.Sample); 
+		boolean isSampleMode = (cmdArg.getMode() == CmdArgEx.eMode.Sample);
 		
 		addWindowListener(this);
 		

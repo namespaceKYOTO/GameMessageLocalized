@@ -2,6 +2,7 @@ package MesMan.MenuBar;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import MesMan.MesMan;
@@ -31,9 +32,14 @@ public class HelpMenu extends MenuBarBase
 	{
 		super(mesman, mesman.getMesDataMan().getMessage(MesTableDefine.mes_help));
 		
+		JMenu menu = getMenu();
+		
 		welcome = new JMenuItem("Welcome");
 		helpContent = new JMenuItem("Help Content");
 		sampleData = new JMenuItem("Sample Data");
+		menu.add(welcome);
+		menu.add(helpContent);
+		menu.add(sampleData);
 	}
 
 	/**
@@ -61,7 +67,13 @@ public class HelpMenu extends MenuBarBase
 		}
 		else if(obj == sampleData)
 		{
-			
+			String[] args = {
+					"-m sample", 
+					"-mt /res/message.mtbl", 
+					"-tt /res/tag.ttbl", 
+					"-ct /res/charSize.ctbl",
+			};
+			MesMan mesman = new MesMan(args);
 		}
 	}
 }
