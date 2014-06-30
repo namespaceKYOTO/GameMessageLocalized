@@ -3,6 +3,7 @@ package MesMan;
 import java.util.Stack;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.InputStreamReader;
 
 import javax.swing.*;
 
@@ -42,6 +43,7 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	{
 		cmdArg = new CmdArgEx();
 		cmdArg.analyzeCommandArguments(args);
+		boolean isSampleMode = (cmdArg.getMode() == CmdArgEx.eMode.Sample); 
 		
 		addWindowListener(this);
 		
@@ -66,6 +68,15 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		Dimension size = getContentPane().getSize();
 		tableMenu = new TableMenu(mesman, size.width, size.height);
 		add(tableMenu.getComponent(), BorderLayout.CENTER);
+		if( isSampleMode ) {
+			TableFile tableFile = new TableFile("", "UTF-16");
+			InputStreamReader mtblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(cmdArg.getMtblFile()));
+			InputStreamReader ttblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(cmdArg.getTtblFile()));
+			InputStreamReader ctblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(cmdArg.getCtblFile()));
+			tableFile.open(mtblFileStream, tableMenu.getMesTable());
+			tableFile.open(ttblFileStream, tableMenu.getTagTable());
+			tableFile.open(ctblFileStream, tableMenu.getCharsizeTable());
+		}
 		
 		{
 			settingMenu = new SettingMenu(this, "./config.txt");
@@ -76,10 +87,14 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		}
 		
 		menubar.add(fileMenu);
-		menubar.add(settingMenu);
+		if( !isSampleMode )	{
+			menubar.add(settingMenu);
+		}
 		menubar.add(languageMenu);
-		menubar.add(toolsMenu);
-		menubar.add(helpMenu);
+		if( !isSampleMode ) {
+			menubar.add(toolsMenu);
+			menubar.add(helpMenu);
+		}
 		
 		setJMenuBar(menubar.getMenuBar());
 		setVisible(true);

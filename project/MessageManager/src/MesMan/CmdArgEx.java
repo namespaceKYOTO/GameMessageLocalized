@@ -19,7 +19,7 @@ public class CmdArgEx extends CmdArg
 	}
 	
 	private static String PREFIX = "-";
-	private static String MODE = "m";
+	private static String OPTION_MODE = "m";
 	private static String OPTION_MESSAGE_TABLE = "mt";
 	private static String OPTION_TAG_TABLE = "tt";
 	private static String OPTION_CHARACTORSIZE_TABLE = "ct";
@@ -86,7 +86,7 @@ public class CmdArgEx extends CmdArg
 		{
 			num = 0;
 			
-			String mode = PREFIX + MODE;
+			String mode = PREFIX + OPTION_MODE;
 			String m = PREFIX + OPTION_MESSAGE_TABLE;
 			String t = PREFIX + OPTION_TAG_TABLE;
 			String c = PREFIX + OPTION_CHARACTORSIZE_TABLE;
@@ -111,7 +111,7 @@ public class CmdArgEx extends CmdArg
 	 */
 	protected void optionAnalyze(String option, String[] args)
 	{
-		String mode = PREFIX + MODE;
+		String mode = PREFIX + OPTION_MODE;
 		String m = PREFIX + OPTION_MESSAGE_TABLE;
 		String t = PREFIX + OPTION_TAG_TABLE;
 		String c = PREFIX + OPTION_CHARACTORSIZE_TABLE;

@@ -2,6 +2,7 @@ package MesMan;
 
 import java.io.*;
 import java.util.*;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,10 +32,26 @@ public class TableFile
 	
 	/**
 	 * ファイルオープン.
-	 * @param file オープンするファイル名
+	 * @param file オープンするファイル
 	 * @param tableEx 読み込み結果格納先テーブル
 	 */
 	public void open(File file, TableEx tableEx)
+	{
+		FileInputStream fileStrem = null;
+		try {
+			fileStrem = new FileInputStream(file);
+			open(new InputStreamReader(fileStrem, this.charset), tableEx);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * ファイルオープン.
+	 * @param isr オープンするファイル
+	 * @param tableEx 読み込み結果格納先テーブル
+	 */
+	public void open(InputStreamReader isr, TableEx tableEx)
 	{
 		JTable table = tableEx.getTable();
 		DefaultTableModel tableModel = tableEx.getTableModel();
@@ -43,8 +60,7 @@ public class TableFile
 		
 		try
 		{
-			FileInputStream fileStrem = new FileInputStream(file);
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileStrem, this.charset));
+			BufferedReader bufferedReader = new BufferedReader(isr);
 			
 			String line;
 			
