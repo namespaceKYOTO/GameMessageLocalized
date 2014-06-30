@@ -1,13 +1,13 @@
 package MesMan.MenuBar;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import MesMan.MesMan;
 import MesMan.MesTableDefine;
-import MesMan.MessageManager;
+import MesMan.MessageDataManager;
 
 /**
  * 言語メニュー
@@ -27,23 +27,24 @@ public class LanguageMenu extends MenuBarBase
 
 	/**
 	 * コンストラクタ.
-	 * @param parent UI親
 	 * @param mesman メッセージ管理
 	 */
-	public LanguageMenu(Component parent, MessageManager mesman)
+	public LanguageMenu(MesMan mesman)
 	{
-		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_language));
+		super(mesman, mesman.getMesDataMan().getMessage(MesTableDefine.mes_language));
+		
+		MessageDataManager mesDataMan =mesman.getMesDataMan(); 
 		
 		JMenu menu = getMenu();
 		
-		jpn = new JMenuItem(mesman.getMessage(MesTableDefine.mes_JPN));
-		eng = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ENG));
-		deu = new JMenuItem(mesman.getMessage(MesTableDefine.mes_DEU));
-		fra = new JMenuItem(mesman.getMessage(MesTableDefine.mes_FRA));
-		ita = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ITA));
-		spa = new JMenuItem(mesman.getMessage(MesTableDefine.mes_SPA));
-		rus = new JMenuItem(mesman.getMessage(MesTableDefine.mes_RUS));
-		tha = new JMenuItem(mesman.getMessage(MesTableDefine.mes_THA));
+		jpn = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_JPN));
+		eng = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_ENG));
+		deu = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_DEU));
+		fra = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_FRA));
+		ita = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_ITA));
+		spa = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_SPA));
+		rus = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_RUS));
+		tha = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_THA));
 		jpn.addActionListener(this);
 		eng.addActionListener(this);
 		deu.addActionListener(this);
@@ -67,7 +68,7 @@ public class LanguageMenu extends MenuBarBase
 	 */
 	public void LanguageChange()
 	{
-		getMenu().setText(getMesman().getMessage(MesTableDefine.mes_language));
+		getMenu().setText(getMesman().getMesDataMan().getMessage(MesTableDefine.mes_language));
 	}
 
 	/* (非 Javadoc)
@@ -76,7 +77,7 @@ public class LanguageMenu extends MenuBarBase
 	public void actionPerformed(ActionEvent arg0)
 	{
 		Object obj = arg0.getSource();
-		this.getMesman().setLanguageNo(getLanguageNo(obj));
+		this.getMesman().getMesDataMan().setLanguageNo(getLanguageNo(obj));
 		this.getMenuBar().languageChange();
 	}
 	

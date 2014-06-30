@@ -1,6 +1,5 @@
 package MesMan.MenuBar;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -10,8 +9,9 @@ import javax.swing.JMenuItem;
 
 import MesMan.CheckParamPanel;
 import MesMan.FileFilterEx;
+import MesMan.MesMan;
 import MesMan.MesTableDefine;
-import MesMan.MessageManager;
+import MesMan.MessageDataManager;
 import MesMan.OutPuter;
 import MesMan.TableEx;
 import MesMan.TableFile;
@@ -43,14 +43,15 @@ public class FileMenu extends MenuBarBase
 	
 	/**
 	 * コンストラクタ.
-	 * @param parent UIの親
 	 * @param mesman メッセージ管理
 	 * @param tableMenu テーブルメニュー
 	 * @param settingMenu 設定メニュー
 	 */
-	public FileMenu(Component parent, MessageManager mesman, TableMenu tableMenu, SettingMenu settingMenu)
+	public FileMenu(MesMan mesman, TableMenu tableMenu, SettingMenu settingMenu)
 	{
-		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_file));
+		super(mesman, mesman.getMesDataMan().getMessage(MesTableDefine.mes_file));
+		
+		MessageDataManager mesDataMan =  mesman.getMesDataMan();
 		
 		this.tableMenu = tableMenu;
 		this.settingMenu = settingMenu;
@@ -62,9 +63,9 @@ public class FileMenu extends MenuBarBase
 		
 		JMenu menu = getMenu();
 		
-		open = new JMenu(mesman.getMessage(MesTableDefine.mes_open));
-		openMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
-		openTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
+		open = new JMenu(mesDataMan.getMessage(MesTableDefine.mes_open));
+		openMesTbl = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_mtbl));
+		openTabTbl = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_ttbl));
 		openCharTbl = new JMenuItem("ctbl");
 		openMesTbl.addActionListener(this);
 		openTabTbl.addActionListener(this);
@@ -74,9 +75,9 @@ public class FileMenu extends MenuBarBase
 		open.add(openCharTbl);
 		menu.add(open);
 		
-		save = new JMenu(mesman.getMessage(MesTableDefine.mes_save));
-		saveMesTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_mtbl));
-		saveTabTbl = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ttbl));
+		save = new JMenu(mesDataMan.getMessage(MesTableDefine.mes_save));
+		saveMesTbl = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_mtbl));
+		saveTabTbl = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_ttbl));
 		saveCharTbl = new JMenuItem("ctbl");
 		saveMesTbl.addActionListener(this);
 		saveTabTbl.addActionListener(this);
@@ -86,7 +87,7 @@ public class FileMenu extends MenuBarBase
 		save.add(saveCharTbl);
 		menu.add(save);
 
-		output = new JMenuItem(mesman.getMessage(MesTableDefine.mes_output));
+		output = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_output));
 		output.addActionListener(this);
 		menu.add(output);
 	}
@@ -96,14 +97,15 @@ public class FileMenu extends MenuBarBase
 	 */
 	public void LanguageChange()
 	{
-		getMenu().setText(getMesman().getMessage(MesTableDefine.mes_file));
-		open.setText(getMesman().getMessage(MesTableDefine.mes_open));
-		openMesTbl.setText(getMesman().getMessage(MesTableDefine.mes_mtbl));
-		openTabTbl.setText(getMesman().getMessage(MesTableDefine.mes_ttbl));
-		save.setText(getMesman().getMessage(MesTableDefine.mes_save));
-		saveMesTbl.setText(getMesman().getMessage(MesTableDefine.mes_mtbl));
-		saveTabTbl.setText(getMesman().getMessage(MesTableDefine.mes_ttbl));
-		output.setText(getMesman().getMessage(MesTableDefine.mes_output));
+		MessageDataManager mesDataMan = getMesman().getMesDataMan(); 
+		getMenu().setText(mesDataMan.getMessage(MesTableDefine.mes_file));
+		open.setText(mesDataMan.getMessage(MesTableDefine.mes_open));
+		openMesTbl.setText(mesDataMan.getMessage(MesTableDefine.mes_mtbl));
+		openTabTbl.setText(mesDataMan.getMessage(MesTableDefine.mes_ttbl));
+		save.setText(mesDataMan.getMessage(MesTableDefine.mes_save));
+		saveMesTbl.setText(mesDataMan.getMessage(MesTableDefine.mes_mtbl));
+		saveTabTbl.setText(mesDataMan.getMessage(MesTableDefine.mes_ttbl));
+		output.setText(mesDataMan.getMessage(MesTableDefine.mes_output));
 	}
 	
 	/* (非 Javadoc)

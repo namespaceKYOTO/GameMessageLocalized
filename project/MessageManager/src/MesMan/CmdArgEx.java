@@ -42,6 +42,39 @@ public class CmdArgEx extends CmdArg
 		ctblFile = null;
 	}
 	
+	/**
+	 * モード取得.
+	 * @return モード
+	 */
+	public eMode getMode()
+	{
+		return this.mode;
+	}
+	
+	/**
+	 * メッセージテーブルファイル名取得.
+	 * @return ファイル名
+	 */
+	public String getMtblFile() {
+		return mtblFile;
+	}
+
+	/**
+	 * タグテーブルファイル名取得.
+	 * @return ファイル名
+	 */
+	public String getTtblFile() {
+		return ttblFile;
+	}
+
+	/**
+	 * 文字サイズテーブルファイル名取得.
+	 * @return ファイル名
+	 */
+	public String getCtblFile() {
+		return ctblFile;
+	}
+
 	/* (非 Javadoc)
 	 * @see Common.CmdArg#getArgumentsNum(java.lang.String)
 	 */
@@ -108,6 +141,11 @@ public class CmdArgEx extends CmdArg
 	{
 	}
 	
+	/**
+	 * モード取得
+	 * @param str 文字
+	 * @return モード
+	 */
 	private eMode getMode(String str)
 	{
 		if("normal".equals(str))

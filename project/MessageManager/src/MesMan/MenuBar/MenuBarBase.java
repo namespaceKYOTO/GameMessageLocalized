@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenu;
 
-import MesMan.MessageManager;
+import MesMan.MesMan;
 
 /**
  * メニュバーベース.
@@ -15,8 +15,7 @@ import MesMan.MessageManager;
  */
 public class MenuBarBase implements ActionListener
 {
-	private Component parent;
-	private MessageManager mesman;
+	private MesMan mesman;
 	private MenuBar menuBar;
 	private JMenu menu;
 	
@@ -25,9 +24,8 @@ public class MenuBarBase implements ActionListener
 	 * @param mesman メッセージ管理
 	 * @param menuName メニュー名
 	 */
-	public MenuBarBase(Component parent, MessageManager mesman, String menuName)
+	public MenuBarBase(MesMan mesman, String menuName)
 	{
-		this.parent = parent;
 		this.mesman = mesman;
 		this.menu = new JMenu(menuName);
 	}
@@ -45,7 +43,7 @@ public class MenuBarBase implements ActionListener
 	 */
 	public Component getParent()
 	{
-		return this.parent;
+		return this.mesman;
 	}
 
 	/**
@@ -79,16 +77,8 @@ public class MenuBarBase implements ActionListener
 	 * メッセージ管理の取得
 	 * @return メッセージ管理
 	 */
-	public MessageManager getMesman() {
+	public MesMan getMesman() {
 		return mesman;
-	}
-
-	/**
-	 * メッセージ管理の設定
-	 * @param mesman メッセージ管理
-	 */
-	public void setMesman(MessageManager mesman) {
-		this.mesman = mesman;
 	}
 
 	/* (非 Javadoc)

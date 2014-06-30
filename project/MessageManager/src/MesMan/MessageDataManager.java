@@ -3,11 +3,11 @@ package MesMan;
 import java.io.*;
 
 /**
- * メッセージ管理クラス.
+ * メッセージデータ管理クラス.
  * @author t_sato
  *
  */
-public class MessageManager
+public class MessageDataManager
 {
 	private static int SignatureOffset = 0;
 	private static int DateOffset = 4;
@@ -48,7 +48,7 @@ public class MessageManager
 	 * コンストラクタ.
 	 * @param binFileName メッセージバイナリのファイル名
 	 */
-	public MessageManager(String binFileName)
+	public MessageDataManager(String binFileName)
 	{
 		this.Open(binFileName);
 	}

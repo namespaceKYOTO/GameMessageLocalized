@@ -1,12 +1,11 @@
 package MesMan.MenuBar;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JMenuItem;
 
+import MesMan.MesMan;
 import MesMan.MesTableDefine;
-import MesMan.MessageManager;
 
 /**
  * ヘルプ.
@@ -26,12 +25,11 @@ public class HelpMenu extends MenuBarBase
 	
 	/**
 	 * コンストラクタ.
-	 * @param parent UIの親
 	 * @param mesman メッセージ管理
 	 */
-	public HelpMenu(Component parent, MessageManager mesman)
+	public HelpMenu(MesMan mesman)
 	{
-		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_help));
+		super(mesman, mesman.getMesDataMan().getMessage(MesTableDefine.mes_help));
 		
 		welcome = new JMenuItem("Welcome");
 		helpContent = new JMenuItem("Help Content");

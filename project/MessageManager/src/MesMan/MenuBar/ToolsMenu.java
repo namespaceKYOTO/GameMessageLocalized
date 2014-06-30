@@ -1,14 +1,13 @@
 package MesMan.MenuBar;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import MesMan.MesMan;
 import MesMan.MesTableDefine;
-import MesMan.MessageManager;
 import MesMan.TableMenu;
 
 /**
@@ -23,12 +22,11 @@ public class ToolsMenu extends MenuBarBase
 	
 	/**
 	 * コンストラクタ.
-	 * @param parent UI親
 	 * @param mesman メッセージ管理
 	 */
-	public ToolsMenu(Component parent, MessageManager mesman, TableMenu tableMenu)
+	public ToolsMenu(MesMan mesman, TableMenu tableMenu)
 	{
-		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_tools));
+		super(mesman, mesman.getMesDataMan().getMessage(MesTableDefine.mes_tools));
 		
 		this.tableMenu = tableMenu;
 		
@@ -56,7 +54,6 @@ public class ToolsMenu extends MenuBarBase
 		
 		if(obj == this.check)
 		{
-//			JOptionPane pane = new JOptionPane("language select", JOptionPane.YES_OPTION);
 			String input = JOptionPane.showInputDialog("language select");
 			if(input != null && input.length() > 0)
 			{

@@ -12,11 +12,11 @@ public class ResultTable extends TableEx
 
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージテーブル
+	 * @param messageMan メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public ResultTable(MessageManager messageMan, int width, int height)
+	public ResultTable(MessageDataManager messageMan, int width, int height)
 	{
 		super(messageMan, width, height);
 		

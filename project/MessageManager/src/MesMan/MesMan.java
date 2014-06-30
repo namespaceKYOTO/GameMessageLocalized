@@ -21,12 +21,10 @@ import MesMan.MenuBar.ToolsMenu;
  */
 public class MesMan extends JFrame implements ActionListener, WindowListener
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 715723283093561615L;
 	
-	private MessageManager mesman;
+	private CmdArgEx cmdArg;
+	private MessageDataManager mesman;
 	private MenuBar menubar;
 	private FileMenu fileMenu;
 	private SettingMenu settingMenu;
@@ -37,20 +35,17 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	
 	private String FRAME_TITLE = "Message Manager";
 	
-	
-	public static void main(String[] args)
-	{	
-		MesMan mesMan = new MesMan();
-	}
-	
 	/**
 	 * コンストラクタ.
 	 */
-	public MesMan()
+	public MesMan(String[] args)
 	{
+		cmdArg = new CmdArgEx();
+		cmdArg.analyzeCommandArguments(args);
+		
 		addWindowListener(this);
 		
-		mesman = new MessageManager("/res/MesTableDefine.bin");
+		mesman = new MessageDataManager("/res/MesTableDefine.bin");
 		mesman.setLanguageNo(SettingMenu.getDefaultLanguage("./config.txt"));
 		
 		setTitle(FRAME_TITLE);
@@ -73,11 +68,11 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		add(tableMenu.getComponent(), BorderLayout.CENTER);
 		
 		{
-			settingMenu = new SettingMenu(this, mesman, "./config.txt");
-			fileMenu = new FileMenu(this, mesman, tableMenu, settingMenu);
-			languageMenu = new LanguageMenu(this, mesman);
-			toolsMenu = new ToolsMenu(this, mesman, tableMenu);
-			helpMenu = new HelpMenu(this, mesman);
+			settingMenu = new SettingMenu(this, "./config.txt");
+			fileMenu = new FileMenu(this, tableMenu, settingMenu);
+			languageMenu = new LanguageMenu(this);
+			toolsMenu = new ToolsMenu(this, tableMenu);
+			helpMenu = new HelpMenu(this);
 		}
 		
 		menubar.add(fileMenu);
@@ -102,6 +97,33 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		}
 	}
 	
+	/**
+	 * 引数解析クラス取得.
+	 * @return 引数解析クラス
+	 */
+	public CmdArgEx getCmdArg() {
+		return cmdArg;
+	}
+
+	/**
+	 * メッセージデータ管理クラス取得.
+	 * @return メッセージデータ管理クラス
+	 */
+	public MessageDataManager getMesDataMan() {
+		return mesman;
+	}
+
+	/**
+	 * テーブルメニュー取得.
+	 * @return
+	 */
+	public TableMenu getTableMenu() {
+		return tableMenu;
+	}
+
+	/* (非 Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e)
 	{
 	}

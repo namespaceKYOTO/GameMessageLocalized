@@ -16,11 +16,11 @@ public class TagTable extends TableEx
 	
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージ管理
+	 * @param messageMan メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public TagTable(MessageManager messageMan, int width, int height)
+	public TagTable(MessageDataManager messageMan, int width, int height)
 	{
 		super(messageMan, width, height);
 		

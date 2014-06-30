@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableColumnModel;
  */
 public class TableEx implements MouseListener, ActionListener, MenuListener
 {
-	MessageManager messageMan;
+	MessageDataManager messageMan;
 	
 	private Stack<Stack<String>>	row;
 	private Stack<String>			columnName;
@@ -46,11 +46,11 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	
 	/**
 	 * 初期化.
-	 * @param messageMan メッセージ管理
+	 * @param messageMan メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	private void init(MessageManager messageMan, int width, int height)
+	private void init(MessageDataManager messageMan, int width, int height)
 	{
 		this.messageMan = messageMan;
 		this.row = new Stack<Stack<String>>();
@@ -122,23 +122,23 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージ管理
+	 * @param messageMan メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public TableEx(MessageManager messageMan, int width, int height)
+	public TableEx(MessageDataManager messageMan, int width, int height)
 	{
 		init( messageMan, width, height);
 	}
 	
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージ管理
+	 * @param messageMan メッセージデータ管理
 	 * @param columns 列文字列
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public TableEx(MessageManager messageMan, String[] columns, int width, int height)
+	public TableEx(MessageDataManager messageMan, String[] columns, int width, int height)
 	{
 		init( messageMan, width, height);
 		addColumnNames(columns);

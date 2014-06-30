@@ -11,7 +11,7 @@ import javax.swing.JTabbedPane;
 public class TableMenu
 {
 
-	private MessageManager mesman;
+	private MessageDataManager mesdataman;
 	private JTabbedPane tab;
 	private MesTable mesTable;
 	private TagTable tagTable;
@@ -20,13 +20,13 @@ public class TableMenu
 	
 	/**
 	 * コンストラクタ.
-	 * @param mesman メッセージ管理
+	 * @param mesman メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public TableMenu(MessageManager mesman, int width, int height)
+	public TableMenu(MessageDataManager mesman, int width, int height)
 	{
-		this.mesman = mesman;
+		this.mesdataman = mesman;
 		
 		this.mesTable = new MesTable(mesman, width, height);
 		this.tagTable = new TagTable(mesman, width, height);

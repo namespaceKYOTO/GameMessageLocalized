@@ -1,6 +1,5 @@
 package MesMan.MenuBar;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,8 +12,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import MesMan.MesMan;
 import MesMan.MesTableDefine;
-import MesMan.MessageManager;
+import MesMan.MessageDataManager;
 
 /**
  * 設定.
@@ -86,13 +86,14 @@ public class SettingMenu extends MenuBarBase
 	
 	/**
 	 * コンストラクタ.
-	 * @param parent UIの親
 	 * @param mesman　メッセージ管理
 	 * @param settingFile 設定ファイル
 	 */
-	public SettingMenu(Component parent, MessageManager mesman, String settingFile)
+	public SettingMenu(MesMan mesman, String settingFile)
 	{
-		super(parent, mesman, mesman.getMessage(MesTableDefine.mes_setting));
+		super(mesman, mesman.getMesDataMan().getMessage(MesTableDefine.mes_setting));
+		
+		MessageDataManager mesDataMan = mesman.getMesDataMan();
 		
 		buffer = new LinkedList<String>();
 		fileName = null;
@@ -134,14 +135,14 @@ public class SettingMenu extends MenuBarBase
 		defaultLang.addActionListener(this);
 		reset.addActionListener(this);
 		
-		setting_jpn = new JMenuItem(mesman.getMessage(MesTableDefine.mes_JPN));
-		setting_eng = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ENG));
-		setting_deu = new JMenuItem(mesman.getMessage(MesTableDefine.mes_DEU));
-		setting_fra = new JMenuItem(mesman.getMessage(MesTableDefine.mes_FRA));
-		setting_ita = new JMenuItem(mesman.getMessage(MesTableDefine.mes_ITA));
-		setting_spa = new JMenuItem(mesman.getMessage(MesTableDefine.mes_SPA));
-		setting_rus = new JMenuItem(mesman.getMessage(MesTableDefine.mes_RUS));
-		setting_tha = new JMenuItem(mesman.getMessage(MesTableDefine.mes_THA));
+		setting_jpn = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_JPN));
+		setting_eng = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_ENG));
+		setting_deu = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_DEU));
+		setting_fra = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_FRA));
+		setting_ita = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_ITA));
+		setting_spa = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_SPA));
+		setting_rus = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_RUS));
+		setting_tha = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_THA));
 		setting_jpn.addActionListener(this);
 		setting_eng.addActionListener(this);
 		setting_deu.addActionListener(this);
@@ -251,7 +252,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public void LanguageChange()
 	{
-		getMenu().setText(getMesman().getMessage(MesTableDefine.mes_setting));
+		getMenu().setText(getMesman().getMesDataMan().getMessage(MesTableDefine.mes_setting));
 	}
 	
 	/* (非 Javadoc)

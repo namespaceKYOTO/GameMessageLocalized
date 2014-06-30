@@ -15,11 +15,11 @@ public class CharacterSizeTable extends TableEx
 
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージクラス
+	 * @param messageMan メッセージデータ管理
 	 * @param width　UI幅
 	 * @param height UI幅
 	 */
-	public CharacterSizeTable(MessageManager messageMan, int width, int height)
+	public CharacterSizeTable(MessageDataManager messageMan, int width, int height)
 	{
 		super(messageMan, width, height);
 		
