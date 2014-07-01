@@ -118,19 +118,19 @@ public class CmdArgEx extends CmdArg
 		
 		if(mode.equals(option))
 		{
-			this.mode = getMode(option);
+			this.mode = getMode(args[0]);
 		}
 		else if(m.equals(option))
 		{
-			mtblFile = args[0];
+			mtblFile = new String(args[0]);
 		}
 		else if(t.equals(option))
 		{
-			ttblFile = args[0];
+			ttblFile = new String(args[0]);
 		}
 		else if(c.equals(option))
 		{
-			ctblFile = args[0];
+			ctblFile = new String(args[0]);
 		}
 	}
 	

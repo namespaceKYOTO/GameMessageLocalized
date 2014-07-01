@@ -96,7 +96,7 @@ public class CmdArg
 	{
 		Stack<String> unknownArgument = new Stack<String>();
 		
-		for( int i = 0; i < args.length; ++i )
+		for( int i = 0; i < args.length;/* ++i */)
 		{
 			// option
 			if( args[i].indexOf(this.optionPrefix) == 0 )
@@ -140,6 +140,7 @@ public class CmdArg
 			else
 			{
 				unknownArgument.push(args[i]);
+				++i;
 			}
 		}
 		

@@ -75,10 +75,13 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		tableMenu = new TableMenu(mesman, size.width, size.height);
 		add(tableMenu.getComponent(), BorderLayout.CENTER);
 		if( isSampleMode ) {
-			TableFile tableFile = new TableFile("", "UTF-16");
-			InputStreamReader mtblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(cmdArg.getMtblFile()));
-			InputStreamReader ttblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(cmdArg.getTtblFile()));
-			InputStreamReader ctblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(cmdArg.getCtblFile()));
+			TableFile tableFile = new TableFile("", "UTF-16BE");
+			String mtblFile = cmdArg.getMtblFile();
+			String ttblFile = cmdArg.getTtblFile();
+			String ctblFile = cmdArg.getCtblFile();
+			InputStreamReader mtblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(mtblFile));
+			InputStreamReader ttblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(ttblFile));
+			InputStreamReader ctblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(ctblFile));
 			tableFile.open(mtblFileStream, tableMenu.getMesTable());
 			tableFile.open(ttblFileStream, tableMenu.getTagTable());
 			tableFile.open(ctblFileStream, tableMenu.getCharsizeTable());
