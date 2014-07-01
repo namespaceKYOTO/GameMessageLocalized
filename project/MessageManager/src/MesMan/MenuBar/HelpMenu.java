@@ -37,6 +37,9 @@ public class HelpMenu extends MenuBarBase
 		welcome = new JMenuItem("Welcome");
 		helpContent = new JMenuItem("Help Content");
 		sampleData = new JMenuItem("Sample Data");
+		welcome.addActionListener(this);
+		helpContent.addActionListener(this);
+		sampleData.addActionListener(this);
 		menu.add(welcome);
 		menu.add(helpContent);
 		menu.add(sampleData);
@@ -67,13 +70,14 @@ public class HelpMenu extends MenuBarBase
 		}
 		else if(obj == sampleData)
 		{
+			System.out.println("Open Sample Window");
 			String[] args = {
-					"-m sample", 
-					"-mt /res/message.mtbl", 
-					"-tt /res/tag.ttbl", 
-					"-ct /res/charSize.ctbl",
+					"-m", "sample",
+					"-mt", "/res/message.mtbl",
+					"-tt", "/res/tag.ttbl", 
+					"-ct", "/res/charSize.ctbl",
 			};
-			MesMan mesman = new MesMan(args);
+			MesMan mesman = new MesMan(args, false);
 		}
 	}
 }

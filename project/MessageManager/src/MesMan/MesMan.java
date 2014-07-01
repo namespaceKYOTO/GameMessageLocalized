@@ -4,6 +4,7 @@ import java.util.Stack;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.*;
 
@@ -34,19 +35,16 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	private HelpMenu helpMenu;
 	private TableMenu tableMenu;
 	
-	private String FRAME_TITLE = "Message Manager";
+	private String FRAME_TITLE_NORMAL = "Message Manager";
+	private String FRAME_TITLE_SAMPLE = "Sample";
 	
 	/**
 	 * コンストラクタ.
+	 * @param args オプション
+	 * @param independence 独立したWindowか?
 	 */
-	public MesMan(String[] args)
+	public MesMan(String[] args, boolean independence)
 	{
-		System.out.println("-- args --");
-		for (String string : args) {
-			System.out.println(string);
-		}
-		System.out.println("-- ---- --");
-		
 		cmdArg = new CmdArgEx();
 		cmdArg.analyzeCommandArguments(args);
 		boolean isSampleMode = (cmdArg.getMode() == CmdArgEx.eMode.Sample);
@@ -56,7 +54,17 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		mesman = new MessageDataManager("/res/MesTableDefine.bin");
 		mesman.setLanguageNo(SettingMenu.getDefaultLanguage("./config.txt"));
 		
-		setTitle(FRAME_TITLE);
+		if( !isSampleMode ) {
+			setTitle(FRAME_TITLE_NORMAL);
+		} else {
+			setTitle(FRAME_TITLE_SAMPLE);
+		}
+		
+		if(independence) {
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		} else {
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		}
 		
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle rec = env.getMaximumWindowBounds();
@@ -64,8 +72,7 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		int height = (int)rec.getHeight() / 2;
 		int x = ((int)rec.getWidth() / 2) - (width / 2);
 		int y = ((int)rec.getHeight() / 2) - (height / 2);
-		setBounds( x, y, width, height );		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds( x, y, width, height );
 		
 		//// menu bar
 		menubar = new MenuBar(this);
@@ -75,16 +82,30 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		tableMenu = new TableMenu(mesman, size.width, size.height);
 		add(tableMenu.getComponent(), BorderLayout.CENTER);
 		if( isSampleMode ) {
-			TableFile tableFile = new TableFile("", "UTF-16BE");
+			String charset = "UTF-16";
+			TableFile tableFile = new TableFile("", charset);
 			String mtblFile = cmdArg.getMtblFile();
 			String ttblFile = cmdArg.getTtblFile();
 			String ctblFile = cmdArg.getCtblFile();
-			InputStreamReader mtblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(mtblFile));
-			InputStreamReader ttblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(ttblFile));
-			InputStreamReader ctblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(ctblFile));
-			tableFile.open(mtblFileStream, tableMenu.getMesTable());
-			tableFile.open(ttblFileStream, tableMenu.getTagTable());
-			tableFile.open(ctblFileStream, tableMenu.getCharsizeTable());
+			try
+			{
+				if(mtblFile != null && mtblFile.length() > 0) {
+					InputStreamReader mtblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(mtblFile), charset);
+					tableFile.open(mtblFileStream, tableMenu.getMesTable());
+				}
+				if(ttblFile != null && ttblFile.length() > 0) {
+					InputStreamReader ttblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(ttblFile), charset);
+					tableFile.open(ttblFileStream, tableMenu.getTagTable());
+				}
+				if(ctblFile != null && ctblFile.length() > 0) {
+					InputStreamReader ctblFileStream = new InputStreamReader(this.getClass().getResourceAsStream(ctblFile), charset);
+					tableFile.open(ctblFileStream, tableMenu.getCharsizeTable());
+				}
+			}
+			catch(UnsupportedEncodingException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		{
@@ -156,7 +177,10 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	public void windowClosed(WindowEvent arg0) {}
 	public void windowClosing(WindowEvent arg0) {
 		// 終了時処理
-		this.settingMenu.save();
+		if(cmdArg.getMode() == CmdArgEx.eMode.Normal)
+		{
+			this.settingMenu.save();
+		}
 	}
 	
 	public void windowDeactivated(WindowEvent arg0) {}

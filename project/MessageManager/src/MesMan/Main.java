@@ -10,7 +10,7 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		MesMan mesman = new MesMan(args);
+		MesMan mesman = new MesMan(args, true);
 	}
 
 }

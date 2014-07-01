@@ -8,6 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import MesMan.CheckParamPanel;
+import MesMan.CmdArgEx;
 import MesMan.FileFilterEx;
 import MesMan.MesMan;
 import MesMan.MesTableDefine;
@@ -73,7 +74,6 @@ public class FileMenu extends MenuBarBase
 		open.add(openMesTbl);
 		open.add(openTabTbl);
 		open.add(openCharTbl);
-		menu.add(open);
 		
 		save = new JMenu(mesDataMan.getMessage(MesTableDefine.mes_save));
 		saveMesTbl = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_mtbl));
@@ -85,10 +85,14 @@ public class FileMenu extends MenuBarBase
 		save.add(saveMesTbl);
 		save.add(saveTabTbl);
 		save.add(saveCharTbl);
-		menu.add(save);
 
 		output = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_output));
 		output.addActionListener(this);
+		
+		if(mesman.getCmdArg().getMode() != CmdArgEx.eMode.Sample) {
+			menu.add(open);
+			menu.add(save);
+		}
 		menu.add(output);
 	}
 	
