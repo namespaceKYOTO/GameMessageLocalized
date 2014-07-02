@@ -92,7 +92,7 @@ public class OutPuter
 					}
 					String javaFileName = outPutBaseFileName.replace(".", "_");
 					javaFileName = javaFileName.replace("-", "_");
-					outputJavaFileMesData(parent, javaFileName, mesTable);
+					outputJavaFile(parent, javaFileName, mesTable, tagTable);
 				}
 
 				++count;
@@ -398,76 +398,82 @@ public class OutPuter
 	}
 	
 	/**
+	 */
+	/**
 	 * メッセージデータの.javaファイル出力.
 	 * @param parent 出力先ディレクトリー
 	 * @param name 出力ファイル名
 	 * @param mesTable　出力するメッセージテーブル
+	 * @param tabTable 出力するタグデーぶる
 	 */
-	private void outputJavaFileMesData(String parent, String name, MesTable mesTable)
+	private void outputJavaFile(String parent, String name, MesTable mesTable, TagTable tagTable)
 	{
 		try
 		{
 			File file = new File(parent, name + ".java");
 			file.createNewFile();
 			PrintWriter pw = new PrintWriter(file);
-			int labelIdx = mesTable.getColumnIndex("Label");
-			Stack<Stack<String>> row = mesTable.getRow();
+			Stack<Stack<String>> mesRow = mesTable.getRow();
+			Stack<Stack<String>> tagRow = tagTable.getRow();
 			
 			pw.write("package MesMan;\n");
 			pw.write("\n");
 			pw.write("public class " + name + "\n");
 			pw.write("{\n");
 			
-
+			// Language Name
 			pw.write("\t// Number of Language\n");
 			int languageCount = 0;
 			for(String column : mesTable.getColumnName())
 			{
-				if(!"Label".equals(column) && !"Description".equals(column))
+				if(mesTable.isLanguageColumnName(column))
 				{
-					pw.write(String.format("\tstatic int Language_%s = %d;\n", column, languageCount));
+					pw.write(String.format("\tpublic static int Language_%s = %d;\n", column, languageCount));
 					++languageCount;
 				}
 			}
-			pw.write(String.format("\tstatic int LanguageNum = %d;\n", languageCount));
+			pw.write("\n");
+			pw.write(String.format("\tpublic static int LanguageNum = %d;\n", languageCount));
 			pw.write("\n");
 			
+			// Message Label
 			pw.write("\t// Number of Message\n");
-			int index = 0;
-			for (Stack<String> strings : row) {
-				String string = strings.elementAt(labelIdx);
-				if(string != null && string.length() > 0) {
-					pw.write(String.format("\tstatic int %s = %d;\n", string, index));
-					++index;
+			{
+				int labelIdx = mesTable.getColumnLabelIndex();
+				int index = 0;
+				for (Stack<String> strings : mesRow) {
+					String string = strings.elementAt(labelIdx);
+					if(string != null && string.length() > 0) {
+						pw.write(String.format("\tpublic static int %s = %d;\n", string, index));
+						++index;
+					}
 				}
+				
+				// Message Num
+				pw.write("\n");
+				pw.write(String.format("\tpublic static int MessageNum = %d;\n", index));
+				pw.write("\n");
 			}
-			pw.write(String.format("\tstatic int MessageNum = %d;\n", index));
 			
-
+			// Tag
+			pw.write("\t// Number of Tag\n");
+			{
+				int labelIdx = tagTable.getColumnLabelIndex();
+				int codeIdx = tagTable.getColumnCodeIndex();
+				for(Stack<String> string : tagRow) {
+					Long data = Long.decode(string.get(codeIdx));
+					pw.write(String.format("\tpublic static int %s = 0x%x;\n", string.get(labelIdx), data));
+				}
+				
+				// Tag Num
+				pw.write("\n");
+				pw.write(String.format("\tpublic static int TagNum = %d;\n", tagRow.size()));
+				pw.write("\n");
+			}
+			
+			
 			pw.write("\n}\n");
 			pw.close();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * タグデータの.javaファイルの出力
-	 * @param parent　出力先ディレクトリー
-	 * @param name 出力ファイル名 
-	 * @param tagTable 出力するタグテーブル
-	 */
-	public void outputJavaFileTagData(String parent, String name, TagTable tagTable)
-	{
-		try
-		{
-			File file = new File(parent, name);
-			file.createNewFile();
-			PrintWriter pw = new PrintWriter(file);
-			Stack<Stack<String>> row = tagTable.getRow();
-			
 		}
 		catch(IOException e)
 		{

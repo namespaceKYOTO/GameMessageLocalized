@@ -9,6 +9,7 @@ import java.util.*;
  */
 public class TagTable extends TableEx
 {
+	private String LABEL = "Label"; 
 	private String TAG = "Tag";
 	private String DESCRIPTION = "Description";
 	private String CODE = "Code";
@@ -24,9 +25,10 @@ public class TagTable extends TableEx
 	{
 		super(messageMan, width, height);
 		
-		String[] columns = {TAG, DESCRIPTION, CODE, SUBSTITUTION};
+		String[] columns = {LABEL, TAG, DESCRIPTION, CODE, SUBSTITUTION};
 		addColumnNames(columns);
 		
+		addNotDeleteColumn(LABEL);
 		addNotDeleteColumn(TAG);
 		addNotDeleteColumn(DESCRIPTION);
 		addNotDeleteColumn(CODE);
@@ -46,7 +48,7 @@ public class TagTable extends TableEx
 		// 
 		Stack<String> rowData = this.getRow().get(index);
 		String code = null;
-		int columnIndex = this.getColumnIndex("Code");
+		int columnIndex = this.getColumnIndex(CODE);
 		System.out.println(String.format("Code index : %d", columnIndex));
 		if(columnIndex != -1)
 		{
@@ -77,6 +79,15 @@ public class TagTable extends TableEx
 		Byte[] ret = new Byte[codeList.size()];
 		codeList.toArray(ret);
 		return ret;
+	}
+	
+	/**
+	 * ラベル列番号の取得.
+	 * @return ラベル列番号
+	 */
+	public int getColumnLabelIndex()
+	{
+		return getColumnIndex(LABEL);
 	}
 	
 	/**

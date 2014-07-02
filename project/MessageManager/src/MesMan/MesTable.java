@@ -100,4 +100,17 @@ public class MesTable extends TableEx
 	{
 		return getColumnIndex(SIZE);	
 	}
+	
+	/**
+	 * 言語の列名か?.
+	 * @param str 列名
+	 * @return 正否
+	 */
+	public boolean isLanguageColumnName(String columnName)
+	{
+		if(LABEL.equals(columnName) || DESCRIPTION.equals(columnName) || SIZE.equals(columnName)) {
+			return false;
+		}
+		return true;
+	}
 }
