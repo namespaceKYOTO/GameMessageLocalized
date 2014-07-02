@@ -185,7 +185,7 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	public void windowClosed(WindowEvent arg0) {}
 	public void windowClosing(WindowEvent arg0) {
 		// 終了時処理
-		if(cmdArg.getMode() != CmdArgEx.eMode.Normal)
+		if(cmdArg.getMode() != CmdArgEx.eMode.Sample)
 		{
 			this.settingMenu.save();
 		}
