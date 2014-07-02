@@ -39,6 +39,16 @@ public class MenuBar
 	}
 	
 	/**
+	 * メニューの取得
+	 * @param index メニュー番号
+	 * @return メニュー
+	 */
+	public MenuBarBase get(int index)
+	{
+		return menuStack.get(index);
+	}
+	
+	/**
 	 * メニューバーの取得.
 	 * @return メニューバー
 	 */

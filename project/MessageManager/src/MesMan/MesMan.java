@@ -121,8 +121,8 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 			menubar.add(settingMenu);
 		}
 		menubar.add(languageMenu);
+		menubar.add(toolsMenu);
 		if( !isSampleMode ) {
-			menubar.add(toolsMenu);
 			menubar.add(helpMenu);
 		}
 		
@@ -164,6 +164,14 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	 */
 	public TableMenu getTableMenu() {
 		return tableMenu;
+	}
+	
+	/**
+	 * メニューバー取得.
+	 * @return メニューバー
+	 */
+	public MenuBar getMenubar() {
+		return menubar;
 	}
 
 	/* (非 Javadoc)

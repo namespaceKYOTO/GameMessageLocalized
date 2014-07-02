@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 
 import MesMan.MesMan;
 import MesMan.MesTableDefine;
+import MesMan.MessageDataManager;
 
 /**
  * ヘルプ.
@@ -78,6 +79,11 @@ public class HelpMenu extends MenuBarBase
 					"-ct", "/res/charSize.ctbl",
 			};
 			MesMan mesman = new MesMan(args, false);
+			
+			// 現在設定されている言語をSampleWindow側にも反映させる
+			int language = getMesman().getMesDataMan().getLanguageNo();
+			mesman.getMesDataMan().setLanguageNo(language);
+			mesman.getMenubar().languageChange();
 		}
 	}
 }
