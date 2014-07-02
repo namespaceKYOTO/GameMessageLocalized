@@ -92,7 +92,7 @@ public class OutPuter
 					}
 					String javaFileName = outPutBaseFileName.replace(".", "_");
 					javaFileName = javaFileName.replace("-", "_");
-					outputJavaFile(parent, javaFileName, mesTable);
+					outputJavaFileMesData(parent, javaFileName, mesTable);
 				}
 
 				++count;
@@ -398,12 +398,12 @@ public class OutPuter
 	}
 	
 	/**
-	 * .javaファイル出力.
+	 * メッセージデータの.javaファイル出力.
 	 * @param parent 出力先ディレクトリー
 	 * @param name 出力ファイル名
 	 * @param mesTable　出力するメッセージテーブル
 	 */
-	private void outputJavaFile(String parent, String name, MesTable mesTable)
+	private void outputJavaFileMesData(String parent, String name, MesTable mesTable)
 	{
 		try
 		{
@@ -449,7 +449,29 @@ public class OutPuter
 		}
 		catch(IOException e)
 		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * タグデータの.javaファイルの出力
+	 * @param parent　出力先ディレクトリー
+	 * @param name 出力ファイル名 
+	 * @param tagTable 出力するタグテーブル
+	 */
+	public void outputJavaFileTagData(String parent, String name, TagTable tagTable)
+	{
+		try
+		{
+			File file = new File(parent, name);
+			file.createNewFile();
+			PrintWriter pw = new PrintWriter(file);
+			Stack<Stack<String>> row = tagTable.getRow();
 			
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
