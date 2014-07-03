@@ -58,46 +58,49 @@ public class OutPuter
 			for (String string : charset) {
 				// .bin
 				if( binCreate && (charaCodeFlag & (binFlag<<count)) != 0 ) {
-					binFile = getOutputFileName(outPutBaseFileName, "_"+string, ".bin", charaCodeFlag);
-					outputBinary(file.getParent(), binFile, tagTable, mesTable, string);
+					binFile = getOutputFileName(outPutBaseFileName, "_"+string, "", charaCodeFlag);
+					outputBinary(file.getParent(), binFile + ".bin", tagTable, mesTable, string);
 				}
 				
 				// .c
 				if( cCreate ) {
 					String parent = file.getParent();
 					if( binFile == null ) {
-						binFile = outPutBaseFileName + ".bin";
-						outputBinary(file.getParent(), binFile, tagTable, mesTable, "UTF-8");
+						binFile = getOutputFileName(outPutBaseFileName, "_"+string, "", charaCodeFlag);
+						outputBinary(file.getParent(), binFile + ".bin", tagTable, mesTable, string);
 					}
 					String cFile = binFile.replace(".", "_");
 					cFile = cFile.replace("-", "_");
+					System.out.println("File Name : " + cFile);
 					String args[] = {
-						"-o",
-						parent + "/" + cFile + ".c",	// Out C File Name
-						"-d",
-						parent + "/" + binFile,			// data File Name
+						"-o", parent + "/",						// out directory
+						"-d", parent + "/" + binFile + ".bin",	// data file Name
 					};
 					BtoC.main(args);
 					
-					// tag file
-					outputCTagFile(parent, cFile, mesTable);
 					
-				}
-
-				// .java
-				if( javaCreate ) {
-					String parent = file.getParent();
-					if( binFile == null ) {
-						binFile = outPutBaseFileName;
-					}
-					String javaFileName = outPutBaseFileName.replace(".", "_");
-					javaFileName = javaFileName.replace("-", "_");
-					outputJavaFile(parent, javaFileName, mesTable, tagTable);
 				}
 
 				++count;
 				binFile = null;
 			}
+		}
+		
+		if(cCreate) {
+			String parent = file.getParent();
+			// tag file
+			outputCTagFile(parent, outPutBaseFileName, mesTable, tagTable);
+		}
+		
+		// .java
+		if( javaCreate ) {
+			String parent = file.getParent();
+			if( binFile == null ) {
+				binFile = outPutBaseFileName;
+			}
+			String javaFileName = outPutBaseFileName.replace(".", "_");
+			javaFileName = javaFileName.replace("-", "_");
+			outputJavaFile(parent, javaFileName, mesTable, tagTable);
 		}
 	}
 	
@@ -357,8 +360,9 @@ public class OutPuter
 	 * @param parent 出力先ディレクトリー
 	 * @param name 出力ファイル名
 	 * @param mesTable 出力するメッセージテーブル
+	 * @param tagTable 出力するタグテーブル
 	 */
-	private void outputCTagFile(String parent, String name, MesTable mesTable)
+	private void outputCTagFile(String parent, String name, MesTable mesTable, TagTable tagTable)
 	{
 		try
 		{
@@ -374,22 +378,46 @@ public class OutPuter
 			pw.write("#define " + name + "_h_\n");
 			pw.write("\n");
 			
-			int labelIdx = mesTable.getColumnIndex("Label");
-			Stack<Stack<String>> row = mesTable.getRow();
-			
-			int index = 0;
-			for (Stack<String> strings : row) {
-				String string = strings.elementAt(labelIdx);
-				pw.write(String.format("#define %s %d\n", string, index));
-				++index;
+			//　Message Label
+			pw.write("// Message Label\n");
+			{
+				int index = 0;
+				Stack<Stack<String>> row = mesTable.getRow();
+				int labelIdx = mesTable.getColumnLabelIndex();
+				for (Stack<String> strings : row) {
+					String string = strings.elementAt(labelIdx);
+					if(string != null && string.length() > 0) {
+						pw.write(String.format("#define %s %d\n", string, index));
+						++index;
+					}
+				}
+				pw.write("\n");
+				pw.write(String.format("#define all_message_label_%s %d\n", name, index));
+				pw.write("\n");
 			}
-			pw.write("\n");
 			
-			pw.write(String.format("#define all_label_%s %d\n", name, index));
-			pw.write("\n");
+			// Tag Label
+			pw.write("// Tag Label\n");
+			{
+				Stack<Stack<String>> row = tagTable.getRow();
+				int labelIdx = tagTable.getColumnLabelIndex();
+				int codeIdx = tagTable.getColumnCodeIndex();
+				int count = 0;
+				for (Stack<String> stack : row) {
+					String label = stack.get(labelIdx);
+					String code = stack.get(codeIdx);
+					if(label != null && label.length() > 0) {
+						pw.write("#define " + label + " " + code + "\n");
+						++count;
+					}
+				}
+				pw.write("\n");
+				pw.write(String.format("#define all_tag_%s %d\n", name, count));
+				pw.write("\n");
+			}
 			
 			pw.write("#endif\t// " + name + "_h_\n");
-			
+			pw.flush();
 			pw.close();
 		}
 		catch(IOException e)
@@ -398,13 +426,11 @@ public class OutPuter
 	}
 	
 	/**
-	 */
-	/**
 	 * メッセージデータの.javaファイル出力.
 	 * @param parent 出力先ディレクトリー
 	 * @param name 出力ファイル名
 	 * @param mesTable　出力するメッセージテーブル
-	 * @param tabTable 出力するタグデーぶる
+	 * @param tabTable 出力するタグテーブル
 	 */
 	private void outputJavaFile(String parent, String name, MesTable mesTable, TagTable tagTable)
 	{
@@ -460,14 +486,19 @@ public class OutPuter
 			{
 				int labelIdx = tagTable.getColumnLabelIndex();
 				int codeIdx = tagTable.getColumnCodeIndex();
-				for(Stack<String> string : tagRow) {
-					Long data = Long.decode(string.get(codeIdx));
-					pw.write(String.format("\tpublic static int %s = 0x%x;\n", string.get(labelIdx), data));
+				int count = 0;
+				for(Stack<String> stack : tagRow) {
+					String label = stack.get(labelIdx);
+					String code = stack.get(codeIdx);
+					if(label != null && label.length() > 0 && code != null && code.length() > 0) {
+						pw.write("\tpublic static int " + label + " = " + code + ";\n");
+						++count;
+					}
 				}
 				
 				// Tag Num
 				pw.write("\n");
-				pw.write(String.format("\tpublic static int TagNum = %d;\n", tagRow.size()));
+				pw.write(String.format("\tpublic static int TagNum = %d;\n", count));
 				pw.write("\n");
 			}
 			
