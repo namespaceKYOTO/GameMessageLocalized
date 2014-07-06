@@ -15,13 +15,13 @@ public class MesTable extends TableEx
 	
 	/**
 	 * コンストラクタ.
-	 * @param messageMan　メッセージデータ管理
+	 * @param mesman　メッセージデータ管理
 	 * @param width　UI幅
 	 * @param height UI高さ
 	 */
-	public MesTable(MessageDataManager messageMan, int width, int height)
+	public MesTable(MesMan mesman, int width, int height)
 	{
-		super(messageMan, width, height);
+		super(mesman, width, height);
 		
 		String[] columns = {LABEL, DESCRIPTION, SIZE, "JPN", "ENG", "DEU", "FRA", "ITA", "SPA"};
 		addColumnNames(columns);

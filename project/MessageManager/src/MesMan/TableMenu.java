@@ -31,11 +31,10 @@ public class TableMenu implements ChangeListener
 	{
 		this.mesman = mesman;
 		
-		MessageDataManager mesDataMan = mesman.getMesDataMan();
-		this.mesTable = new MesTable(mesDataMan, width, height);
-		this.tagTable = new TagTable(mesDataMan, width, height);
-		this.charSizeTable = new CharacterSizeTable(mesDataMan, width, height);
-		this.resultTable = new ResultTable(mesDataMan, width, height);
+		this.mesTable = new MesTable(mesman, width, height);
+		this.tagTable = new TagTable(mesman, width, height);
+		this.charSizeTable = new CharacterSizeTable(mesman, width, height);
+		this.resultTable = new ResultTable(mesman, width, height);
 		
 		tab = new JTabbedPane();
 		tab.addChangeListener(this);

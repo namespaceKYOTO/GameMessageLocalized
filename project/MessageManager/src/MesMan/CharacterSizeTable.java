@@ -3,6 +3,8 @@ package MesMan;
 import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
+import MesMan.MenuBar.SettingMenu;
+
 /**
  * 文字サイズテーブル.
  * @author t_sato
@@ -15,13 +17,13 @@ public class CharacterSizeTable extends TableEx
 
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージデータ管理
+	 * @param mesman メッセージデータ管理
 	 * @param width　UI幅
 	 * @param height UI幅
 	 */
-	public CharacterSizeTable(MessageDataManager messageMan, int width, int height)
+	public CharacterSizeTable(MesMan mesman, int width, int height)
 	{
-		super(messageMan, width, height);
+		super(mesman, width, height);
 		
 		String[] columns = {CHARACTER, SIZE};
 		addColumnNames(columns);
@@ -92,7 +94,12 @@ public class CharacterSizeTable extends TableEx
 			e1.printStackTrace();
 			return 0;
 		}
+		SettingMenu settingMenu = (SettingMenu) this.mesman.getMenubar().get(1);
 		int size = 0;
+		if(settingMenu != null) {
+			// 文字が見つからなかったときのサイズ
+			size = settingMenu.getDefaultCharactorSize().intValue();
+		}
 		
 		while(leftIdx < rightIdx)
 		{

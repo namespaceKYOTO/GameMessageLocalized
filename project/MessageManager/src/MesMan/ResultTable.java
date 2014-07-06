@@ -12,13 +12,13 @@ public class ResultTable extends TableEx
 
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージデータ管理
+	 * @param mesman メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public ResultTable(MessageDataManager messageMan, int width, int height)
+	public ResultTable(MesMan mesman, int width, int height)
 	{
-		super(messageMan, width, height);
+		super(mesman, width, height);
 		
 		String[] colum = {LABEL, OVER};
 		this.addColumnNames(colum);

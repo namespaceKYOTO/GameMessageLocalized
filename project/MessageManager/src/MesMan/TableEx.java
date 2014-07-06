@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableColumnModel;
  */
 public class TableEx implements MouseListener, ActionListener, MenuListener
 {
-	MessageDataManager messageMan;
+	MesMan mesman;
 	
 	private Stack<Stack<String>>	row;
 	private Stack<String>			columnName;
@@ -46,13 +46,13 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	
 	/**
 	 * 初期化.
-	 * @param messageMan メッセージデータ管理
+	 * @param mesman メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	private void init(MessageDataManager messageMan, int width, int height)
+	private void init(MesMan mesman, int width, int height)
 	{
-		this.messageMan = messageMan;
+		this.mesman = mesman;
 		this.row = new Stack<Stack<String>>();
 		this.columnName = new Stack<String>();
 		this.notDeleteColumn = new Stack<String>();
@@ -75,11 +75,12 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 		//this.panel.setPreferredSize(preferredMesTable);
 //		this.panel.setSize(width, height);
 		
-		this.addItem = new JMenu(messageMan.getMessage(MesTableDefine.mes_add_row));
-		this.insertItem = new JMenu(messageMan.getMessage(MesTableDefine.mes_intert_row));
-		this.removeItem = new JMenuItem(messageMan.getMessage(MesTableDefine.mes_remove_row));
-		this.addColumn = new JMenuItem(messageMan.getMessage(MesTableDefine.mes_add_column));
-		this.removeColumn = new JMenuItem(messageMan.getMessage(MesTableDefine.mes_remove_column));
+		MessageDataManager mesDataMan = mesman.getMesDataMan();
+		this.addItem = new JMenu(mesDataMan.getMessage(MesTableDefine.mes_add_row));
+		this.insertItem = new JMenu(mesDataMan.getMessage(MesTableDefine.mes_intert_row));
+		this.removeItem = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_remove_row));
+		this.addColumn = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_add_column));
+		this.removeColumn = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_remove_column));
 		this.addItem.addActionListener(this);
 		this.insertItem.addActionListener(this);
 		this.removeItem.addActionListener(this);
@@ -122,25 +123,25 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージデータ管理
+	 * @param mesman メッセージデータ管理
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public TableEx(MessageDataManager messageMan, int width, int height)
+	public TableEx(MesMan mesman, int width, int height)
 	{
-		init( messageMan, width, height);
+		init( mesman, width, height);
 	}
 	
 	/**
 	 * コンストラクタ.
-	 * @param messageMan メッセージデータ管理
+	 * @param mesman メッセージデータ管理
 	 * @param columns 列文字列
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public TableEx(MessageDataManager messageMan, String[] columns, int width, int height)
+	public TableEx(MesMan mesman, String[] columns, int width, int height)
 	{
-		init( messageMan, width, height);
+		init( mesman, width, height);
 		addColumnNames(columns);
 	}
 	
@@ -449,10 +450,11 @@ public class TableEx implements MouseListener, ActionListener, MenuListener
 	 */
 	public void LanguageChange()
 	{
-		addItem.setText(messageMan.getMessage(MesTableDefine.mes_add_row));
-		insertItem.setText(messageMan.getMessage(MesTableDefine.mes_intert_row));
-		removeItem.setText(messageMan.getMessage(MesTableDefine.mes_remove_row));
-		addColumn.setText(messageMan.getMessage(MesTableDefine.mes_add_column));
-		removeColumn.setText(messageMan.getMessage(MesTableDefine.mes_remove_column));
+		MessageDataManager mesDataMan = this.mesman.getMesDataMan();
+		addItem.setText(mesDataMan.getMessage(MesTableDefine.mes_add_row));
+		insertItem.setText(mesDataMan.getMessage(MesTableDefine.mes_intert_row));
+		removeItem.setText(mesDataMan.getMessage(MesTableDefine.mes_remove_row));
+		addColumn.setText(mesDataMan.getMessage(MesTableDefine.mes_add_column));
+		removeColumn.setText(mesDataMan.getMessage(MesTableDefine.mes_remove_column));
 	}
 }
