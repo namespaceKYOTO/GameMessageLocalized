@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import MesMan.MesMan;
 import MesMan.MesTableDefine;
@@ -23,19 +24,28 @@ import MesMan.MessageDataManager;
  */
 public class SettingMenu extends MenuBarBase
 {
+	public enum eMenuType
+	{
+		Normal,
+		CharactorSize,
+	};
 	
 	private String fileName;
 	private String defaultDirectory;
 	private Integer defaultLanguage;
+	private Integer defaultCharactorSize;
 	LinkedList<String> buffer;
-	
-	private static String DefaultLanguageLabel = "\"defaultLanguage\":";
-	private static String DefaultDirectory = "C:\\";
+
 	private static String DefaultDirectoryLabel = "\"defaultDirectory\":";
-	private static int Defaultlanguage = MesTableDefine.Language_ENG;
+	private static String DefaultDirectory = "C:\\";
+	private static String DefaultLanguageLabel = "\"defaultLanguage\":";
+	private static int DefaultLanguage = MesTableDefine.Language_ENG;
+	private static String DefaultCharactorSizeLabel = "\"defaultCharactorSize\":";
+	private static int DefaultCharactorSize = 0;
 	
 	private static int directoryIdx = 0;
 	private static int languageIdx = 1;
+	private static int charactorsizeIdx = 2;
 	
 	private JMenuItem defaulttDir;
 	private JMenu defaultLang;
@@ -48,6 +58,8 @@ public class SettingMenu extends MenuBarBase
 	private JMenuItem setting_rus;
 	private JMenuItem setting_tha;
 	private JMenuItem reset;
+	
+	private JMenuItem defaultCharSize;
 
 	private JFileChooser directoryChooser;
 	
@@ -61,7 +73,7 @@ public class SettingMenu extends MenuBarBase
 	{
 		File file = new File(fileName);
 		if(!file.exists()) {
-			return Defaultlanguage;
+			return DefaultLanguage;
 		}
 		
 		try 
@@ -80,7 +92,7 @@ public class SettingMenu extends MenuBarBase
 		catch(IOException e)
 		{
 			e.printStackTrace();
-			return Defaultlanguage;
+			return DefaultLanguage;
 		}
 	}
 	
@@ -98,7 +110,8 @@ public class SettingMenu extends MenuBarBase
 		buffer = new LinkedList<String>();
 		fileName = null;
 		defaultDirectory = new String(DefaultDirectory);
-		defaultLanguage = Defaultlanguage;
+		defaultLanguage = DefaultLanguage;
+		defaultCharactorSize = DefaultCharactorSize;
 		try
 		{
 			fileName = settingFile;
@@ -106,7 +119,8 @@ public class SettingMenu extends MenuBarBase
 			if(!file.exists())
 			{
 				buffer.add(DefaultDirectoryLabel + DefaultDirectory);
-				buffer.add(DefaultLanguageLabel + String.format("%d", Defaultlanguage));
+				buffer.add(DefaultLanguageLabel + String.format("%d", DefaultLanguage));
+				buffer.add(DefaultCharactorSizeLabel + String.format("%d", DefaultCharactorSize));
 			}
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			
@@ -119,6 +133,7 @@ public class SettingMenu extends MenuBarBase
 			
 			defaultDirectory = buffer.get(directoryIdx).substring(DefaultDirectoryLabel.length());
 			defaultLanguage = Integer.valueOf(buffer.get(languageIdx).substring(DefaultLanguageLabel.length()));
+			defaultCharactorSize = Integer.valueOf(buffer.get(charactorsizeIdx).substring(DefaultCharactorSizeLabel.length()));
 		}
 		catch(IOException e)
 		{
@@ -131,9 +146,12 @@ public class SettingMenu extends MenuBarBase
 		defaulttDir = new JMenuItem ("Default Directory");
 		defaultLang = new JMenu("Default Language");
 		reset = new JMenuItem("reset");
+		defaultCharSize = new JMenuItem("Default Charactor Size");
 		defaulttDir.addActionListener(this);
 		defaultLang.addActionListener(this);
 		reset.addActionListener(this);
+		defaultCharSize.addActionListener(this);
+		
 		
 		setting_jpn = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_JPN));
 		setting_eng = new JMenuItem(mesDataMan.getMessage(MesTableDefine.mes_ENG));
@@ -163,10 +181,13 @@ public class SettingMenu extends MenuBarBase
 		menu.add(defaulttDir);
 		menu.add(defaultLang);
 		menu.add(reset);
+		menu.add(defaultCharSize);
 		
 		directoryChooser = new JFileChooser();
 		directoryChooser.setDialogType(JFileChooser.CUSTOM_DIALOG);
 		directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		changeMenu(eMenuType.Normal);
 	}
 	
 	/**
@@ -190,12 +211,13 @@ public class SettingMenu extends MenuBarBase
 	
 	/**
 	 * デフォルトディレクト取得.
-	 * @return
+	 * @return ディレクト
 	 */
 	public String getDefaultDirectory()
 	{
 		return defaultDirectory;
 	}
+	
 	/**
 	 * デフォルトディレクトリ設定.
 	 * @param defaultDirectory ディレクトリ
@@ -207,6 +229,26 @@ public class SettingMenu extends MenuBarBase
 		this.defaultDirectory = defaultDirectory;
 	}
 	
+	/**
+	 * デフォルト文字サイズの取得.
+	 * @return　文字サイズ
+	 */
+	public Integer getDefaultCharactorSize()
+	{
+		return defaultCharactorSize;
+	}
+
+	/**
+	 * デフォルト文字サイズの設定
+	 * @param defaultCharactorSize 文字サイズ
+	 */
+	public void setDefaultCharactorSize(Integer defaultCharactorSize)
+	{
+		buffer.remove(charactorsizeIdx);
+		buffer.add(charactorsizeIdx, DefaultCharactorSizeLabel + String.valueOf(defaultCharactorSize));
+		this.defaultCharactorSize = defaultCharactorSize;
+	}
+
 	/**
 	 * 設定のリセット.
 	 */
@@ -255,6 +297,30 @@ public class SettingMenu extends MenuBarBase
 		getMenu().setText(getMesman().getMesDataMan().getMessage(MesTableDefine.mes_setting));
 	}
 	
+	/**
+	 * メニュータイプの変更.
+	 * @param type タイプ
+	 */
+	public void changeMenu(eMenuType type)
+	{
+		switch(type)
+		{
+			case Normal:
+				defaulttDir.setVisible(true);
+				defaultLang.setVisible(true);
+				reset.setVisible(true);
+				defaultCharSize.setVisible(false);
+				break;
+				
+			case CharactorSize:
+				defaulttDir.setVisible(false);
+				defaultLang.setVisible(false);
+				reset.setVisible(false);
+				defaultCharSize.setVisible(true);
+				break;
+		}
+	}
+	
 	/* (非 Javadoc)
 	 * @see MesMan.MenuBar.MenuBarBase#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -270,6 +336,18 @@ public class SettingMenu extends MenuBarBase
 			{
 				File file = this.directoryChooser.getSelectedFile();
 				this.setDefaultDirectory(file.getPath());
+			}
+		}
+		else if(obj == this.defaultCharSize) 
+		{
+			String input = JOptionPane.showInputDialog("Charactor Size");
+			try
+			{
+				this.setDefaultCharactorSize(Integer.valueOf(input));
+			}
+			catch(NumberFormatException e)
+			{
+				e.printStackTrace();
 			}
 		}
 		else if(obj == this.reset)

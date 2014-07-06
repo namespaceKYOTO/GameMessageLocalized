@@ -2,16 +2,19 @@ package MesMan;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import MesMan.MenuBar.SettingMenu;
 
 /**
  * テーブルメニュー
  * @author t_sato
  *
  */
-public class TableMenu
+public class TableMenu implements ChangeListener
 {
-
-	private MessageDataManager mesdataman;
+	private MesMan mesman;
 	private JTabbedPane tab;
 	private MesTable mesTable;
 	private TagTable tagTable;
@@ -24,16 +27,18 @@ public class TableMenu
 	 * @param width UI幅
 	 * @param height UI高さ
 	 */
-	public TableMenu(MessageDataManager mesman, int width, int height)
+	public TableMenu(MesMan mesman, int width, int height)
 	{
-		this.mesdataman = mesman;
+		this.mesman = mesman;
 		
-		this.mesTable = new MesTable(mesman, width, height);
-		this.tagTable = new TagTable(mesman, width, height);
-		this.charSizeTable = new CharacterSizeTable(mesman, width, height);
-		this.resultTable = new ResultTable(mesman, width, height);
+		MessageDataManager mesDataMan = mesman.getMesDataMan();
+		this.mesTable = new MesTable(mesDataMan, width, height);
+		this.tagTable = new TagTable(mesDataMan, width, height);
+		this.charSizeTable = new CharacterSizeTable(mesDataMan, width, height);
+		this.resultTable = new ResultTable(mesDataMan, width, height);
 		
 		tab = new JTabbedPane();
+		tab.addChangeListener(this);
 		tab.addTab("Tag", this.tagTable.getPanel());
 		tab.addTab("Message", this.mesTable.getPanel());
 		tab.addTab("CharacterSize", this.charSizeTable.getPanel());
@@ -112,5 +117,23 @@ public class TableMenu
 	public void checkMessageSize(String language)
 	{
 		this.charSizeTable.check(this.mesTable, this.tagTable, this.resultTable, language);
+	}
+
+	/* (非 Javadoc)
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
+	public void stateChanged(ChangeEvent arg0) {
+		int selectedIdx = this.tab.getSelectedIndex();
+		SettingMenu settingMenu = (SettingMenu)this.mesman.getMenubar().get(1);
+		if(settingMenu == null) { 
+			return;
+		}
+		
+		if(selectedIdx == 0 || selectedIdx == 1 || selectedIdx == 3) {
+			settingMenu.changeMenu(SettingMenu.eMenuType.Normal);
+		}
+		else if(selectedIdx == 2) {
+			settingMenu.changeMenu(SettingMenu.eMenuType.CharactorSize);
+		}
 	}
 }

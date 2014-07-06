@@ -45,7 +45,10 @@ public class MenuBar
 	 */
 	public MenuBarBase get(int index)
 	{
-		return menuStack.get(index);
+		if(index < menuStack.size()) {
+			return menuStack.get(index);
+		}
+		return null;
 	}
 	
 	/**

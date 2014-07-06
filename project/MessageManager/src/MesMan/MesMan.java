@@ -79,7 +79,7 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 
 		// size
 		Dimension size = getContentPane().getSize();
-		tableMenu = new TableMenu(mesman, size.width, size.height);
+		tableMenu = new TableMenu(this, size.width, size.height);
 		add(tableMenu.getComponent(), BorderLayout.CENTER);
 		if( isSampleMode ) {
 			String charset = "UTF-16";
