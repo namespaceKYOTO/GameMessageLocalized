@@ -14,6 +14,7 @@ public class CharacterSizeTable extends TableEx
 {
 	private static String CHARACTER = "Character";
 	private static String SIZE = "Size";
+	private static String charset = "UTF-16";
 
 	/**
 	 * コンストラクタ.
@@ -46,6 +47,8 @@ public class CharacterSizeTable extends TableEx
 	 */
 	public void check(MesTable mestable, TagTable tagtable, ResultTable resultTable, String language)
 	{
+		charSort();
+		
 		int languageIdx = mestable.getColumnIndex(language);
 		if( languageIdx < 0 ) { return; }
 		
@@ -86,7 +89,6 @@ public class CharacterSizeTable extends TableEx
 		Stack<Stack<String>> row = getRow();
 		int charIdx = this.getColumnIndex(CHARACTER);
 		int sizeIdx = this.getColumnIndex(SIZE);
-		String charset = "UTF-16";
 		int dstValue = 0;
 		try {
 			dstValue = valueOf(src.getBytes(charset));
@@ -204,5 +206,108 @@ public class CharacterSizeTable extends TableEx
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * 文字のソート.
+	 * 文字をUnicodeの順番にソートする.
+	 */
+	public void charSort()
+	{
+		Stack<Stack<String>> row = this.getRow();
+		quickSort(row, 0, row.size() - 1);
+	}
+	
+	/**
+	 * ソート. 
+	 * @param dst　ソート先
+	 * @param left 範囲 最小
+	 * @param right　範囲 最大
+	 */
+	private void quickSort(Stack<Stack<String>> dst, int left, int right)
+	{
+		if(left >= right) {
+			return;
+		}
+		
+		int store = partition(dst, left, right);
+		
+		if(store < left || right < store)
+		{
+			return;
+		}
+		
+		quickSort( dst, left, store - 1);
+		quickSort( dst, store + 1, right);
+	}
+	
+	/**
+	 * 中心の値から小さい物と大きい物に分ける.
+	 * @param dst　分ける先
+	 * @param left 範囲 最小
+	 * @param right　範囲 最大
+	 * @return
+	 */
+	private int partition(Stack<Stack<String>> dst, int left, int right)
+	{
+		int charIdx = getColumnIndex(CHARACTER);
+		int pivotIdx = (left + right) / 2;
+		String pivot = dst.get(pivotIdx).get(charIdx);
+		int pivotCode = 0;
+		
+		if(pivot == null || pivot.length() <= 0) {
+			return 0;
+		}
+		
+		try
+		{
+			pivotCode = valueOf(pivot.getBytes(charset));
+			
+			swap(dst, right, pivotIdx);
+			
+			int num = right - 1;
+			int store = left;
+			for(int i = left; i <= num; ++i)
+			{
+				String codeStr = dst.get(i).get(charIdx);
+				if(codeStr == null || codeStr.length() <= 0) {
+					swap(dst, num - 1, i);
+					swap(dst, num, num - 1);
+					--num;
+					continue;
+				}
+				int code = this.valueOf(codeStr.getBytes(charset));
+				if(code <= pivotCode) {
+					swap(dst, i, store);
+					++store;
+				}
+			}
+			swap(dst, store, num);
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * 交換.
+	 * @param dst 交換元
+	 * @param idx1 交換index1
+	 * @param idx2 交換index2
+	 */
+	private void swap(Stack<Stack<String>> dst, int idx1, int idx2)
+	{
+		Stack<String> idx1Obj = dst.get(idx1);
+		Stack<String> idx2Obj = dst.get(idx2);
+		
+		dst.remove(idx1);
+		dst.add(idx1, idx2Obj);
+		
+		dst.remove(idx2);
+		dst.add(idx2, idx1Obj);
 	}
 }
