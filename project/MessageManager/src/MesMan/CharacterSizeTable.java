@@ -1,5 +1,8 @@
 package MesMan;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
@@ -32,11 +35,6 @@ public class CharacterSizeTable extends TableEx
 		addNotDeleteColumn(CHARACTER);
 		addNotDeleteColumn(SIZE);
 	}
-	
-//	private void sort()
-//	{
-//		
-//	}
 	
 	/**
 	 * 文字サイズチェック.
@@ -144,6 +142,7 @@ public class CharacterSizeTable extends TableEx
 		int bitSift = 0;
 		for (byte b : src) {
 			ret = (ret<<bitSift) | b;
+			++bitSift;
 		}		
 		return ret;
 	}
@@ -216,6 +215,9 @@ public class CharacterSizeTable extends TableEx
 	{
 		Stack<Stack<String>> row = this.getRow();
 		quickSort(row, 0, row.size() - 1);
+		
+		// Debug
+		debugPrint();
 	}
 	
 	/**
@@ -232,13 +234,12 @@ public class CharacterSizeTable extends TableEx
 		
 		int store = partition(dst, left, right);
 		
-		if(store < left || right < store)
-		{
+		if(store < left || right < store) {
 			return;
 		}
 		
-		quickSort( dst, left, store - 1);
-		quickSort( dst, store + 1, right);
+		quickSort(dst, left, store - 1);
+		quickSort(dst, store + 1, right);
 	}
 	
 	/**
@@ -271,9 +272,10 @@ public class CharacterSizeTable extends TableEx
 			{
 				String codeStr = dst.get(i).get(charIdx);
 				if(codeStr == null || codeStr.length() <= 0) {
-					swap(dst, num - 1, i);
-					swap(dst, num, num - 1);
+					swap(dst, i, num);
+					swap(dst, num, num + 1);
 					--num;
+					--i;
 					continue;
 				}
 				int code = this.valueOf(codeStr.getBytes(charset));
@@ -282,7 +284,7 @@ public class CharacterSizeTable extends TableEx
 					++store;
 				}
 			}
-			swap(dst, store, num);
+			swap(dst, store, num + 1);
 		}
 		catch (UnsupportedEncodingException e)
 		{
@@ -309,5 +311,32 @@ public class CharacterSizeTable extends TableEx
 		
 		dst.remove(idx2);
 		dst.add(idx2, idx1Obj);
+	}
+	
+	/**
+	 * デバック出力.
+	 */
+	private void debugPrint()
+	{
+		File file = new File("./debugPrint.txt");
+		try {
+			file.createNewFile();
+			PrintWriter pw = new PrintWriter(file);
+			
+			Stack<Stack<String>> row = this.getRow();
+			for (Stack<String> stack : row) {
+				String code = stack.get(0);
+				if(code != null && code.length() > 0) {
+					int value = this.valueOf(code.getBytes(charset));
+					pw.write(code + String.format(" : 0x%x\r\n", value));
+				}
+			}
+			pw.flush();
+			pw.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
