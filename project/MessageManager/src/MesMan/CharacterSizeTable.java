@@ -18,6 +18,9 @@ public class CharacterSizeTable extends TableEx
 	private static String CHARACTER = "Character";
 	private static String SIZE = "Size";
 	private static String charset = "UTF-16";
+	
+	private int spacenum;
+	private int defaultCharSize;
 
 	/**
 	 * コンストラクタ.
@@ -34,6 +37,9 @@ public class CharacterSizeTable extends TableEx
 		
 		addNotDeleteColumn(CHARACTER);
 		addNotDeleteColumn(SIZE);
+		
+		spacenum = 0;
+		defaultCharSize = 0;
 	}
 	
 	/**
@@ -45,7 +51,11 @@ public class CharacterSizeTable extends TableEx
 	 */
 	public void check(MesTable mestable, TagTable tagtable, ResultTable resultTable, String language)
 	{
+		// 文字をソート
 		charSort();
+		
+		// 文字のデフォルトサイズ取得
+		defaultCharSize = ((SettingMenu)this.mesman.getMenubar().get(1)).getDefaultCharactorSize().intValue();
 		
 		int languageIdx = mestable.getColumnIndex(language);
 		if( languageIdx < 0 ) { return; }
@@ -109,6 +119,7 @@ public class CharacterSizeTable extends TableEx
 			if(c == null || c.length() <= 0) {
 				// 空白があった場合はエラーにする
 				// エラーをスローする？
+				break;
 			}
 			int charValue = 0;
 			try {
@@ -138,12 +149,9 @@ public class CharacterSizeTable extends TableEx
 	public int valueOf(byte[] src)
 	{
 		int  ret = 0;
-		
-		int bitSift = 0;
 		for (byte b : src) {
-			ret = (ret<<bitSift) | b;
-			++bitSift;
-		}		
+			ret = (ret<<8) | ((int)b & 0x000000FF);
+		}
 		return ret;
 	}
 	
@@ -173,7 +181,7 @@ public class CharacterSizeTable extends TableEx
 			int tagSize = 0;
 			for(int i = 0; i < tagMessage.length(); ++i)
 			{
-				tagSize += getCharacterSize(tagMessage.substring(i, i+1), 0, getRow().size() - 2);
+				tagSize += getCharacterSize(tagMessage.substring(i, i+1), 0, getRow().size() - 1 - spacenum);
 			} 
 			
 			int index = str.indexOf(tagName);
@@ -190,7 +198,7 @@ public class CharacterSizeTable extends TableEx
 				{
 					String c = str.substring(i, i+1);
 					System.out.print(c + " ");
-					ret += getCharacterSize(str.substring(i, i+1), 0, getRow().size() - 2);
+					ret += getCharacterSize(str.substring(i, i+1), 0, getRow().size() - 1 - spacenum);
 				}
 				System.out.print("\n");
 			}
@@ -200,7 +208,7 @@ public class CharacterSizeTable extends TableEx
 		{
 			for(int i = 0; i < str.length(); ++i)
 			{
-				ret += getCharacterSize(str.substring(i, i+1), 0, getRow().size() - 2);
+				ret += getCharacterSize(str.substring(i, i+1), 0, getRow().size() - 1 - spacenum);
 			}
 		}
 		
@@ -214,7 +222,31 @@ public class CharacterSizeTable extends TableEx
 	public void charSort()
 	{
 		Stack<Stack<String>> row = this.getRow();
-		quickSort(row, 0, row.size() - 1);
+		int left = 0;
+		int right = row.size() - 1;
+		
+		// 空欄を末尾へ移動
+		{
+			int charIdx = getColumnIndex(CHARACTER);
+			int r = row.size() - 1;
+			for(int l = 0; l < r; ++l) {
+				String str = row.get(l).get(charIdx);
+				if(str == null || (str != null && str.length() <= 0)) {
+					
+					String rstr = row.get(r).get(charIdx); 
+					while(rstr == null || (rstr != null && rstr.length() <= 0)) {
+						if(l == --r) { break; }
+						rstr = row.get(r).get(charIdx);
+					}
+					swap(row, l, r);
+					--r;
+					++spacenum;
+				}
+			}
+			right = r;
+		}
+		
+		quickSort(row, left, right);
 		
 		// Debug
 		debugPrint();
@@ -247,37 +279,25 @@ public class CharacterSizeTable extends TableEx
 	 * @param dst　分ける先
 	 * @param left 範囲 最小
 	 * @param right　範囲 最大
-	 * @return
+	 * @return 
 	 */
 	private int partition(Stack<Stack<String>> dst, int left, int right)
 	{
 		int charIdx = getColumnIndex(CHARACTER);
+		int pivotCode = 0;
 		int pivotIdx = (left + right) / 2;
 		String pivot = dst.get(pivotIdx).get(charIdx);
-		int pivotCode = 0;
-		
-		if(pivot == null || pivot.length() <= 0) {
-			return 0;
-		}
-		
+		int num = right - 1;
+		int store = left;
 		try
 		{
 			pivotCode = valueOf(pivot.getBytes(charset));
 			
 			swap(dst, right, pivotIdx);
 			
-			int num = right - 1;
-			int store = left;
 			for(int i = left; i <= num; ++i)
 			{
 				String codeStr = dst.get(i).get(charIdx);
-				if(codeStr == null || codeStr.length() <= 0) {
-					swap(dst, i, num);
-					swap(dst, num, num + 1);
-					--num;
-					--i;
-					continue;
-				}
 				int code = this.valueOf(codeStr.getBytes(charset));
 				if(code <= pivotCode) {
 					swap(dst, i, store);
@@ -292,7 +312,7 @@ public class CharacterSizeTable extends TableEx
 			return 0;
 		}
 		
-		return 0;
+		return store;
 	}
 	
 	/**
@@ -328,7 +348,7 @@ public class CharacterSizeTable extends TableEx
 				String code = stack.get(0);
 				if(code != null && code.length() > 0) {
 					int value = this.valueOf(code.getBytes(charset));
-					pw.write(code + String.format(" : 0x%x\r\n", value));
+					pw.write(code + String.format(" : 0x%08x\r\n", value));
 				}
 			}
 			pw.flush();
