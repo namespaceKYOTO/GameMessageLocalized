@@ -14,9 +14,9 @@ import MesMan.MesMan;
 import MesMan.MesTableDefine;
 import MesMan.MessageDataManager;
 import MesMan.OutPuter;
-import MesMan.TableEx;
-import MesMan.TableFile;
-import MesMan.TableMenu;
+import MesMan.Table.TableEx;
+import MesMan.Table.TableFile;
+import MesMan.Table.TableMenu;
 
 
 /**

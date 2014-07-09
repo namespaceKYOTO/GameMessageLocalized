@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.util.Stack;
 
+import MesMan.Table.TableEx;
+
 /**
  * UIリサイズ時用のリスナー.
  * @author t_sato

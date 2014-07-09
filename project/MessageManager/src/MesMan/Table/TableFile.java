@@ -1,4 +1,4 @@
-package MesMan;
+package MesMan.Table;
 
 import java.io.*;
 import java.util.*;

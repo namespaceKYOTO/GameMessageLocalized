@@ -1,6 +1,8 @@
-package MesMan;
+package MesMan.Table;
 
 import java.util.Stack;
+
+import MesMan.MesMan;
 
 /**
  * メッセージテーブル.

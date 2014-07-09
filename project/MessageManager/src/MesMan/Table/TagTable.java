@@ -1,6 +1,8 @@
-package MesMan;
+package MesMan.Table;
 
 import java.util.*;
+
+import MesMan.MesMan;
 
 /**
  * タグテーブル.

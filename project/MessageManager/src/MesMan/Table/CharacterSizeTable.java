@@ -1,4 +1,4 @@
-package MesMan;
+package MesMan.Table;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
+import MesMan.MesMan;
 import MesMan.MenuBar.SettingMenu;
 
 /**

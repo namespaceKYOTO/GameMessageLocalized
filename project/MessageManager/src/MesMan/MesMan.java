@@ -14,6 +14,9 @@ import MesMan.MenuBar.LanguageMenu;
 import MesMan.MenuBar.MenuBar;
 import MesMan.MenuBar.SettingMenu;
 import MesMan.MenuBar.ToolsMenu;
+import MesMan.Table.TableEx;
+import MesMan.Table.TableFile;
+import MesMan.Table.TableMenu;
 
 /**
  * メッセージ管理クラス.

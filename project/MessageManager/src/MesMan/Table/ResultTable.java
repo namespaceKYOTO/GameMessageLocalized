@@ -1,4 +1,6 @@
-package MesMan;
+package MesMan.Table;
+
+import MesMan.MesMan;
 
 /**
  * 結果テーブル.

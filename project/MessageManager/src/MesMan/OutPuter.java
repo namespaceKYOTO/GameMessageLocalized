@@ -11,6 +11,8 @@ import java.util.Calendar;
 import java.util.Stack;
 
 import BtoC.BtoC;
+import MesMan.Table.MesTable;
+import MesMan.Table.TagTable;
 
 /**
  * 出力クラス.

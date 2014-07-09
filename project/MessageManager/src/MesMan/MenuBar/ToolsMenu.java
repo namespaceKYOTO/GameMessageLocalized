@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import MesMan.MesMan;
 import MesMan.MesTableDefine;
-import MesMan.TableMenu;
+import MesMan.Table.TableMenu;
 
 /**
  * ツールメニュー.

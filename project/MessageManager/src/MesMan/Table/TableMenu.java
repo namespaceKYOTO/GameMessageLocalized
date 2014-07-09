@@ -1,10 +1,11 @@
-package MesMan;
+package MesMan.Table;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import MesMan.MesMan;
 import MesMan.MenuBar.SettingMenu;
 
 /**

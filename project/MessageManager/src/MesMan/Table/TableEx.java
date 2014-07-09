@@ -1,12 +1,17 @@
-package MesMan;
+package MesMan.Table;
 
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableColumnModel;
+
+import MesMan.MesMan;
+import MesMan.MesTableDefine;
+import MesMan.MessageDataManager;
 
 /**
  * テーブルクラス.
