@@ -7,7 +7,6 @@ import javax.swing.JMenuItem;
 
 import MesMan.MesMan;
 import MesMan.MesTableDefine;
-import MesMan.MessageDataManager;
 
 /**
  * ヘルプ.
@@ -64,6 +63,7 @@ public class HelpMenu extends MenuBarBase
 		
 		if(obj == welcome)
 		{
+			
 		}
 		else if(obj == helpContent)
 		{

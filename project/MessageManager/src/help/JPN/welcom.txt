@@ -1,0 +1,22 @@
+ようこそ
+メッセージ管理を利用してくれてありがとう！！
+
+
+みんなTwitterで拡散だ！！!
+---　Copy --------------------------------------------
+ゲームを作るときにメッセージの管理やローカライズに困ったことはない？
+そんなときはMessageManagerだ！！
+これがあれば簡単にメッセージの管理、ローカライズができるぞ！！
+https://github.com/namespaceKYOTO/MessageManager.git
+-----------------------------------------------------
+
+
+↓↓↓ e-mail ↓↓↓
+hifive.www@gmail.com
+
+↓↓↓　参加してみてね!　↓↓↓
+↓↓↓　翻訳頼む！！　↓↓↓
+https://github.com/namespaceKYOTO/MessageManager.git
+
+
+July.09.2014  t_sato
