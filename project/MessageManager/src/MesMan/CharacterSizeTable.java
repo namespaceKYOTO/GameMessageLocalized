@@ -137,7 +137,7 @@ public class CharacterSizeTable extends TableEx
 			else				{ rightIdx = middleIdx - 1; }
 		}
 
-		System.out.println("Check : " + src + String.format("  size %d  value 0x%x", size, dstValue));
+		System.out.println("Check : " + src + String.format("  size %d  value 0x%08x", size, dstValue));
 		return size;
 	}
 	
@@ -173,6 +173,7 @@ public class CharacterSizeTable extends TableEx
 		boolean existTag = false;
 		
 		for (Stack<String> column : row) {
+			if(column == null) continue;
 			String tagName = column.get(tagIndex);
 			if(tagName == null) continue;
 			existTag = true;
