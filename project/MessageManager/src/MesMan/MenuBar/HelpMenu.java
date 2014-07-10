@@ -98,7 +98,8 @@ public class HelpMenu extends MenuBarBase
 		}
 		else if(obj == helpContent)
 		{
-			
+			HelpDialog dialog = new HelpDialog(this.getMesman());
+			dialog.show();
 		}
 		else if(obj == sampleData)
 		{
