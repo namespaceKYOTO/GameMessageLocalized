@@ -1,5 +1,6 @@
 package MesMan.MenuBar;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -85,9 +87,14 @@ public class HelpMenu extends MenuBarBase
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
-//			JOptionPane dialog = new JOptionPane("Welcom", JOptionPane.INFORMATION_MESSAGE);
-			JOptionPane.showMessageDialog(this.getMesman(), area);
-//			dialog.setVisible(true);
+			area.setEditable(false);
+			area.setLineWrap(true);
+			
+			JDialog dialog = new JDialog(this.getMesman(), "Welcom");
+			Dimension size = this.getMesman().getContentPane().getSize();
+			dialog.setSize(size);
+			dialog.add(area);
+			dialog.setVisible(true);
 		}
 		else if(obj == helpContent)
 		{
