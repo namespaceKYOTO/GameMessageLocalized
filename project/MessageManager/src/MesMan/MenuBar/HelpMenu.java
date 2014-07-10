@@ -1,9 +1,16 @@
 package MesMan.MenuBar;
 
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 import MesMan.MesMan;
 import MesMan.MesTableDefine;
@@ -59,11 +66,28 @@ public class HelpMenu extends MenuBarBase
 	public void actionPerformed(ActionEvent arg0)
 	{
 		System.out.println(arg0.paramString());
+		
+		
 		Object obj = arg0.getSource();
 		
 		if(obj == welcome)
 		{
-			
+			InputStream fileStream = this.getClass().getResourceAsStream("/help/JPN/welcom.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(fileStream));
+			String readLine = null;
+			JTextArea area = new JTextArea();
+			try {
+				while((readLine = br.readLine()) != null)
+				{
+					area.append(readLine + "\n");
+				}
+			} catch (IOException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+//			JOptionPane dialog = new JOptionPane("Welcom", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this.getMesman(), area);
+//			dialog.setVisible(true);
 		}
 		else if(obj == helpContent)
 		{
