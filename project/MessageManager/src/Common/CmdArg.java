@@ -10,6 +10,13 @@ import java.util.Stack;
 public class CmdArg
 {
 	protected String optionPrefix;
+	protected boolean version;
+	protected boolean help;
+	
+	protected String V = "v";
+	protected String VERSION = "version";
+	protected String H = "h";
+	protected String HELP = "help";
 	
 	/**
 	 * コンストラクタ. 
@@ -45,12 +52,10 @@ public class CmdArg
 	protected int getArgumentsNum(String option)
 	{
 		// よくあるオプションについて記述しとく...
-		String v = optionPrefix + "v";
-		String h = optionPrefix + "h";
-		String o = optionPrefix + "o";
-		String version = optionPrefix + "version";
-		String help = optionPrefix + "help";
-		String out = optionPrefix + "out";
+		String v = optionPrefix + V;
+		String h = optionPrefix + H;
+		String version = optionPrefix + VERSION;
+		String help = optionPrefix + HELP;
 		
 		// バージョン
 		if(v.equals(option) || version.equals(option))
@@ -62,15 +67,26 @@ public class CmdArg
 		{
 			return 0;
 		}
-		// 出力ディレクトリ
-		else if(o.equals(option) || out.equals(option))
-		{
-			return 1;	// "o"の後にはディレクトリの指定があるので1
-		}
 		// ...etc
 		return -1;
 	}
 	
+	/**
+	 * バージョン指定があったか
+	 * @return　有無
+	 */
+	public boolean isVersion() {
+		return version;
+	}
+
+	/**
+	 * ヘルプ指定があったか
+	 * @return 有無
+	 */
+	public boolean isHelp() {
+		return help;
+	}
+
 	/**
 	 * オプション解析.
 	 * @param option オプション
@@ -78,6 +94,19 @@ public class CmdArg
 	 */
 	protected void optionAnalyze(String option, String[] args)
 	{
+		String v = optionPrefix + V;
+		String h = optionPrefix + H;
+		String version = optionPrefix + VERSION;
+		String help = optionPrefix + HELP;
+		
+		if(v.equals(option) || version.equals(option))
+		{
+			this.version = true;
+		}
+		else if(h.equals(option) || help.equals(option))
+		{
+			this.help = true;
+		}
 	}
 	
 	/**

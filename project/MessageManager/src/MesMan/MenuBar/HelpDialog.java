@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import MesMan.MesMan;
-
 /**
  * ヘルプのダイアログ.
  * @author t_sato
@@ -115,31 +114,27 @@ public class HelpDialog implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		Object obj = arg0.getSource();
+		String language = getNowLanguage();
 		
 		if(obj == this.buttonMessage)
 		{
-			System.out.println("Message");
-			textRead("/help/JPN/help_message.txt");
+			textRead("/help/" + language + "/help_message.txt");
 		}
 		else if(obj == this.buttonTag)
 		{
-			System.out.println("Tag");
-			textRead("/help/JPN/help_tag.txt");
+			textRead("/help/" + language + "/help_tag.txt");
 		}
 		else if(obj == this.buttonCharSize)
 		{
-			System.out.println("CharSize");
-			textRead("/help/JPN/help_charasize.txt");
+			textRead("/help/" + language + "/help_charasize.txt");
 		}
 		else if(obj == this.buttonOutput)
 		{
-			System.out.println("Output");
-			textRead("/help/JPN/help_output.txt");
+			textRead("/help/" + language + "/help_output.txt");
 		}
 		else if(obj == this.buttonSuffix)
 		{
-			System.out.println("Suffix");
-			textRead("/help/JPN/help_suffix.txt");
+			textRead("/help/" + language + "/help_suffix.txt");
 		}
 	}
 	
@@ -164,5 +159,15 @@ public class HelpDialog implements ActionListener
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 現在の表示言語取得.
+	 * @return 言語文字
+	 */
+	private String getNowLanguage()
+	{
+		// TODO：現在はJPNのヘルプしかないので July.13.2014 t_sato
+		return "JPN";
 	}
 }

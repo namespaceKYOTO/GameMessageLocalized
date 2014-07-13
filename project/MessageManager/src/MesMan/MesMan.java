@@ -40,6 +40,7 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 	
 	private String FRAME_TITLE_NORMAL = "Message Manager";
 	private String FRAME_TITLE_SAMPLE = "Sample";
+	public static String CONFIG_FILE = "./MesManConfig";
 	
 	/**
 	 * コンストラクタ.
@@ -55,7 +56,7 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		addWindowListener(this);
 		
 		mesman = new MessageDataManager("/res/MesTableDefine.bin");
-		mesman.setLanguageNo(SettingMenu.getDefaultLanguage("./config.txt"));
+		mesman.setLanguageNo(SettingMenu.getDefaultLanguage(CONFIG_FILE));
 		
 		if( !isSampleMode ) {
 			setTitle(FRAME_TITLE_NORMAL);
@@ -112,7 +113,7 @@ public class MesMan extends JFrame implements ActionListener, WindowListener
 		}
 		
 		{
-			settingMenu = new SettingMenu(this, "./config.txt");
+			settingMenu = new SettingMenu(this, CONFIG_FILE);
 			fileMenu = new FileMenu(this, tableMenu, settingMenu);
 			languageMenu = new LanguageMenu(this);
 			toolsMenu = new ToolsMenu(this, tableMenu);

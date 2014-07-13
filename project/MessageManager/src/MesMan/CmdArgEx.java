@@ -111,6 +111,8 @@ public class CmdArgEx extends CmdArg
 	 */
 	protected void optionAnalyze(String option, String[] args)
 	{
+		super.optionAnalyze(option, args);
+		
 		String mode = PREFIX + OPTION_MODE;
 		String m = PREFIX + OPTION_MESSAGE_TABLE;
 		String t = PREFIX + OPTION_TAG_TABLE;

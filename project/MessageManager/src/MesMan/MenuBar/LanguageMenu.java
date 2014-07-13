@@ -33,7 +33,7 @@ public class LanguageMenu extends MenuBarBase
 	{
 		super(mesman, mesman.getMesDataMan().getMessage(MesTableDefine.mes_language));
 		
-		MessageDataManager mesDataMan =mesman.getMesDataMan(); 
+		MessageDataManager mesDataMan =mesman.getMesDataMan();
 		
 		JMenu menu = getMenu();
 		

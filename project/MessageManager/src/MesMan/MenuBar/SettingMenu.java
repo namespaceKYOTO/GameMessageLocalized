@@ -260,6 +260,7 @@ public class SettingMenu extends MenuBarBase
 		buffer.clear();
 		buffer.add(directoryIdx, DefaultDirectoryLabel + defaultDirectory);
 		buffer.add(languageIdx, DefaultLanguageLabel + String.valueOf(defaultLanguage));
+		buffer.add(charactorsizeIdx, DefaultCharactorSizeLabel + String.valueOf(defaultCharactorSize));
 	}
 	
 	/**
