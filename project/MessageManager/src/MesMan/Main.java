@@ -23,11 +23,16 @@ public class Main
 		if(cmd.getMode() != CmdArgEx.eMode.Sample)
 		{
 			// Check Config file
-//			MesMan.CONFIG_FILE
 			File file = new File(MesMan.CONFIG_FILE);
 			if(file.exists() == false)
 			{
 				// create config File
+				System.out.println("create config File");
+				PreSetting preSetting = new PreSetting();
+				
+				while(preSetting.isCreate() == false) {
+					// polling
+				}
 			}
 		}
 		

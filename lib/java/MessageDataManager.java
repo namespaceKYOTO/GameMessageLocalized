@@ -1,13 +1,13 @@
-/*---------------------------------------------------------------------*/
-/*!
- * @brief	Message Manager
- */
-/*---------------------------------------------------------------------*/
 package MesMan;
 
 import java.io.*;
 
-public class MessageManager
+/**
+ * メッセージデータ管理クラス.
+ * @author t_sato
+ *
+ */
+public class MessageDataManager
 {
 	private static int SignatureOffset = 0;
 	private static int DateOffset = 4;
@@ -28,33 +28,42 @@ public class MessageManager
 	private int mesDataIdx;
 	private int languageNo;
 	
+	/**
+	 * 言語取得.
+	 * @return 言語番号
+	 */
 	public int getLanguageNo() {
 		return languageNo;
 	}
 
+	/**
+	 * 言語設定.
+	 * @param languageNo 言語番号
+	 */
 	public void setLanguageNo(int languageNo) {
 		this.languageNo = languageNo;
 	}
 
 	/**
-	 * @param mtblFileName
+	 * コンストラクタ.
+	 * @param binFileName メッセージバイナリのファイル名
 	 */
-	public MessageManager(String mtblFileName)
+	public MessageDataManager(String binFileName)
 	{
-		this.Open(mtblFileName);
+		this.Open(binFileName);
 	}
 	
 	/**
-	 * @param mtblFileName
+	 * メッセージバイナリのオープン.
+	 * @param binFileName メッセージバイナリのファイル名
 	 */
-	public void Open(String mtblFileName)
+	public void Open(String binFileName)
 	{
 		try
 		{
-			File file = new File(mtblFileName);
-			FileInputStream fileStream = new FileInputStream(file);
-			this.readData = new byte[(int)file.length()];
-			System.out.println(String.format("read byte %d", file.length()));
+			InputStream fileStream = this.getClass().getResourceAsStream(binFileName);
+			this.readData = new byte[(int)fileStream.available()];
+			System.out.println(String.format("read byte %d", this.readData.length));
 			int readBytes = fileStream.read(this.readData);
 			
 			// Singnature
@@ -80,7 +89,7 @@ public class MessageManager
 			if( charSetNo == UTF16LE)	{ this.charset = new String("UTF-16LE"); }
 
 			// Message Offset (Message Num * Language Num * 4Byte)
-			this.setMessageOffset( MesOffsetOffset, this.messageNum, this.languageNum);
+			this.getMessageOffset( MesOffsetOffset, this.messageNum, this.languageNum);
 			
 			this.mesDataIdx = MesOffsetOffset + messageOffset.length * 4;
 		}
@@ -91,8 +100,9 @@ public class MessageManager
 	}
 	
 	/**
-	 * @param offset
-	 * @return
+	 * 4Byteデータ取得.
+	 * @param offset 取得開始位置
+	 * @return 4Byteデータ
 	 */
 	private int getData(int offset)
 	{
@@ -112,9 +122,10 @@ public class MessageManager
 	}
 	
 	/**
-	 * @param offset
-	 * @param length
-	 * @return
+	 * 文字列データ取得.
+	 * @param offset 取得開始位置
+	 * @param length 文字列サイズ
+	 * @return 文字列
 	 */
 	private String getData(int offset, int length)
 	{
@@ -122,11 +133,12 @@ public class MessageManager
 	}
 	
 	/**
-	 * @param offset
-	 * @param messageNum
-	 * @param languageNum
+	 * メッセージの取得Offset値取得.
+	 * @param offset 取得開始位置
+	 * @param messageNum メッセージ数
+	 * @param languageNum 言語数
 	 */
-	private void setMessageOffset(int offset, int messageNum, int languageNum)
+	private void getMessageOffset(int offset, int messageNum, int languageNum)
 	{
 		this.messageOffset = new int[messageNum*languageNum];
 		for(int i = 0; i < (messageNum*languageNum); ++i) {
@@ -144,6 +156,11 @@ public class MessageManager
 		}
 	}
 	
+	/**
+	 * メッセージ取得.
+	 * @param mesNo 取得するメッセージ番号
+	 * @return　メッセージ
+	 */
 	public String getMessage(int mesNo)
 	{
 		String ret = null;
