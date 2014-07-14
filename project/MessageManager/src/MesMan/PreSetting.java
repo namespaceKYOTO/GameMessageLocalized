@@ -21,6 +21,8 @@ public class PreSetting extends JFrame implements ActionListener, WindowListener
 	private JComboBox<String> comboBox;
 	private JLabel label;
 	private JButton okButton;
+	private Config config;
+	boolean create;
 
 	/**
 	 * コンストラクタ.
@@ -40,7 +42,7 @@ public class PreSetting extends JFrame implements ActionListener, WindowListener
 		setBounds( x, y, width, height );
 
 		setTitle("Setting");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE );
 		addWindowListener(this);
 		
 		String[] element = {
@@ -56,6 +58,7 @@ public class PreSetting extends JFrame implements ActionListener, WindowListener
 		comboBox = new JComboBox<String>(element);
 		label = new JLabel("Default Language");
 		okButton = new JButton("OK");
+		okButton.addActionListener(this);
 		
 		JPanel panel = new JPanel();
 		panel.add(label);
@@ -65,6 +68,9 @@ public class PreSetting extends JFrame implements ActionListener, WindowListener
 		
 		add(panel);
 		setVisible(true);
+		
+		config = new Config(MesMan.CONFIG_FILE);
+		create = false;
 	}
 	
 	/**
@@ -73,7 +79,7 @@ public class PreSetting extends JFrame implements ActionListener, WindowListener
 	 */
 	public boolean isCreate()
 	{
-		return false;
+		return create;
 	}
 	
 	/**
@@ -81,14 +87,18 @@ public class PreSetting extends JFrame implements ActionListener, WindowListener
 	 */
 	public void createConfigFile()
 	{
-		
+		System.out.println("createConfigFile");
+		config.save();
+		create = true;
 	}
 
 	/* (非 Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0)
-	{	
+	{
+		createConfigFile();
+		setVisible(false);
 	}
 
 	public void windowActivated(WindowEvent arg0) {}

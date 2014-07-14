@@ -1,18 +1,14 @@
 package MesMan.MenuBar;
 
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import MesMan.Config;
 import MesMan.MesMan;
 import MesMan.MesTableDefine;
 import MesMan.MessageDataManager;
@@ -30,22 +26,8 @@ public class SettingMenu extends MenuBarBase
 		CharactorSize,
 	};
 	
-	private String fileName;
-	private String defaultDirectory;
-	private Integer defaultLanguage;
-	private Integer defaultCharactorSize;
-	LinkedList<String> buffer;
-
-	private static String DefaultDirectoryLabel = "\"defaultDirectory\":";
-	private static String DefaultDirectory = "C:\\";
-	private static String DefaultLanguageLabel = "\"defaultLanguage\":";
-	private static int DefaultLanguage = MesTableDefine.Language_ENG;
-	private static String DefaultCharactorSizeLabel = "\"defaultCharactorSize\":";
-	private static int DefaultCharactorSize = 0;
-	
-	private static int directoryIdx = 0;
-	private static int languageIdx = 1;
-	private static int charactorsizeIdx = 2;
+//	LinkedList<String> buffer;
+	Config config;
 	
 	private JMenuItem defaulttDir;
 	private JMenu defaultLang;
@@ -71,29 +53,8 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public static int getDefaultLanguage(String fileName)
 	{
-		File file = new File(fileName);
-		if(!file.exists()) {
-			return DefaultLanguage;
-		}
-		
-		try 
-		{
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			LinkedList<String> buffer = new LinkedList<String>();
-			
-			// ファイルから情報取得
-			String line = null;
-			while((line = br.readLine()) != null) {
-				buffer.add(line);
-			}
-			br.close();
-			return Integer.valueOf(buffer.get(languageIdx).substring(DefaultLanguageLabel.length()));
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-			return DefaultLanguage;
-		}
+		Config config = new Config(fileName);
+		return config.getDefaultLanguage();
 	}
 	
 	/**
@@ -107,39 +68,7 @@ public class SettingMenu extends MenuBarBase
 		
 		MessageDataManager mesDataMan = mesman.getMesDataMan();
 		
-		buffer = new LinkedList<String>();
-		fileName = null;
-		defaultDirectory = new String(DefaultDirectory);
-		defaultLanguage = DefaultLanguage;
-		defaultCharactorSize = DefaultCharactorSize;
-		try
-		{
-			fileName = settingFile;
-			File file = new File(fileName);
-			if(!file.exists())
-			{
-				buffer.add(DefaultDirectoryLabel + DefaultDirectory);
-				buffer.add(DefaultLanguageLabel + String.format("%d", DefaultLanguage));
-				buffer.add(DefaultCharactorSizeLabel + String.format("%d", DefaultCharactorSize));
-			}
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			
-			// ファイルから情報取得
-			String line = null;
-			while((line = br.readLine()) != null) {
-				buffer.add(line);
-			}
-			br.close();
-			
-			defaultDirectory = buffer.get(directoryIdx).substring(DefaultDirectoryLabel.length());
-			defaultLanguage = Integer.valueOf(buffer.get(languageIdx).substring(DefaultLanguageLabel.length()));
-			defaultCharactorSize = Integer.valueOf(buffer.get(charactorsizeIdx).substring(DefaultCharactorSizeLabel.length()));
-		}
-		catch(IOException e)
-		{
-			System.out.println(e.getMessage());
-			reset();
-		}
+		config = new Config(settingFile);
 		
 		JMenu menu = getMenu();
 		
@@ -195,7 +124,7 @@ public class SettingMenu extends MenuBarBase
 	 * @return 言語番号
 	 */
 	public Integer getDefaultLanguage() {
-		return defaultLanguage;
+		return config.getDefaultLanguage();
 	}
 
 	/**
@@ -204,9 +133,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public void setDefaultLanguage(int defaultLanguage)
 	{
-		buffer.remove(languageIdx);
-		buffer.add(languageIdx, DefaultLanguageLabel + String.valueOf(defaultLanguage));
-		this.defaultLanguage = new Integer(defaultLanguage);
+		config.setDefaultLanguage(defaultLanguage);
 	}
 	
 	/**
@@ -215,7 +142,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public String getDefaultDirectory()
 	{
-		return defaultDirectory;
+		return config.getDefaultDirectory();
 	}
 	
 	/**
@@ -224,9 +151,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public void setDefaultDirectory(String defaultDirectory)
 	{
-		buffer.remove(directoryIdx);
-		buffer.add(directoryIdx, DefaultDirectoryLabel + defaultDirectory);
-		this.defaultDirectory = defaultDirectory;
+		config.setDefaultDirectory(defaultDirectory);
 	}
 	
 	/**
@@ -235,7 +160,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public Integer getDefaultCharactorSize()
 	{
-		return defaultCharactorSize;
+		return config.getDefaultCharactorSize();
 	}
 
 	/**
@@ -244,9 +169,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public void setDefaultCharactorSize(Integer defaultCharactorSize)
 	{
-		buffer.remove(charactorsizeIdx);
-		buffer.add(charactorsizeIdx, DefaultCharactorSizeLabel + String.valueOf(defaultCharactorSize));
-		this.defaultCharactorSize = defaultCharactorSize;
+		config.setDefaultCharactorSize(defaultCharactorSize);
 	}
 
 	/**
@@ -254,13 +177,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public void reset()
 	{
-		defaultDirectory = new String(DefaultDirectory);
-		defaultLanguage = MesTableDefine.Language_ENG;
-		
-		buffer.clear();
-		buffer.add(directoryIdx, DefaultDirectoryLabel + defaultDirectory);
-		buffer.add(languageIdx, DefaultLanguageLabel + String.valueOf(defaultLanguage));
-		buffer.add(charactorsizeIdx, DefaultCharactorSizeLabel + String.valueOf(defaultCharactorSize));
+		config.reset();
 	}
 	
 	/**
@@ -268,26 +185,7 @@ public class SettingMenu extends MenuBarBase
 	 */
 	public void save()
 	{
-		try
-		{
-			File file = new File(fileName);
-			if(!file.exists()) {
-				file.createNewFile();
-			}
-			PrintWriter pw = new PrintWriter(file);
-			
-			for (String str : this.buffer) {
-				pw.write(str);
-				pw.write("\r\n");
-				pw.flush();
-			}
-			pw.close();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			return;
-		}
+		config.save();
 	}
 	
 	/**
