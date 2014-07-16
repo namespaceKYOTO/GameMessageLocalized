@@ -28,7 +28,7 @@ public class Config
 	private static int languageIdx = 1;
 	private static int charactorsizeIdx = 2;
 	
-	private Stack<String> buffer;
+	private LinkedList<String> buffer;
 	private String fileName;
 	private String defaultDirectory;
 	private Integer defaultLanguage;
@@ -41,14 +41,13 @@ public class Config
 	public Config(String configFile)
 	{
 		this.fileName = configFile;
-		buffer = new Stack<String>();
-		reset();
+		buffer = new LinkedList<String>();
+//		reset();
 		
 		File file = new File(configFile);
 		try
 		{
 			BufferedReader br = new BufferedReader(new FileReader(file));
-			LinkedList<String> buffer = new LinkedList<String>();
 			String line = null;
 			int count = 0;
 			while((line = br.readLine()) != null) {
@@ -66,7 +65,7 @@ public class Config
 		{
 			defaultDirectory = buffer.get(directoryIdx).substring(DefaultDirectoryLabel.length());
 			defaultLanguage = Integer.valueOf(buffer.get(languageIdx).substring(DefaultLanguageLabel.length()));
-			defaultCharactorSize = Integer.valueOf(buffer.get(charactorsizeIdx).substring(DefaultCharactorSizeLabel.length()));	
+			defaultCharactorSize = Integer.valueOf(buffer.get(charactorsizeIdx).substring(DefaultCharactorSizeLabel.length()));
 		}
 	}
 	
