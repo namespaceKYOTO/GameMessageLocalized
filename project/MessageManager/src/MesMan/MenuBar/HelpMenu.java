@@ -1,6 +1,7 @@
 package MesMan.MenuBar;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -91,8 +92,8 @@ public class HelpMenu extends MenuBarBase
 			area.setLineWrap(true);
 			
 			JDialog dialog = new JDialog(this.getMesman(), "Welcom");
-			Dimension size = this.getMesman().getContentPane().getSize();
-			dialog.setSize(size);
+			Rectangle rectangle = this.getMesman().getBounds();
+			dialog.setBounds(rectangle);
 			dialog.add(area);
 			dialog.setVisible(true);
 		}

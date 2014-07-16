@@ -2,6 +2,7 @@ package MesMan.MenuBar;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -46,8 +47,8 @@ public class HelpDialog implements ActionListener
 		this.mesman = mesman;
 		
 		dialog = new JDialog(mesman, "Help");
-		Dimension size = mesman.getContentPane().getSize();
-		dialog.setSize(size);
+		Rectangle rectangle = mesman.getBounds();
+		dialog.setBounds(rectangle);
 		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
@@ -168,6 +169,7 @@ public class HelpDialog implements ActionListener
 	private String getNowLanguage()
 	{
 		// TODO：現在はJPNのヘルプしかないので July.13.2014 t_sato
-		return "JPN";
+		String language = ((LanguageMenu)mesman.getMenubar().get(2)).getLanguage(); 
+		return language;
 	}
 }

@@ -16,6 +16,16 @@ import MesMan.MessageDataManager;
  */
 public class LanguageMenu extends MenuBarBase
 {
+	private String[] languages = {
+			"JPN",
+			"ENG",
+			"DEU",
+			"FRA",
+			"ITA",
+			"SPA",
+			"RUS",
+			"THA",
+	};
 	private JMenuItem jpn;
 	private JMenuItem eng;
 	private JMenuItem deu;
@@ -69,6 +79,17 @@ public class LanguageMenu extends MenuBarBase
 	public void LanguageChange()
 	{
 		getMenu().setText(getMesman().getMesDataMan().getMessage(MesTableDefine.mes_language));
+	}
+	
+	/**
+	 * 現在設定されている言語を取得
+	 * @return 言語
+	 */
+	public String getLanguage()
+	{
+		int languageNo = this.getMesman().getMesDataMan().getLanguageNo();
+		return languages[languageNo];
+		
 	}
 
 	/* (非 Javadoc)
