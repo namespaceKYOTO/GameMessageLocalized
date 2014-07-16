@@ -1,0 +1,10 @@
+﻿Message. 
+Si vous voulez créer un message de plusieurs lignes 
+Je peux faire ce que vous mettez dans plusieurs lignes sans intervenir message, le nom de l'étiquette. 
+
+
+■ Colonne Description 
+Nom d'étiquette pour le message: étiquette 
+Explication du message: description 
+La taille du message: taille 
+Messages de différentes langues: diverses langues

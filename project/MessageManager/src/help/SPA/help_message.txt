@@ -1,0 +1,10 @@
+﻿Mensaje. 
+Si desea crear un mensaje de múltiples líneas 
+Yo puedo hacer esto que usted pone en múltiples líneas sin intervenir mensaje el nombre de la etiqueta. 
+
+
+■ Columna Descripción 
+Nombre de la etiqueta para el mensaje: etiqueta 
+Explicación del mensaje: Descripción 
+El tamaño del mensaje: tamaño 
+Los mensajes de los distintos lenguajes: varios idiomas

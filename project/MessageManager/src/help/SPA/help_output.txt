@@ -1,0 +1,22 @@
+﻿Quiero la salida de los datos del mensaje. 
+
+
+■ Proteger archivo 
+Puedo especificar los datos que se emitan. 
+
+●. Bin 
+Yo seria un archivo binario de los datos del mensaje. 
+
+●. C 
+De archivo de lenguaje c (número de mensajes y el nombre de la etiqueta) información del mensaje 
+Me dará salida en el formulario. 
+
+●. Java 
+De archivo java (número de mensajes y nombre de la etiqueta) información del mensaje 
+Me dará salida en el formulario. 
+
+
+■ Código Charactor 
+Se especifica la codificación de caracteres del mensaje que se emitirá. 
+En el nombre del archivo si se especifica más de uno de los "nombre de archivo _" código de caracteres "" 
+Es salida.

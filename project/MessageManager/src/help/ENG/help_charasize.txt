@@ -1,0 +1,10 @@
+﻿I use size check of the message. 
+Once you have specified the size of the message 
+Tools 
+  +- I can check the size of the message from the "message size check" 
+            The results are displayed "result" in the tag. 
+
+
+■ Column Description 
+Character: Character 
+Text Size Size:

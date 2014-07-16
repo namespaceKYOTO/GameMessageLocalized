@@ -1,0 +1,22 @@
+﻿Je veux que la sortie des données de message. 
+
+
+■ Hors fichier 
+Je précise les données à sortir. 
+
+●. Bin 
+Je vais sortir un fichier binaire des données de message. 
+
+●. C 
+De fichier de langue c (nombre de messages et le nom de l'étiquette) d'informations dans le message 
+Je vais sortie dans le formulaire. 
+
+●. Java 
+De fichier java (nombre de messages et le nom de l'étiquette) d'informations dans le message 
+Je vais sortie dans le formulaire. 
+
+
+■ code Charactor 
+Je précise le codage de caractères du message à délivrer. 
+Dans le nom de fichier si vous spécifiez plus d'un du "nom de fichier _" code de caractère "" 
+Est sortie.

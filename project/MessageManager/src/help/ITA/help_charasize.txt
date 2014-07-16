@@ -1,0 +1,10 @@
+﻿Io uso assegno dimensione del messaggio. 
+Dopo aver specificato la dimensione del messaggio 
+Strumenti 
+  + - Posso controllare la dimensione del messaggio dal "controllo della dimensione messaggio" 
+            I risultati vengono visualizzati "risultato" nel tag. 
+
+
+■ Colonna Descrizione 
+Carattere: Carattere 
+Text Size Dimensione:

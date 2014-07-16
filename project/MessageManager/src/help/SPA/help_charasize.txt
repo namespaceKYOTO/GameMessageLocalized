@@ -1,0 +1,10 @@
+﻿Yo uso el chequeo del tamaño del mensaje. 
+Una vez que haya especificado el tamaño del mensaje 
+instrumentos 
+  + - Puedo comprobar el tamaño del mensaje de la "verificación de tamaño del mensaje"
+            Los resultados se muestran "número" en la etiqueta. 
+
+
+■ Columna Descripción 
+Carácter: El carácter 
+Tamaño del texto Tamaño:

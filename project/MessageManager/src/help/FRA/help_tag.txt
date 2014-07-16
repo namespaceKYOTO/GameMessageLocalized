@@ -1,0 +1,8 @@
+﻿Vous pouvez incorporer un code d'octets qui est spécifié comme une balise dans le message. 
+
+
+■ Colonne Description 
+Tags: tag caractère 
+Description de la balise Description 
+Le Code: La valeur réelle de quand il est sortie binaire (hexadécimal) par exemple) 0xFF 
+(String, possible) caractère, qui est calculée comme la taille de l'étiquette à la taille de message lors de la vérification: caractère de remplacement

@@ -1,0 +1,8 @@
+﻿È possibile incorporare un codice byte specificato come una variabile nel messaggio. 
+
+
+■ Colonna Descrizione 
+Tags: carattere tag 
+Tag Descrizione: Descrizione 
+Il codice: Il valore attuale di quando è uscita binaria (notazione esadecimale) es) 0xFF 
+(String, possibile) il carattere, che è calcolato come la dimensione del tag per la dimensione dei messaggi durante il controllo: carattere di sostituzione

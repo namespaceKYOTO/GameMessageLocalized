@@ -1,0 +1,11 @@
+﻿■ mtbl
+Stands pour la table des messages. 
+Message contient des données. 
+
+■ ttbl 
+Stands pour Tag tableau. 
+Tag contient des données. 
+
+■ ctbl
+Stands pour CharctorSize tableau 
+Taille des caractères contient des données.

@@ -1,0 +1,8 @@
+﻿Puede incorporar un código de bytes que se especifica como una variable en el mensaje.
+
+
+■ Columna Descripción 
+Etiquetas: carácter tag 
+Descripción de la etiqueta: Descripción 
+El código: El valor real de cuando es la salida binaria (notación hexadecimal), por ejemplo) 0xFF 
+(String, es posible) carácter, que se calcula como el tamaño de la etiqueta para el tamaño del mensaje en la comprobación: carácter de reemplazo

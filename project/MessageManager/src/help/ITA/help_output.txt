@@ -1,0 +1,22 @@
+﻿Voglio che l'uscita dei dati del messaggio. 
+
+
+■ Out File 
+A specificare i dati da emettere. 
+
+●. Bin 
+Mi sarà in uscita un file binario dei dati del messaggio. 
+
+●. C 
+Di file di lingua c (numero di messaggi e il nome etichetta) informazioni contenute nel messaggio 
+Mi sarà in uscita in forma. 
+
+●. Java 
+Di java (numero di messaggi e il nome etichetta) informazioni contenute nel messaggio 
+Mi sarà in uscita in forma. 
+
+
+■ Codice Charactor 
+A specificare la codifica dei caratteri del messaggio da trasmettere. 
+Nel nome del file se si specifica più di una delle "nome del file _" codice carattere "" 
+È uscita.

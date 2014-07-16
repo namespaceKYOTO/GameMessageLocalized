@@ -1,0 +1,10 @@
+﻿J'utilise vérification de la taille du message. 
+Une fois que vous avez spécifié la taille du message 
+outils 
+  + - Je peux vérifier la taille du message de la "vérification de la taille de message" 
+            Les résultats sont affichés "résultat" dans la balise. 
+
+
+■ Colonne Description 
+Caractère: Caractère 
+Taille du texte Taille:

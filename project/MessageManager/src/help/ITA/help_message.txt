@@ -1,0 +1,10 @@
+﻿Messaggio. 
+Se si desidera creare un messaggio di più linee 
+Posso fare questo si mette in più righe senza intervenire messaggio il nome dell'etichetta.
+
+
+■ Colonna Descrizione 
+Nome di etichetta per il messaggio: etichetta 
+Spiegazione del messaggio: Descrizione 
+La dimensione del messaggio: dimensione 
+Messaggi di varie lingue: varie lingue

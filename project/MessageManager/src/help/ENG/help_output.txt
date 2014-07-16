@@ -1,0 +1,22 @@
+﻿I want the output of the message data. 
+
+
+■ Out File 
+I specify the data to be output. 
+
+●. Bin 
+I will output a binary file of the message data. 
+
+●. C 
+Of c language file (number of messages and label name) information in the message 
+I will output in the form. 
+
+●. Java 
+Of java file (number of messages and label name) information in the message 
+I will output in the form. 
+
+
+■ Charactor Code 
+I specify the character encoding of the message to be output. 
+In the file name if you specify more than one of the "file name _" character code "" 
+Is output.

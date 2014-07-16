@@ -1,0 +1,11 @@
+﻿■ mtbl 
+Supporti per Message Table. 
+Il messaggio contiene i dati. 
+
+■ ttbl 
+Supporti per tag table. 
+Tag contiene dati. 
+
+■ ctbl
+Supporti per CharctorSize Table 
+Dimensione dei caratteri contiene dati.

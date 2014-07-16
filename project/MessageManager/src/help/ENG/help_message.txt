@@ -1,0 +1,10 @@
+﻿Message. 
+If you want to create a message of multiple lines 
+I can do this you put in multiple lines without intervening message the label name. 
+
+
+■ Column Description 
+Label name for the message: label 
+Explanation of the message: Description 
+The size of the message: size 
+Messages of various languages​​: various languages

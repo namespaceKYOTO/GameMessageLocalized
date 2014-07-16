@@ -1,0 +1,8 @@
+﻿You can embed a byte code that is specified as a tag in the message. 
+
+
+■ Column Description 
+Tags: tag character 
+Tag Description: Description 
+The Code: The actual value of when it is binary output (hexadecimal notation) eg) 0xFF 
+(String, possible) character, which is calculated as the size of the tag to the message size when checking: replacement character
