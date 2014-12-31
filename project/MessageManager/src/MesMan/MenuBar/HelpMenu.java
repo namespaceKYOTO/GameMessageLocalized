@@ -23,11 +23,9 @@ import MesMan.MesTableDefine;
 public class HelpMenu extends MenuBarBase
 {
 //    JOptionPane.showMessageDialog(this, "JOptionPane");
-	// ようこそ　-> Dialog標示
 	// ヘルプ目次　-> Dialog標示
 	// テストデータ -> テストデータ標示
 
-	private JMenuItem welcome;
 	private JMenuItem helpContent;
 	private JMenuItem sampleData;
 	
@@ -41,14 +39,10 @@ public class HelpMenu extends MenuBarBase
 		
 		JMenu menu = getMenu();
 		
-		welcome = null;
-//		welcome = new JMenuItem("Welcome");
 		helpContent = new JMenuItem("Help Content");
 		sampleData = new JMenuItem("Sample Data");
-//		welcome.addActionListener(this);
 		helpContent.addActionListener(this);
 		sampleData.addActionListener(this);
-//		menu.add(welcome);
 		menu.add(helpContent);
 		menu.add(sampleData);
 	}
@@ -71,31 +65,7 @@ public class HelpMenu extends MenuBarBase
 		
 		Object obj = arg0.getSource();
 		
-		if(obj == welcome)
-		{
-			InputStream fileStream = this.getClass().getResourceAsStream("/help/JPN/welcom.txt");
-			BufferedReader br = new BufferedReader(new InputStreamReader(fileStream));
-			String readLine = null;
-			JTextArea area = new JTextArea();
-			try {
-				while((readLine = br.readLine()) != null)
-				{
-					area.append(readLine + "\n");
-				}
-			} catch (IOException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-			}
-			area.setEditable(false);
-			area.setLineWrap(true);
-			
-			JDialog dialog = new JDialog(this.getMesman(), "Welcom");
-			Rectangle rectangle = this.getMesman().getBounds();
-			dialog.setBounds(rectangle);
-			dialog.add(area);
-			dialog.setVisible(true);
-		}
-		else if(obj == helpContent)
+		if(obj == helpContent)
 		{
 			HelpDialog dialog = new HelpDialog(this.getMesman());
 			dialog.show();
