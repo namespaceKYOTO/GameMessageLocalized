@@ -1,7 +1,5 @@
 package MesMan;
 
-import java.io.File;
-
 /**
  * メインクラス.
  * @author t_sato
