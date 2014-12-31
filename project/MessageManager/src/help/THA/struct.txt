@@ -1,0 +1,14 @@
+แฟ้มไบนารีมีโครงสร้างดังนี้
+
+
+{
+  [signature]      : "TEXT"        (4Byte)
+  [creation date]  :  YYYY MM DD   (2Byte 1Byte 1Byte)
+  [Message Num]    :               (4Byte)
+  [Language Num]   :               (4Byte)
+  [charset]        :               (4Byte)
+  [Message Offset] :               (Message Num * Language Num * 4Byte)
+  [Messsage]       :                     
+    Example : message_1_JPN, message_1_ENG, message_2_JPN, message_2_ENG ....
+}
+  
