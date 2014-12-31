@@ -41,13 +41,14 @@ public class HelpMenu extends MenuBarBase
 		
 		JMenu menu = getMenu();
 		
-		welcome = new JMenuItem("Welcome");
+		welcome = null;
+//		welcome = new JMenuItem("Welcome");
 		helpContent = new JMenuItem("Help Content");
 		sampleData = new JMenuItem("Sample Data");
-		welcome.addActionListener(this);
+//		welcome.addActionListener(this);
 		helpContent.addActionListener(this);
 		sampleData.addActionListener(this);
-		menu.add(welcome);
+//		menu.add(welcome);
 		menu.add(helpContent);
 		menu.add(sampleData);
 	}
